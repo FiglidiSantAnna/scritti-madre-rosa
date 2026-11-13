@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scritti di Madre Rosa</title>
+<meta name="theme-color" content="#6d1a2a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Madre Rosa">
+<style>
+:root{
+  --bg:#f7f1e6; --paper:#fffaf1; --ink:#2b2420; --muted:#7a6a5d; --line:#e4d7c3;
+  --wine:#6d1a2a; --wine2:#8b2a3c; --gold:#b08a3e; --gold2:#d9bf7f; --hl:#f6e3a6;
+  --fs:19px; --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+body.sepia{--bg:#efe4cf;--paper:#f6ecd8;--ink:#3b2f22;--line:#d9c8a8}
+body.dark{--bg:#17130f;--paper:#201b16;--ink:#e9dfd0;--muted:#a8998a;--line:#3a3129;--wine:#c56a7a;--wine2:#d98393;--gold:#cfae6a;--hl:#5a4a1f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:var(--wine)}
+.bar{position:sticky;top:0;z-index:20;background:var(--wine);color:#fff;padding:calc(env(safe-area-inset-top) + 8px) 12px 8px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.bar h1{font-size:17px;min-width:0;font-weight:600;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
+.bar .ib{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--sans);font-size:20px;flex:none}
+.bar .ib:active{background:rgba(255,255,255,.15)}
+.ib svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+main{max-width:760px;margin:0 auto;padding:0 16px 120px}
+.langs{display:flex;gap:4px;font-family:var(--sans)}
+.langs button{font-size:12px;font-weight:700;padding:5px 8px;border-radius:14px;color:#f3dfe3;letter-spacing:.05em}
+.langs button.on{background:var(--gold2);color:var(--wine)}
+/* home */
+.hero{text-align:center;padding:28px 8px 14px}
+.hero .orn{color:var(--gold);font-size:22px;letter-spacing:.4em}
+.hero h2{font-weight:500;font-size:28px;margin:6px 0 2px;color:var(--wine);letter-spacing:.03em}
+.hero p{margin:0;color:var(--muted);font-style:italic}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(80,50,20,.06)}
+.thought{border-left:4px solid var(--gold)}
+.thought .lbl,.sec-h{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.thought blockquote{margin:8px 0 6px;font-size:18px;line-height:1.55;font-style:italic}
+.thought .src{font-size:13px;color:var(--muted)}
+.sec-h{margin:26px 4px 6px;color:var(--wine)}
+.work{display:flex;gap:14px;align-items:center;padding:14px 16px;margin:8px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;width:100%;text-align:left}
+.work:active{background:var(--bg)}
+.work .ic{flex:none;width:42px;height:54px;border-radius:4px 7px 7px 4px;background:linear-gradient(135deg,var(--wine),var(--wine2));color:var(--gold2);display:grid;place-items:center;font-size:20px;box-shadow:inset 3px 0 0 rgba(0,0,0,.2)}
+.work .tx{flex:1;min-width:0}
+.work .t{font-size:18px;color:var(--ink)}
+.work .s{font-size:14px;color:var(--muted);font-style:italic;margin-top:2px}
+.badge{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:8px;background:var(--line);color:var(--muted);margin-top:5px;text-transform:uppercase}
+.badge.ok{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.cont{display:flex;align-items:center;gap:12px}
+.cont .tx{flex:1}
+.btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 14px;border-radius:20px;background:var(--wine);color:#fff}
+.btn.sec{background:transparent;color:var(--wine);border:1px solid var(--wine)}
+/* porte e scaffali */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 6px}
+.door{display:flex;gap:10px;align-items:center;text-align:left;padding:13px 12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(80,50,20,.06);min-width:0}
+.door:active{background:var(--bg)}
+.door .di{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--wine);color:var(--gold2)}
+.door .di svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.door .dt{font-size:16.5px;color:var(--ink);line-height:1.2}
+.door .ds{font-family:var(--sans);font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.25}
+details.shelf{padding:0 10px}
+details.shelf summary{align-items:center;gap:10px;justify-content:flex-start}
+details.shelf summary .sn{flex:1}
+details.shelf summary .sc{font-family:var(--sans);font-size:12px;color:var(--muted)}
+details.shelf .work{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;margin:0;padding:12px 4px}
+.scheda{font-size:16px;line-height:1.5;margin:6px 0 14px}
+.scheda .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:10px}
+.scheda .meta b{color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:capitalize}
+.copybar{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;display:none;justify-content:center;pointer-events:none}
+.copybar button{pointer-events:auto;font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 18px;border-radius:24px;background:var(--wine);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.tcard{text-align:left;padding:14px 12px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;font-size:16.5px;line-height:1.25;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{font-family:var(--sans);font-size:13.5px;padding:7px 12px;border-radius:18px;border:1px solid var(--wine);color:var(--wine);background:transparent}
+.chip.fill{background:var(--wine);color:#fff}
+.tl{list-style:none;margin:10px 0;padding:0;border-left:2px solid var(--gold2);margin-left:8px}
+.tl li{position:relative;padding:8px 0 12px 18px}
+.tl li::before{content:"";position:absolute;left:-6px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--gold)}
+.tl li.ev::before{background:var(--wine);border-color:var(--wine)}
+.tl .yy{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--wine);letter-spacing:.04em}
+.tl .et{font-size:16.5px;line-height:1.4;margin:2px 0 4px}
+.tl .chip{font-size:12.5px;padding:5px 10px}
+.life{border-left:4px solid var(--wine)}
+.life .lbl{color:var(--wine)}
+.life .d{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:2px}
+.lev{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:baseline}
+.lev:first-of-type{border-top:0}
+.lev .y{flex:none;font-family:var(--sans);font-weight:700;font-size:14px;color:var(--gold);min-width:40px}
+.lev .x{font-size:16.5px;line-height:1.45}
+.lev .ag{display:block;font-family:var(--sans);font-size:11.5px;color:var(--muted);margin-top:1px}
+.daynav{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px}
+.daynav button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);font-size:20px;color:var(--wine)}
+.daynav .dn{font-size:20px;color:var(--wine)}
+/* toc */
+.whead{padding:22px 4px 8px;text-align:center}
+.whead h2{margin:0;color:var(--wine);font-weight:500;font-size:26px}
+.whead .s{color:var(--muted);font-style:italic;margin-top:4px}
+.whead .a{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:6px}
+.notice{font-family:var(--sans);font-size:13.5px;line-height:1.45;background:#fbf0d4;color:#6b5320;border:1px solid #ead39a;border-radius:10px;padding:10px 12px;margin:10px 0}
+body.dark .notice{background:#3a3020;color:#e8d4a2;border-color:#5a4a2a}
+.toc{list-style:none;margin:0;padding:0}
+.toc li button{display:flex;width:100%;text-align:left;padding:11px 6px;border-bottom:1px solid var(--line);gap:10px;align-items:baseline}
+.toc li .n{font-family:var(--sans);font-size:12px;color:var(--gold);min-width:26px}
+.toc li .tt{flex:1;font-size:16.5px}
+.toc li .ss{display:block;font-size:13px;color:var(--muted);font-style:italic}
+.toc li.cur .tt{color:var(--wine);font-weight:600}
+details.grp{background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:8px 0;padding:0 12px}
+details.grp summary{padding:13px 4px;font-size:17px;color:var(--wine);cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.grp summary::after{content:"＋";font-family:var(--sans);color:var(--gold)}
+details.grp[open] summary::after{content:"－"}
+.filter{width:100%;font:inherit;font-size:16px;padding:10px 14px;border-radius:22px;border:1px solid var(--line);background:var(--paper);color:var(--ink);margin:8px 0}
+/* reader */
+.reader{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin:14px -6px;padding:26px 22px 30px;box-shadow:0 1px 3px rgba(80,50,20,.07)}
+.reader .rt{text-align:center;color:var(--wine);font-size:calc(var(--fs) * 1.15);font-weight:500;margin:0 0 4px;letter-spacing:.02em}
+.reader .rs{text-align:center;color:var(--muted);font-style:italic;font-size:calc(var(--fs) * .85);margin-bottom:6px}
+.reader .orn{text-align:center;color:var(--gold);letter-spacing:.5em;margin:6px 0 18px}
+.txt{font-size:var(--fs);line-height:1.62;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.txt p{margin:0 0 .75em;text-align:justify}
+.txt h3,.txt h4{font-weight:600;color:var(--wine);font-size:1em;text-align:center;margin:1.3em 0 .6em}
+.txt blockquote{margin:.6em 1.2em;font-style:italic}
+.txt p.nota{font-size:.78em;line-height:1.45;color:var(--muted);text-align:left}
+.txt img{max-width:100%}
+.txt table{border-collapse:collapse;font-size:.85em}
+.txt td,.txt th{border:1px solid var(--line);padding:3px 6px}
+.txt hr{border:0;text-align:center;margin:1.2em 0}
+.txt hr::after{content:"✦";color:var(--gold)}
+.footnote-ref{text-decoration:none;color:var(--wine);font-weight:700;padding:0 2px}
+.footnote-ref sup{font-size:.68em}
+mark{background:var(--hl);color:inherit;border-radius:2px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}
+.nav button{flex:1;font-family:var(--sans);font-size:14px;padding:12px;border-radius:12px;background:var(--paper);border:1px solid var(--line);color:var(--wine)}
+.nav button[disabled]{opacity:.35}
+.progress{position:fixed;left:0;right:0;bottom:0;height:3px;background:transparent;z-index:30}
+.progress i{display:block;height:100%;background:var(--gold);width:0}
+/* sheet */
+.sheet-bg{position:fixed;inset:0;background:rgba(20,10,5,.35);z-index:40;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--paper);border-radius:18px 18px 0 0;padding:16px 20px calc(20px + env(safe-area-inset-bottom));max-height:70vh;overflow:auto;box-shadow:0 -6px 24px rgba(0,0,0,.2);transform:translateY(110%);transition:transform .22s ease;max-width:760px;margin:0 auto}
+.sheet.on{transform:none}
+.sheet-bg.on{display:block}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.sheet h4{margin:0 0 10px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.sheet .txt{font-size:calc(var(--fs) * .9)}
+.row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:15px;gap:12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.seg button{padding:7px 12px;font-size:14px}
+.seg button.on{background:var(--wine);color:#fff}
+/* search */
+.sbox{display:flex;gap:8px;margin:16px 0 8px}
+.sbox input{flex:1;font:inherit;font-size:17px;padding:11px 16px;border-radius:24px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.scope{font-family:var(--sans);font-size:14px;color:var(--muted);display:flex;gap:14px;align-items:center;margin:4px 6px 10px}
+.res{padding:12px 4px;border-bottom:1px solid var(--line);width:100%;text-align:left;display:block}
+.res .w{font-family:var(--sans);font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.04em}
+.res .c{font-size:15px;color:var(--wine);margin:2px 0}
+.res .x{font-size:15px;line-height:1.45;color:var(--ink)}
+.muted{color:var(--muted);font-family:var(--sans);font-size:14px}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--wine);border-radius:50%;animation:sp 1s linear infinite;vertical-align:-3px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.foot{text-align:center;color:var(--muted);font-size:13px;font-family:var(--sans);margin:40px 0 10px;line-height:1.5}
+.bm{list-style:none;padding:0;margin:0}
+.bm li{display:flex;align-items:center;border-bottom:1px solid var(--line)}
+.bm li button.go{flex:1;text-align:left;padding:12px 4px}
+.bm .del{color:var(--muted);font-family:var(--sans);padding:10px}
+.empty{text-align:center;color:var(--muted);font-style:italic;padding:30px 0}
+@media (max-width:420px){.langs button{padding:5px 6px;font-size:11.5px}.bar .ib{width:34px}}
+</style>
+</head>
+<body>
+<header class="bar" id="bar">
+  <button class="ib" id="back" aria-label="Indietro" style="visibility:hidden"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <h1 id="title">Scritti di Madre Rosa</h1>
+  <div class="langs" id="langs"></div>
+  <button class="ib" id="bsearch" aria-label="Cerca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+  <button class="ib" id="bmenu" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</header>
+<main id="main"></main>
+<div class="progress"><i id="prog"></i></div>
+<div class="copybar" id="copybar"><button id="copybtn"></button></div>
+<div class="sheet-bg" id="sbg"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetc"></div></div>
+
+<script>
+'use strict';
+/* ------------------------------------------------------------------ testi dell'interfaccia */
+const UI = {
+ it:{app:'Scritti di Madre Rosa',hero:'Beata Anna Rosa Gattorno',heroS:'Scritti e libri della spiritualità della Famiglia di Sant’Anna',
+   thought:'Un pensiero di Madre Rosa',cont:'Continua a leggere',open:'Apri',cats:{scritti:'Gli scritti di Madre Rosa',antologie:'Antologie e introduzioni',vita:'La vita e la spiritualità',famiglia:'La Famiglia di Sant’Anna e le missioni'},byVol:'Volume',byYear:'Anno',byTo:'Destinatario',byPlace:'Luogo',undated:'Senza data',onDay:'Lettere scritte in questo giorno',noDay:'Nessuna lettera porta questa data.',dThemes:'Temi',dThemesS:'Percorsi negli scritti',dTime:'Linea del tempo',dTimeS:'La vita, anno per anno',themesIntro:'Ogni tema apre il capitolo dei «Fili d’oro» e la ricerca in tutte le opere.',searchAll:'Cerca in tutte le opere',copyRef:'Copia con riferimento',copied:'Copiato ✓',copyManual:'Selezioni e copi il testo qui sotto',tlIntro:'Le date principali della vita di Madre Rosa e, anno per anno, i testi che si possono leggere.',bio:'Biografia',onLife:'In questo giorno, nella vita di Madre Rosa',noLife:'La Cronologia non registra fatti in questo giorno.',cronoSrc:'Dalla Cronologia delle «Memorie», a cura di suor A. Roberta Frati.',itOnly:'',ago:'{n} anni fa',crono:'Cronologia',seeAll:'Vedi tutto',extras:'Introduzioni e appendici',dLib:'Biblioteca',dLibS:'Tutte le opere',dSearch:'Cerca',dSearchS:'In tutti i testi',dToday:'Oggi con Madre Rosa',dTodayS:'Fatti, pensiero e lettere del giorno',dResume:'Riprendi',dResumeS:'Ultima lettura e segnalibri',noLast:'Nessuna lettura in corso.',works:'opere',avail:'Lingue',time:'Lettura',hrs:'ore circa',mins:'minuti circa',readSrc:'Leggi nel testo',
+   onlyIt:'Testo italiano',transl:'Tradotto',fallback:'La traduzione di quest’opera è in preparazione: per ora si legge il testo italiano.',
+   work:'Bozza di traduzione da rivedere: segnalare eventuali errori.',toc:'Indice',prev:'Precedente',next:'Successivo',filter:'Filtra…',
+   search:'Cerca',searchPh:'Cerca una parola o una frase…',inWork:'In quest’opera',inAll:'In tutte le opere',noRes:'Nessun risultato.',searching:'Ricerca in corso…',results:'risultati',more:'Mostra altri',
+   settings:'Impostazioni',size:'Carattere',theme:'Aspetto',light:'Chiaro',sepia:'Seppia',dark:'Scuro',lang:'Lingua',bookmarks:'Segnalibri',addBm:'Aggiungi segnalibro',bmAdded:'Segnalibro aggiunto',noBm:'Nessun segnalibro.',
+   offline:'Scarica per leggere senza internet',offlineDo:'Scarica',offlineOk:'Tutti i testi sono disponibili senza internet.',downloading:'Scaricamento…',about:'Informazioni',
+   aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
+   note:'Nota',home:'Biblioteca',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',close:'Chiudi',letters:'lettere'},
+ pt:{app:'Escritos de Madre Rosa',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
+   thought:'Um pensamento de Madre Rosa',cont:'Continuar a leitura',open:'Abrir',cats:{scritti:'Os escritos de Madre Rosa',antologie:'Antologias e introduções',vita:'A vida e a espiritualidade',famiglia:'A Família de Sant’Ana e as missões'},byVol:'Volume',byYear:'Ano',byTo:'Destinatário',byPlace:'Lugar',undated:'Sem data',onDay:'Cartas escritas neste dia',noDay:'Nenhuma carta traz esta data.',dThemes:'Temas',dThemesS:'Percursos nos escritos',dTime:'Linha do tempo',dTimeS:'A vida, ano por ano',themesIntro:'Cada tema abre o capítulo dos «Fios de ouro» e a busca em todas as obras.',searchAll:'Buscar em todas as obras',copyRef:'Copiar com referência',copied:'Copiado ✓',copyManual:'Selecione e copie o texto abaixo',tlIntro:'As datas principais da vida de Madre Rosa e, ano por ano, os textos que se podem ler.',bio:'Biografia',onLife:'Neste dia, na vida de Madre Rosa',noLife:'A Cronologia não registra fatos neste dia.',cronoSrc:'Da Cronologia das «Memórias», organizada por Ir. A. Roberta Frati.',itOnly:'Texto em italiano.',ago:'há {n} anos',crono:'Cronologia',seeAll:'Ver tudo',extras:'Introduções e apêndices',dLib:'Biblioteca',dLibS:'Todas as obras',dSearch:'Buscar',dSearchS:'Em todos os textos',dToday:'Hoje com Madre Rosa',dTodayS:'Fatos, pensamento e cartas do dia',dResume:'Retomar',dResumeS:'Última leitura e marcadores',noLast:'Nenhuma leitura em andamento.',works:'obras',avail:'Línguas',time:'Leitura',hrs:'horas aprox.',mins:'minutos aprox.',readSrc:'Ler no texto',
+   onlyIt:'Texto italiano',transl:'Traduzido',fallback:'A tradução desta obra está em preparação: por enquanto lê-se o texto italiano.',
+   work:'Tradução de trabalho a rever: assinalar eventuais erros.',toc:'Índice',prev:'Anterior',next:'Seguinte',filter:'Filtrar…',
+   search:'Buscar',searchPh:'Buscar uma palavra ou frase…',inWork:'Nesta obra',inAll:'Em todas as obras',noRes:'Nenhum resultado.',searching:'Buscando…',results:'resultados',more:'Mostrar mais',
+   settings:'Configurações',size:'Letra',theme:'Aparência',light:'Claro',sepia:'Sépia',dark:'Escuro',lang:'Língua',bookmarks:'Marcadores',addBm:'Adicionar marcador',bmAdded:'Marcador adicionado',noBm:'Nenhum marcador.',
+   offline:'Baixar para ler sem internet',offlineDo:'Baixar',offlineOk:'Todos os textos estão disponíveis sem internet.',downloading:'Baixando…',about:'Informações',
+   aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
+   note:'Nota',home:'Biblioteca',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',close:'Fechar',letters:'cartas'},
+ es:{app:'Escritos de Madre Rosa',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
+   thought:'Un pensamiento de Madre Rosa',cont:'Seguir leyendo',open:'Abrir',cats:{scritti:'Los escritos de Madre Rosa',antologie:'Antologías e introducciones',vita:'La vida y la espiritualidad',famiglia:'La Familia de Santa Ana y las misiones'},byVol:'Volumen',byYear:'Año',byTo:'Destinatario',byPlace:'Lugar',undated:'Sin fecha',onDay:'Cartas escritas en este día',noDay:'Ninguna carta lleva esta fecha.',dThemes:'Temas',dThemesS:'Recorridos por los escritos',dTime:'Línea del tiempo',dTimeS:'La vida, año por año',themesIntro:'Cada tema abre el capítulo de los «Hilos de oro» y la búsqueda en todas las obras.',searchAll:'Buscar en todas las obras',copyRef:'Copiar con referencia',copied:'Copiado ✓',copyManual:'Seleccione y copie el texto de abajo',tlIntro:'Las fechas principales de la vida de Madre Rosa y, año por año, los textos que se pueden leer.',bio:'Biografía',onLife:'En este día, en la vida de Madre Rosa',noLife:'La Cronología no registra hechos en este día.',cronoSrc:'De la Cronología de las «Memorias», a cargo de Sor A. Roberta Frati.',itOnly:'Texto en italiano.',ago:'hace {n} años',crono:'Cronología',seeAll:'Ver todo',extras:'Introducciones y apéndices',dLib:'Biblioteca',dLibS:'Todas las obras',dSearch:'Buscar',dSearchS:'En todos los textos',dToday:'Hoy con Madre Rosa',dTodayS:'Hechos, pensamiento y cartas del día',dResume:'Retomar',dResumeS:'Última lectura y marcadores',noLast:'Ninguna lectura en curso.',works:'obras',avail:'Idiomas',time:'Lectura',hrs:'horas aprox.',mins:'minutos aprox.',readSrc:'Leer en el texto',
+   onlyIt:'Texto italiano',transl:'Traducido',fallback:'La traducción de esta obra está en preparación: por ahora se lee el texto italiano.',
+   work:'Traducción de trabajo por revisar: señalar posibles errores.',toc:'Índice',prev:'Anterior',next:'Siguiente',filter:'Filtrar…',
+   search:'Buscar',searchPh:'Buscar una palabra o frase…',inWork:'En esta obra',inAll:'En todas las obras',noRes:'Ningún resultado.',searching:'Buscando…',results:'resultados',more:'Mostrar más',
+   settings:'Ajustes',size:'Letra',theme:'Aspecto',light:'Claro',sepia:'Sepia',dark:'Oscuro',lang:'Idioma',bookmarks:'Marcadores',addBm:'Añadir marcador',bmAdded:'Marcador añadido',noBm:'Ningún marcador.',
+   offline:'Descargar para leer sin internet',offlineDo:'Descargar',offlineOk:'Todos los textos están disponibles sin internet.',downloading:'Descargando…',about:'Información',
+   aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
+   note:'Nota',home:'Biblioteca',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',close:'Cerrar',letters:'cartas'},
+ en:{app:'Writings of Mother Rosa',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
+   thought:'A thought from Mother Rosa',cont:'Continue reading',open:'Open',cats:{scritti:'The writings of Mother Rosa',antologie:'Anthologies and introductions',vita:'Life and spirituality',famiglia:'The Family of Saint Anne and the missions'},byVol:'Volume',byYear:'Year',byTo:'Recipient',byPlace:'Place',undated:'Undated',onDay:'Letters written on this day',noDay:'No letter bears this date.',dThemes:'Themes',dThemesS:'Paths through the writings',dTime:'Timeline',dTimeS:'Her life, year by year',themesIntro:'Each theme opens the chapter of “Threads of Gold” and a search in all the works.',searchAll:'Search in all the works',copyRef:'Copy with reference',copied:'Copied ✓',copyManual:'Select and copy the text below',tlIntro:'The main dates of Mother Rosa’s life and, year by year, the texts available to read.',bio:'Biography',onLife:'On this day in Mother Rosa’s life',noLife:'The Chronology records nothing on this day.',cronoSrc:'From the Chronology in the “Memoirs”, edited by Sr. A. Roberta Frati.',itOnly:'Text in Italian.',ago:'{n} years ago',crono:'Chronology',seeAll:'See all',extras:'Introductions and appendices',dLib:'Library',dLibS:'All the works',dSearch:'Search',dSearchS:'In all the texts',dToday:'Today with Mother Rosa',dTodayS:'Events, thought and letters of the day',dResume:'Resume',dResumeS:'Last reading and bookmarks',noLast:'No reading in progress.',works:'works',avail:'Languages',time:'Reading',hrs:'hours approx.',mins:'minutes approx.',readSrc:'Read in the text',
+   onlyIt:'Italian text',transl:'Translated',fallback:'The translation of this work is in preparation: for now the Italian text is shown.',
+   work:'Working translation awaiting review: please report any errors.',toc:'Contents',prev:'Previous',next:'Next',filter:'Filter…',
+   search:'Search',searchPh:'Search a word or phrase…',inWork:'In this work',inAll:'In all works',noRes:'No results.',searching:'Searching…',results:'results',more:'Show more',
+   settings:'Settings',size:'Text size',theme:'Appearance',light:'Light',sepia:'Sepia',dark:'Dark',lang:'Language',bookmarks:'Bookmarks',addBm:'Add bookmark',bmAdded:'Bookmark added',noBm:'No bookmarks.',
+   offline:'Download to read offline',offlineDo:'Download',offlineOk:'All texts are available offline.',downloading:'Downloading…',about:'About',
+   aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
+   note:'Note',home:'Library',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',close:'Close',letters:'letters'}
+};
+const LANGS=['it','pt','es','en'];
+const CAT_ICON={scritti:'✠',antologie:'❧',vita:'❦',famiglia:'✿'};
+const CATS=['scritti','antologie','vita','famiglia'];
+function wDesc(w){return w.d?(w.d[LANG]||w.d.it||''):''}
+const REVIEWED={}; // opere la cui traduzione è già stata rivista: {id:{pt:true}}
+const NATIVE={travagli:{pt:1},memorie:{es:1,en:1},biografia:{pt:1,es:1,en:1},grata:{pt:1,es:1,en:1},madre:{en:1}}; // traduzioni preesistenti d'archivio
+
+/* ------------------------------------------------------------------ stato */
+const store={get(k,d){try{const v=localStorage.getItem('mr.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('mr.'+k,JSON.stringify(v))}catch(e){}}};
+let LANG=store.get('lang',null)||((navigator.language||'it').slice(0,2));
+if(!LANGS.includes(LANG))LANG='it';
+let CAT=null; const CACHE={};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const T=()=>UI[LANG];
+function applyPrefs(){
+  document.documentElement.style.setProperty('--fs',store.get('fs',19)+'px');
+  document.body.className=store.get('theme','light')==='light'?'':store.get('theme');
+  document.documentElement.lang=LANG;
+}
+applyPrefs();
+
+async function getJSON(u){
+  if(CACHE[u])return CACHE[u];
+  const r=await fetch(u);if(!r.ok)throw new Error(r.status);
+  const j=await r.json();CACHE[u]=j;return j;
+}
+const W=id=>CAT.find(w=>w.id===id);
+function effLang(w,l){return w.langs[l]?l:(w.langs.it?'it':Object.keys(w.langs)[0])}
+const ONLY_EN={it:'Quest’opera è disponibile per ora solo in inglese.',pt:'Esta obra está disponível, por enquanto, apenas em inglês.',es:'Esta obra está disponible por ahora solo en inglés.',en:''};
+function fbMsg(l){return l==='it'?T().fallback:(ONLY_EN[LANG]||T().fallback)}
+function wTitle(w){return w.t[LANG]||w.t.it}
+function wSub(w){return w.st[LANG]||w.st.it}
+async function index(w,l){return getJSON(`data/${w.id}/${l}/index.json`)}
+async function chunk(w,l,c){return getJSON(`data/${w.id}/${l}/${c}.json`)}
+async function section(w,l,i){
+  const ix=await index(w,l);const e=ix.toc[i];const ch=await chunk(w,l,e.c);
+  const s=ch.sections.find(x=>x.i===i);return {toc:ix.toc,e,html:s?s.h:'',notes:ch.notes}
+}
+
+/* ------------------------------------------------------------------ intestazione */
+function renderBar(title,canBack){
+  $('#title').textContent=canBack?title:'';
+  $('#back').style.visibility=canBack?'visible':'hidden';
+  $('#langs').innerHTML=LANGS.map(l=>`<button class="${l===LANG?'on':''}" data-l="${l}">${l.toUpperCase()}</button>`).join('');
+}
+$('#langs').onclick=e=>{const l=e.target.dataset.l;if(!l||l===LANG)return;LANG=l;store.set('lang',l);applyPrefs();route()};
+$('#back').onclick=()=>{if(history.length>1)history.back();else location.hash=''};
+$('#bsearch').onclick=()=>{const m=location.hash.match(/^#(?:w|r)-([a-z]+)/);location.hash='#s'+(m?'-'+m[1]:'')};
+$('#bmenu').onclick=()=>openSettings();
+
+/* ------------------------------------------------------------------ biblioteca */
+function dayThought(){
+  const w=W('fili');if(!w)return Promise.resolve(null);
+  const l=effLang(w,LANG);
+  return index(w,l).then(async ix=>{
+    const d=new Date();const seed=d.getFullYear()*400+d.getMonth()*32+d.getDate();
+    const cands=[];for(let i=0;i<ix.toc.length;i++)cands.push(i);
+    const i=cands[2+seed%(Math.max(1,cands.length-3))]||1;
+    const s=await section(w,l,i);
+    const div=document.createElement('div');div.innerHTML=s.html;
+    const ps=[...div.querySelectorAll('p')].map(p=>p.textContent.trim()).filter(t=>t.length>60&&t.length<420&&!/^\d+$/.test(t));
+    if(!ps.length)return null;
+    return {t:ps[seed%ps.length],src:wTitle(w)+' — '+s.e.t,i}
+  }).catch(()=>null)
+}
+/* ---- Lettere: data, luogo e destinatario ricavati dall'indice */
+const MESI=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+const RE_DM=new RegExp('(\\d{1,2})(?:\\s*-\\s*\\d{1,2})?[°º]?\\s+('+MESI.join('|')+')','i'),RE_M=new RegExp(MESI.join('|'),'i');
+function lClean(s){return (s||'').replace(/\[\^\d+\]|\^\d+\^|[\[\]]/g,'').replace(/\s+/g,' ').trim()}
+function lInfo(e){
+  if(e._i)return e._i;
+  const s=lClean(e.s).replace(/(\d{4})\d{1,3}$/,'$1');
+  const y=e.s?((s.match(/18\d\d/)||[])[0]||''):'';const dm=s.match(RE_DM),mm=s.match(RE_M);
+  let pl=s.includes(',')?s.split(',')[0].trim():'';if(/\d/.test(pl)||pl.length>30)pl='';
+  let to=e.s?lClean((e.t||'').replace(/^\d+\.\s*/,'')).replace(/^(?:all['’]\s*|(?:alla|allo|alle|agli|al|ai|a)\s+)/i,'').replace(/\bSr\. a\./g,'Sr. A.'):'';
+  if(to)to=to[0].toUpperCase()+to.slice(1);
+  const k=norm(to).replace(/\b(sr|suor|a|m)\b\.?/g,' ').replace(/[^a-z]+/g,' ').trim();
+  return e._i={y,mo:mm?MESI.indexOf(mm[0].toLowerCase())+1:0,d:dm?+dm[1]:0,pl,to,k};
+}
+function letterGroups(ix,mode){
+  const map=new Map();
+  ix.toc.forEach((e,i)=>{const f=lInfo(e);let key,label;
+    if(mode==='year'){key=f.y;label=f.y}else if(mode==='place'){key=f.pl;label=f.pl}else{key=f.k;label=f.to}
+    if(!key){key=e.s?'~':'~~';label=e.s?T().undated:T().extras}
+    if(!map.has(key))map.set(key,{n:label,key,items:[],lb:{}});const G=map.get(key);G.items.push([e,i]);G.lb[label]=(G.lb[label]||0)+1});
+  if(mode==='to')map.forEach(G=>{G.n=Object.keys(G.lb).sort((x,y)=>G.lb[y]-G.lb[x])[0]});
+  const gs=[...map.values()];
+  gs.sort((a,b)=>(a.key[0]==='~')-(b.key[0]==='~')||(a.key[0]==='~'?a.key.localeCompare(b.key):0)||(mode==='year'?a.key.localeCompare(b.key):b.items.length-a.items.length||a.n.localeCompare(b.n)));
+  return gs;
+}
+function setLMode(m,id){store.set('lmode',m);workView(id)}
+let OPEN_G=null;
+function openLettersYear(y){store.set('lmode','year');OPEN_G=String(y);location.hash='#w-lettere'}
+/* ---- Cronologia della vita (dalle Memorie) */
+const CRONO={};
+function crono(){const it=()=>getJSON('data/cronologia.json').catch(()=>({}));return CRONO[LANG]||(CRONO[LANG]=LANG==='it'?it():getJSON('data/cronologia.'+LANG+'.json').catch(it))}
+const dkey=(m,d)=>String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+const dlabel=(m,d)=>new Date(2024,m-1,d).toLocaleDateString(LANG,{day:'numeric',month:'long'});
+function levHtml(list,nowY){return list.map(([y,t,f])=>`<div class="lev"><span class="y">${y}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${nowY?`<span class="ag">${esc(T().ago.replace('{n}',nowY-y))}</span>`:''}</span></div>`).join('')}
+const ICO={lib:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  resume:'<path d="M7 3h10v18l-5-4-5 4z"/>',
+  themes:'<path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/>',
+  time:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};
+let TODAY=null;
+function workRow(w,c){
+  const has=!!w.langs[LANG];let badge='';
+  if(LANG!=='it')badge=has?`<span class="badge ok">${esc(T().transl)}</span>`:`<span class="badge">${esc(T().onlyIt)}</span>`;
+  if(!has&&!w.langs.it)badge=`<span class="badge">English</span>`;
+  const extra=w.letters?` · ${w.letters.toLocaleString(LANG)} ${esc(T().letters)}`:'';
+  return `<button class="work" onclick="location.hash='#w-${w.id}'"><div class="ic">${CAT_ICON[c]||'✦'}</div><div class="tx"><div class="t">${esc(wTitle(w))}</div>${wSub(w)?`<div class="s">${esc(wSub(w))}${extra}</div>`:''}${w.author?`<div class="muted" style="font-size:12.5px;margin-top:2px">${esc(w.author)}</div>`:''}${badge}</div></button>`;
+}
+async function home(){
+  renderBar(T().app,false);
+  const door=(k,t,s,act)=>`<button class="door" onclick="${act}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span style="min-width:0"><div class="dt">${esc(t)}</div><div class="ds">${esc(s)}</div></span></button>`;
+  let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
+  h+=`<div class="doors">${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}</div>`;
+  h+=`<div class="card thought life" id="life" style="display:none"></div>`;
+  h+=`<div class="card thought" id="thought" style="display:none"></div>`;
+  h+=`<div id="lib"></div>`;
+  const open=store.get('shelf',{scritti:1});
+  const known=new Set(CATS);
+  for(const c of CATS.concat([...new Set(CAT.map(w=>w.cat))].filter(x=>!known.has(x)))){
+    const ws=CAT.filter(x=>x.cat===c);if(!ws.length)continue;
+    h+=`<details class="grp shelf" data-c="${c}"${open[c]?' open':''}><summary><span>${CAT_ICON[c]||'✦'}</span><span class="sn">${esc(T().cats[c]||c)}</span><span class="sc">${ws.length} ${esc(T().works)}</span></summary>${ws.map(w=>workRow(w,c)).join('')}</details>`;
+  }
+  h+=`<div class="foot">Figlie di Sant’Anna · Figli di Sant’Anna<br>${esc(T().about)}: <a href="#" onclick="openAbout();return false">ⓘ</a></div>`;
+  $('#main').innerHTML=h;
+  document.querySelectorAll('details.shelf').forEach(d=>d.addEventListener('toggle',()=>{const s=store.get('shelf',{scritti:1});s[d.dataset.c]=d.open?1:0;store.set('shelf',s)}));
+  crono().then(C=>{const n=new Date(),list=C[dkey(n.getMonth()+1,n.getDate())]||[];const el=$('#life');if(!el||!list.length)return;
+    el.style.display='';el.innerHTML=`<div class="lbl">${esc(T().onLife)}</div><div class="d">${esc(dlabel(n.getMonth()+1,n.getDate()))}</div>${levHtml(list.slice(0,3),n.getFullYear())}<div style="text-align:right;margin-top:6px"><button class="btn sec" onclick="openToday()">${esc(list.length>3?T().seeAll+' ('+list.length+')':T().dToday)}</button></div>`});
+  TODAY=dayThought();
+  TODAY.then(t=>{if(!t)return;const el=$('#thought');if(!el)return;el.style.display='';
+    el.innerHTML=`<div class="lbl">${esc(T().thought)}</div><blockquote>«${esc(t.t)}»</blockquote><div class="src">${esc(t.src)}</div>`});
+}
+function goLib(){const el=$('#lib');if(!el)return;const d=document.querySelector('details.shelf');if(d&&![...document.querySelectorAll('details.shelf')].some(x=>x.open))d.open=true;
+  window.scrollTo({top:el.getBoundingClientRect().top+scrollY-64,behavior:'smooth'})}
+let DAYOFF=0;
+async function openToday(off){
+  DAYOFF=off||0;const now=new Date();const day=new Date(now.getFullYear(),now.getMonth(),now.getDate()+DAYOFF);
+  const mo=day.getMonth()+1,d=day.getDate(),my=DAYOFF;
+  let h=`<div class="daynav"><button onclick="openToday(${DAYOFF-1})" aria-label="‹">‹</button><div class="dn">${esc(dlabel(mo,d))}</div><button onclick="openToday(${DAYOFF+1})" aria-label="›">›</button></div>`;
+  h+=`<h4>${esc(T().onLife)}</h4><div id="onlife"><span class="spin"></span></div>`;
+  if(DAYOFF===0){const t=await (TODAY||(TODAY=dayThought()));if(my!==DAYOFF)return;
+    if(t)h+=`<h4 style="margin-top:20px">${esc(T().thought)}</h4><div class="txt"><blockquote style="margin:.4em 0">«${esc(t.t)}»</blockquote><p class="nota">${esc(t.src)}</p></div><div style="text-align:center;margin-top:6px"><button class="btn sec" onclick="closeSheet();location.hash='#r-fili-${t.i}'">${esc(T().readSrc)}</button></div>`}
+  h+=`<h4 style="margin-top:20px">${esc(T().onDay)}</h4><div id="onday"><span class="spin"></span></div>`;
+  openSheet(h);$('#sheet').scrollTop=0;
+  const C=await crono();if(my!==DAYOFF)return;const list=C[dkey(mo,d)]||[];
+  const lb=document.getElementById('onlife');
+  if(lb)lb.innerHTML=list.length?levHtml(list,now.getFullYear())+`<p class="muted" style="font-size:12px;margin-top:8px">${esc(T().cronoSrc)}</p>`:`<div class="muted">${esc(T().noLife)}</div>`;
+  const w=W('lettere');const box=()=>document.getElementById('onday');
+  if(!w||!w.langs.it){if(box())box().innerHTML=`<div class="muted">—</div>`;return}
+  try{const ix=await index(w,'it');if(my!==DAYOFF)return;const hits=[];
+    ix.toc.forEach((e,i)=>{const f=lInfo(e);if(f.d===d&&f.mo===mo)hits.push([f,e,i])});
+    hits.sort((a,b)=>(a[0].y||'9999').localeCompare(b[0].y||'9999'));
+    if(!box())return;
+    box().innerHTML=hits.length?`<ul class="bm">${hits.map(([f,e,i])=>`<li><button class="go" onclick="closeSheet();location.hash='#r-lettere-${i}'"><div style="font-size:16px"><b style="color:var(--gold);font-family:var(--sans);font-size:13px">${esc(f.y||'—')}</b> · ${esc(f.to)}</div><div class="muted">${esc(lClean(e.s))}</div></button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noDay)}</div>`;
+  }catch(x){if(box())box().innerHTML=`<div class="muted">${esc(T().err)}</div>`}
+}
+async function openYearCrono(y){
+  const C=await crono();const rows=[];
+  Object.keys(C).sort().forEach(k=>C[k].forEach(([yy,t,f])=>{if(yy===y)rows.push([k,t,f])}));
+  openSheet(`<h4>${esc(T().crono)} · ${y}</h4>${rows.map(([k,t,f])=>`<div class="lev"><span class="y" style="min-width:92px;font-size:12.5px">${esc(dlabel(+k.slice(0,2),+k.slice(3)))}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}</span></div>`).join('')}<p class="muted" style="font-size:12px;margin-top:8px">${esc(T().cronoSrc)}</p>`);$('#sheet').scrollTop=0;
+}
+function openResume(){
+  const last=store.get('last',null),bms=store.get('bm',[]);
+  let h=`<h4>${esc(T().cont)}</h4>`;
+  if(last&&W(last.w))h+=`<div class="row"><span><span style="font-family:var(--serif);font-size:17px;color:var(--ink)">${esc(wTitle(W(last.w)))}</span><br><span class="muted">${esc(last.t||'')}</span></span><button class="btn" onclick="closeSheet();location.hash='#r-${last.w}-${last.i}'">${esc(T().open)}</button></div>`;
+  else h+=`<div class="muted">${esc(T().noLast)}</div>`;
+  h+=`<h4 style="margin-top:18px">${esc(T().bookmarks)}</h4>`;
+  h+=bms.length?`<ul class="bm">${bms.map(b=>`<li><button class="go" onclick="closeSheet();location.hash='#r-${b.w}-${b.i}'"><div style="font-size:15px">${esc(W(b.w)?wTitle(W(b.w)):b.w)}</div><div class="muted">${esc(b.t)}</div></button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noBm)}</div>`;
+  openSheet(h);
+}
+
+/* ------------------------------------------------------------------ indice dell'opera */
+async function workView(id){
+  const w=W(id);if(!w)return home();
+  const l=effLang(w,LANG);
+  renderBar(wTitle(w),true);
+  $('#main').innerHTML=`<p class="muted" style="padding:30px 0;text-align:center"><span class="spin"></span></p>`;
+  let ix;try{ix=await index(w,l)}catch(e){$('#main').innerHTML=`<div class="notice">${esc(T().err)}</div>`;return}
+  const prog=store.get('pos.'+id,null);
+  let h=`<div class="whead"><h2>${esc(wTitle(w))}</h2>${wSub(w)?`<div class="s">${esc(wSub(w))}</div>`:''}${w.author?`<div class="a">${esc(w.author)}</div>`:''}</div>`;
+  {const info=w.langs[l]||{};const m=Math.round((info.words||0)/200);
+   const tm=m>=90?`${Math.round(m/60)} ${T().hrs}`:`${Math.max(1,m)} ${T().mins}`;
+   h+=`<div class="card scheda">${wDesc(w)?esc(wDesc(w)):''}<div class="meta"><span><b>${esc(T().avail)}</b> ${Object.keys(w.langs).map(x=>x.toUpperCase()).join(' · ')}</span><span><b>${esc(T().sections)}</b> ${ix.toc.length.toLocaleString(LANG)}</span><span><b>${esc(T().time)}</b> ${tm}</span></div></div>`}
+  if(l!==LANG)h+=`<div class="notice">${esc(fbMsg(l))}</div>`;
+  else if(LANG!=='it'&&!(NATIVE[id]&&NATIVE[id][LANG])&&!(REVIEWED[id]&&REVIEWED[id][LANG]))h+=`<div class="notice">${esc(T().work)}</div>`;
+  h+=`<div style="display:flex;gap:10px;justify-content:center;margin:10px 0 16px">`;
+  if(prog)h+=`<button class="btn" onclick="location.hash='#r-${id}-${prog.i}'">${esc(T().cont)}</button>`;
+  else h+=`<button class="btn" onclick="location.hash='#r-${id}-0'">${esc(T().open)}</button>`;
+  h+=`<button class="btn sec" onclick="location.hash='#s-${id}'">${esc(T().search)}</button></div>`;
+  const lmode=w.letters&&l==='it'?store.get('lmode','vol'):'vol';
+  let groups=[];let g=null;
+  if(lmode==='vol')ix.toc.forEach((e,i)=>{const gn=e.g||'';if(!g||g.n!==gn){g={n:gn,items:[]};groups.push(g)}g.items.push([e,i])});
+  else groups=letterGroups(ix,lmode);
+  if(w.letters&&l==='it')h+=`<div style="display:flex;justify-content:center;margin:4px 0 10px"><div class="seg" style="font-family:var(--sans)">${[['vol',T().byVol],['year',T().byYear],['to',T().byTo],['place',T().byPlace]].map(([m,t])=>`<button class="${m===lmode?'on':''}" onclick="setLMode('${m}','${id}')">${esc(t)}</button>`).join('')}</div></div>`;
+  const li=([e,i])=>`<li class="${prog&&prog.i===i?'cur':''}" data-q="${esc((e.t+' '+(e.s||'')).toLowerCase())}"><button onclick="location.hash='#r-${id}-${i}'"><span class="n">${i+1}</span><span class="tt">${esc(e.t)}${e.s?`<span class="ss">${esc(e.s)}</span>`:''}</span></button></li>`;
+  if(groups.length>1||ix.toc.length>80){
+    h+=`<input class="filter" id="flt" placeholder="${esc(T().filter)}" autocomplete="off">`;
+    h+=groups.map(g=>`<details class="grp"${(OPEN_G&&g.key===OPEN_G)?' open data-og="1"':(prog&&!OPEN_G&&g.items.some(x=>x[1]===prog.i)?' open':'')}><summary>${esc((g.n||wTitle(w)).replace('Volume',T().vol))} <span class="muted">${g.items.length}</span></summary><ul class="toc">${g.items.map(li).join('')}</ul></details>`).join('');
+  }else h+=`<ul class="toc">${ix.toc.map((e,i)=>li([e,i])).join('')}</ul>`;
+  $('#main').innerHTML=h;
+  if(OPEN_G){OPEN_G=null;const d=document.querySelector('details[data-og]');if(d)setTimeout(()=>window.scrollTo(0,d.getBoundingClientRect().top+scrollY-70),50)}
+  const f=$('#flt');if(f)f.oninput=()=>{const q=f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc li').forEach(x=>x.style.display=!q||x.dataset.q.includes(q)?'':'none');
+    document.querySelectorAll('details.grp').forEach(d=>{const any=[...d.querySelectorAll('li')].some(x=>x.style.display!=='none');d.style.display=any?'':'none';if(q)d.open=true})};
+}
+
+/* ------------------------------------------------------------------ lettore */
+let readerState=null,PENDING_HL=null;
+async function reader(id,i,hl){
+  const w=W(id);if(!w)return home();
+  const l=effLang(w,LANG);i=+i||0;
+  renderBar(wTitle(w),true);
+  let s;try{s=await section(w,l,i)}catch(e){$('#main').innerHTML=`<div class="notice">${esc(T().err)}</div>`;return}
+  const n=s.toc.length;
+  readerState={w,l,i,notes:s.notes,e:s.e};
+  let h='';
+  if(l!==LANG)h+=`<div class="notice">${esc(fbMsg(l))}</div>`;
+  h+=`<article class="reader"><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt" id="txt">${s.html}</div></article>`;
+  h+=`<div class="nav"><button ${i<=0?'disabled':''} onclick="location.hash='#r-${id}-${i-1}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${i>=n-1?'disabled':''} onclick="location.hash='#r-${id}-${i+1}'">${esc(T().next)} ›</button></div>`;
+  $('#main').innerHTML=h;
+  const txt=$('#txt');
+  if(hl){highlight(txt,hl)}
+  else{const p=store.get('pos.'+id,null);
+    if(p&&p.i===i&&p.y)requestAnimationFrame(()=>window.scrollTo(0,p.y*(document.body.scrollHeight-innerHeight)));else window.scrollTo(0,0)}
+  store.set('last',{w:id,i,t:s.e.t});
+  savePos();
+}
+function highlight(root,q){
+  const nq=norm(q);if(!nq)return;
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node,first=null;
+  const nodes=[];while(node=walker.nextNode())nodes.push(node);
+  for(const t of nodes){const nt=norm(t.nodeValue);let k=nt.indexOf(nq);if(k<0)continue;
+    const r=document.createRange();r.setStart(t,k);r.setEnd(t,Math.min(t.nodeValue.length,k+q.length));
+    const m=document.createElement('mark');try{r.surroundContents(m)}catch(e){continue}
+    if(!first)first=m}
+  if(first)setTimeout(()=>first.scrollIntoView({block:'center'}),60);
+}
+let posT=null;
+function savePos(){if(!readerState)return;const max=document.body.scrollHeight-innerHeight;
+  const y=max>0?scrollY/max:0;$('#prog').style.width=(y*100)+'%';
+  store.set('pos.'+readerState.w.id,{i:readerState.i,y})}
+addEventListener('scroll',()=>{if(!location.hash.startsWith('#r-'))return;clearTimeout(posT);posT=setTimeout(savePos,250);
+  const max=document.body.scrollHeight-innerHeight;$('#prog').style.width=(max>0?scrollY/max*100:0)+'%'},{passive:true});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a.footnote-ref');if(!a||!readerState)return;e.preventDefault();
+  const id=a.getAttribute('href').slice(1);const nt=readerState.notes[id]||'—';
+  openSheet(`<h4>${esc(T().note)} ${esc(a.textContent)}</h4><div class="txt">${nt}</div>`);
+});
+
+/* ------------------------------------------------------------------ ricerca */
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’‘`´]/g,"'").replace(/\s+/g,' ');
+let searchTok=0,PENDING_Q=null;
+function searchView(id){
+  const w=id&&W(id);
+  renderBar(T().search,true);
+  const scope=store.get('scope','work');
+  let h=`<div class="sbox"><input id="q" type="search" placeholder="${esc(T().searchPh)}" value="${esc(store.get('lastq',''))}" enterkeyhint="search"><button class="btn" id="go">${esc(T().search)}</button></div>`;
+  if(w)h+=`<div class="scope"><label><input type="radio" name="sc" value="work" ${scope==='work'?'checked':''}> ${esc(T().inWork)}: <i>${esc(wTitle(w))}</i></label></div><div class="scope"><label><input type="radio" name="sc" value="all" ${scope!=='work'?'checked':''}> ${esc(T().inAll)}</label></div>`;
+  h+=`<div id="st" class="muted"></div><div id="res"></div>`;
+  $('#main').innerHTML=h;
+  const q=$('#q');q.focus();
+  const run=()=>{const sc=w?(document.querySelector('input[name=sc]:checked')||{}).value:'all';store.set('scope',sc);doSearch(q.value,sc==='work'?[w]:CAT)};
+  $('#go').onclick=run;q.onkeydown=e=>{if(e.key==='Enter')run()};
+  if(PENDING_Q){q.value=PENDING_Q;PENDING_Q=null;const a=document.querySelector('input[name=sc][value=all]');if(a)a.checked=true;run()}
+}
+async function doSearch(q,works){
+  q=q.trim();if(q.length<2)return;store.set('lastq',q);
+  const tok=++searchTok;const nq=norm(q);
+  const res=$('#res'),st=$('#st');res.innerHTML='';let count=0;const MAX=300;
+  st.innerHTML=`<span class="spin"></span>${esc(T().searching)}`;
+  const tmp=document.createElement('div');
+  for(const w of works){const l=effLang(w,LANG);let ix;
+    try{ix=await index(w,l)}catch(e){continue}
+    for(let c=0;c<ix.chunks;c++){
+      let ch;try{ch=await chunk(w,l,c)}catch(e){continue}
+      if(tok!==searchTok)return;
+      let out='';
+      for(const s of ch.sections){
+        tmp.innerHTML=s.h;const text=tmp.textContent.replace(/\s+/g,' ');const nt=norm(text);
+        let k=nt.indexOf(nq);if(k<0)continue;
+        const a=Math.max(0,k-70),b=Math.min(text.length,k+q.length+90);
+        const snip=(a>0?'…':'')+esc(text.slice(a,k))+'<mark>'+esc(text.slice(k,k+q.length))+'</mark>'+esc(text.slice(k+q.length,b))+(b<text.length?'…':'');
+        const e=ix.toc[s.i];count++;
+        out+=`<button class="res" onclick="PENDING_HL=${esc(JSON.stringify(q))};location.hash='#r-${w.id}-${s.i}'"><div class="w">${esc(wTitle(w))}</div><div class="c">${esc(e.t)}${e.s?' · '+esc(e.s):''}</div><div class="x">${snip}</div></button>`;
+        if(count>=MAX)break}
+      if(out)res.insertAdjacentHTML('beforeend',out);
+      st.innerHTML=`<span class="spin"></span>${esc(T().searching)} ${count} ${esc(T().results)}`;
+      if(count>=MAX)break}
+    if(count>=MAX)break}
+  if(tok===searchTok)st.textContent=count?`${count}${count>=MAX?'+':''} ${T().results}`:T().noRes;
+}
+
+/* ------------------------------------------------------------------ fogli: impostazioni, note, segnalibri */
+function openSheet(h){$('#sheetc').innerHTML=h;$('#sheet').classList.add('on');$('#sbg').classList.add('on')}
+function closeSheet(){$('#sheet').classList.remove('on');$('#sbg').classList.remove('on')}
+$('#sbg').onclick=closeSheet;
+function openSettings(){
+  const th=store.get('theme','light'),fs=store.get('fs',19);
+  let h=`<h4>${esc(T().settings)}</h4>
+  <div class="row"><span>${esc(T().size)}</span><div class="seg"><button onclick="setFs(-1)">A−</button><button disabled>${fs}</button><button onclick="setFs(1)">A+</button></div></div>
+  <div class="row"><span>${esc(T().theme)}</span><div class="seg">${['light','sepia','dark'].map(t=>`<button class="${t===th?'on':''}" onclick="setTheme('${t}')">${esc(T()[t])}</button>`).join('')}</div></div>
+  <div class="row"><span>${esc(T().lang)}</span><div class="seg">${LANGS.map(l=>`<button class="${l===LANG?'on':''}" onclick="setLang('${l}')">${l.toUpperCase()}</button>`).join('')}</div></div>`;
+  if(readerState&&location.hash.startsWith('#r-'))h+=`<div class="row"><span>${esc(T().addBm)}</span><button class="btn" onclick="addBm()">＋</button></div>`;
+  const bms=store.get('bm',[]);
+  h+=`<h4 style="margin-top:18px">${esc(T().bookmarks)}</h4>`;
+  h+=bms.length?`<ul class="bm">${bms.map((b,k)=>`<li><button class="go" onclick="closeSheet();location.hash='#r-${b.w}-${b.i}'"><div style="font-size:15px">${esc(W(b.w)?wTitle(W(b.w)):b.w)}</div><div class="muted">${esc(b.t)}</div></button><button class="del" onclick="delBm(${k})">✕</button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noBm)}</div>`;
+  h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
+  h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
+  openSheet(h);
+}
+function openAbout(){openSheet(`<h4>${esc(T().about)}</h4><div class="txt"><p>${esc(T().aboutT)}</p></div>`)}
+function setFs(d){store.set('fs',Math.max(14,Math.min(30,store.get('fs',19)+d)));applyPrefs();openSettings()}
+function setTheme(t){store.set('theme',t);applyPrefs();openSettings()}
+function setLang(l){LANG=l;store.set('lang',l);applyPrefs();closeSheet();route()}
+function addBm(){const r=readerState;if(!r)return;const bms=store.get('bm',[]);
+  bms.unshift({w:r.w.id,i:r.i,t:(document.querySelector('.rt')||{}).textContent||''});store.set('bm',bms.slice(0,200));openSettings()}
+function delBm(k){const bms=store.get('bm',[]);bms.splice(k,1);store.set('bm',bms);openSettings()}
+async function downloadAll(){
+  const st=$('#offst');let done=0,tot=0;const urls=[];
+  for(const w of CAT){for(const l of new Set([effLang(w,'it'),effLang(w,LANG)])){
+    const ix=await index(w,l);urls.push(`data/${w.id}/${l}/index.json`);for(let c=0;c<ix.chunks;c++)urls.push(`data/${w.id}/${l}/${c}.json`)}}
+  tot=urls.length;
+  for(const u of urls){try{await fetch(u)}catch(e){}done++;if(st)st.textContent=`${T().downloading} ${Math.round(done/tot*100)}%`}
+  if(st)st.textContent=T().offlineOk;
+}
+
+/* ------------------------------------------------------------------ temi */
+const THEMES=[
+ {f:4,n:['Amore di Dio e fede','Amor de Deus e fé','Amor de Dios y fe','Love of God and faith'],q:[['amor di Dio','fede'],['amor de Deus','fé'],['amor de Dios','fe'],['love of God','faith']]},
+ {f:5,n:['Amore del prossimo','Amor ao próximo','Amor al prójimo','Love of neighbour'],q:[['carità','prossimo'],['caridade','próximo'],['caridad','prójimo'],['charity','neighbour']]},
+ {f:6,n:['Croce e pazienza','Cruz e paciência','Cruz y paciencia','Cross and patience'],q:[['croce','patire','pazienza'],['cruz','padecer','paciência'],['cruz','padecer','paciencia'],['cross','suffer','patience']]},
+ {f:7,n:['Preghiera e speranza','Oração e esperança','Oración y esperanza','Prayer and hope'],q:[['preghiera','speranza'],['oração','esperança'],['oración','esperanza'],['prayer','hope']]},
+ {f:8,n:['Umiltà e mansuetudine','Humildade e mansidão','Humildad y mansedumbre','Humility and meekness'],q:[['umiltà','mansuetudine'],['humildade','mansidão'],['humildad','mansedumbre'],['humility','meekness']]},
+ {f:9,n:['Semplicità e prudenza','Simplicidade e prudência','Sencillez y prudencia','Simplicity and prudence'],q:[['semplicità','prudenza'],['simplicidade','prudência'],['sencillez','prudencia'],['simplicity','prudence']]},
+ {f:10,n:['Distacco e mortificazione','Desapego e mortificação','Desprendimiento y mortificación','Detachment and mortification'],q:[['distacco','mortificazione'],['desapego','mortificação'],['desprendimiento','mortificación'],['detachment','mortification']]},
+ {f:11,n:['Fortezza','Fortaleza','Fortaleza','Fortitude'],q:[['fortezza','coraggio'],['fortaleza','coragem'],['fortaleza','valor'],['fortitude','courage']]},
+ {f:12,n:['Silenzio','Silêncio','Silencio','Silence'],q:[['silenzio'],['silêncio'],['silencio'],['silence']]},
+ {f:13,n:['Obbedienza','Obediência','Obediencia','Obedience'],q:[['obbedienza'],['obediência'],['obediencia'],['obedience']]},
+ {f:14,n:['Povertà e fiducia in Dio','Pobreza e confiança em Deus','Pobreza y confianza en Dios','Poverty and trust in God'],q:[['povertà','Provvidenza'],['pobreza','Providência'],['pobreza','Providencia'],['poverty','Providence']]},
+ {f:15,n:['Perfezione e retta intenzione','Perfeição e reta intenção','Perfección y recta intención','Perfection and right intention'],q:[['perfezione','retta intenzione'],['perfeição','reta intenção'],['perfección','recta intención'],['perfection','right intention']]},
+ {f:16,n:['Le Regole','As Regras','Las Reglas','The Rules'],q:[['Regole','Regola'],['Regras','Regra'],['Reglas','Regla'],['Rules','Rule']]},
+ {f:17,n:['L’Immacolata e Sant’Anna','A Imaculada e Sant’Ana','La Inmaculada y Santa Ana','The Immaculate and Saint Anne'],q:[['Immacolata','Santa Madre'],['Imaculada','Santa Mãe'],['Inmaculada','Santa Madre'],['Immaculate','Holy Mother']]},
+ {f:3,n:['Madre tenera ed esemplare','Mãe terna e exemplar','Madre tierna y ejemplar','A tender and exemplary mother'],q:[[],[],[],[]]},
+ {a:[2,3],n:['Missione','Missão','Misión','Mission'],q:[['missione','missionarie'],['missão','missionárias'],['misión','misioneras'],['mission','missionaries']]},
+ {a:[5,6],n:['I poveri e gli infermi','Os pobres e os enfermos','Los pobres y los enfermos','The poor and the sick'],q:[['poveri','infermi'],['pobres','enfermos'],['pobres','enfermos'],['poor','sick']]},
+ {a:[4],n:['Famiglia','Família','Familia','Family'],q:[['famiglia'],['família'],['familia'],['family']]},
+ {a:[7],n:['I giovani','Os jovens','Los jóvenes','The young'],q:[['giovani','fanciulle'],['jovens','meninas'],['jóvenes','niñas'],['young','girls']]},
+ {n:['Eucaristia','Eucaristia','Eucaristía','Eucharist'],q:[['Eucaristia','Sacramento','Comunione'],['Eucaristia','Sacramento','Comunhão'],['Eucaristía','Sacramento','Comunión'],['Eucharist','Sacrament','Communion']]},
+ {n:['Volontà di Dio','Vontade de Deus','Voluntad de Dios','Will of God'],q:[['volontà di Dio'],['vontade de Deus'],['voluntad de Dios'],['will of God']]}
+];
+const LI=()=>LANGS.indexOf(LANG);
+function themesView(){
+  renderBar(T().dThemes,true);
+  $('#main').innerHTML=`<div class="whead"><h2>${esc(T().dThemes)}</h2><div class="s">${esc(T().themesIntro)}</div></div><div class="tgrid">${THEMES.map((t,k)=>`<button class="tcard" onclick="location.hash='#t-${k}'">${esc(t.n[LI()])}</button>`).join('')}</div>`;
+  window.scrollTo(0,0);
+}
+async function themeView(k){
+  const t=THEMES[k];if(!t)return themesView();
+  renderBar(T().dThemes,true);
+  let h=`<div class="whead"><h2>${esc(t.n[LI()])}</h2></div>`;
+  const links=[];
+  try{
+    if(t.f!=null&&W('fili')){const w=W('fili'),l=effLang(w,LANG),ix=await index(w,l);if(ix.toc[t.f])links.push([`#r-fili-${t.f}`,wTitle(w),ix.toc[t.f].t])}
+    if(t.a&&W('attingiamo')){const w=W('attingiamo'),l=effLang(w,LANG),ix=await index(w,l);t.a.forEach(i=>{if(ix.toc[i])links.push([`#r-attingiamo-${i}`,wTitle(w),ix.toc[i].t])})}
+  }catch(e){}
+  if(links.length)h+=links.map(([u,wt,st])=>`<button class="work" onclick="location.hash='${u}'"><div class="ic">❧</div><div class="tx"><div class="t">${esc(wt)}</div><div class="s">${esc(st)}</div></div></button>`).join('');
+  const qs=t.q[LI()]||[];
+  if(qs.length)h+=`<div class="sec-h">${esc(T().searchAll)}</div><div class="chips">${qs.map(q=>`<button class="chip fill" onclick="PENDING_Q=${esc(JSON.stringify(q))};location.hash='#s'">«${esc(q)}»</button>`).join('')}</div>`;
+  $('#main').innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ------------------------------------------------------------------ linea del tempo */
+const BIO={c1:[4,4,4,5],c2:[5,5,5,6],c6:[10,9,9,10],c8:[12,11,11,12],c15:[19,18,18,19],c16:[20,19,19,20],c17:[21,20,20,21],cz:[32,31,31,32]};
+const EVENTS=[
+ [1831,'c1',['14 ottobre: nasce a Genova.','14 de outubro: nasce em Gênova.','14 de octubre: nace en Génova.','14 October: born in Genoa.']],
+ [1852,'c2',['5 novembre: sposa Gerolamo Custo.','5 de novembro: casa-se com Gerolamo Custo.','5 de noviembre: se casa con Gerolamo Custo.','5 November: marries Gerolamo Custo.']],
+ [1858,'c2',['9 marzo: muore il marito; resta vedova con tre figli.','9 de março: morre o marido; fica viúva com três filhos.','9 de marzo: muere su marido; queda viuda con tres hijos.','9 March: her husband dies; she is left a widow with three children.']],
+ [1866,'c6',['3 gennaio: udienza di Pio IX, che le chiede di iniziare subito la fondazione.','3 de janeiro: audiência com Pio IX, que lhe pede para iniciar logo a fundação.','3 de enero: audiencia con Pío IX, que le pide iniciar en seguida la fundación.','3 January: audience with Pius IX, who tells her to begin the foundation at once.']],
+ [1866,'c8',['8 dicembre: a Piacenza nasce l’Istituto delle Figlie di Sant’Anna.','8 de dezembro: em Piacenza nasce o Instituto das Filhas de Sant’Ana.','8 de diciembre: en Piacenza nace el Instituto de las Hijas de Santa Ana.','8 December: the Institute of the Daughters of Saint Anne is born in Piacenza.']],
+ [1867,'c8',['26 luglio: riceve l’abito religioso.','26 de julho: recebe o hábito religioso.','26 de julio: recibe el hábito religioso.','26 July: she receives the religious habit.']],
+ [1870,'c8',['8 aprile: professione religiosa, insieme a dodici suore.','8 de abril: profissão religiosa, com doze irmãs.','8 de abril: profesión religiosa, junto con doce hermanas.','8 April: religious profession, together with twelve sisters.']],
+ [1876,'c16',['8 aprile: Decreto di lode dell’Istituto.','8 de abril: Decreto de louvor do Instituto.','8 de abril: Decreto de alabanza del Instituto.','8 April: Decree of Praise for the Institute.']],
+ [1878,'c15',['19 ottobre: accordo per la prima missione in Bolivia.','19 de outubro: acordo para a primeira missão na Bolívia.','19 de octubre: acuerdo para la primera misión en Bolivia.','19 October: agreement for the first mission to Bolivia.']],
+ [1879,'c16',['21 aprile: decreto di approvazione definitiva dell’Istituto.','21 de abril: decreto de aprovação definitiva do Instituto.','21 de abril: decreto de aprobación definitiva del Instituto.','21 April: decree of definitive approval of the Institute.']],
+ [1892,'c17',['26 luglio: approvazione definitiva delle Regole.','26 de julho: aprovação definitiva das Regras.','26 de julio: aprobación definitiva de las Reglas.','26 July: definitive approval of the Rules.']],
+ [1900,'cz',['6 maggio: muore a Roma, nella Casa generalizia.','6 de maio: morre em Roma, na Casa generalícia.','6 de mayo: muere en Roma, en la Casa generalicia.','6 May: she dies in Rome, at the Generalate.']],
+ [2000,null,['9 aprile: è beatificata da Giovanni Paolo II.','9 de abril: é beatificada por João Paulo II.','9 de abril: es beatificada por Juan Pablo II.','9 April: beatified by John Paul II.']]
+];
+async function timelineView(){
+  renderBar(T().dTime,true);
+  $('#main').innerHTML=`<p class="muted" style="padding:30px 0;text-align:center"><span class="spin"></span></p>`;
+  const Y={};const yr=y=>Y[y]||(Y[y]={ev:[],chips:[]});
+  const bio=W('biografia');const bl=bio?effLang(bio,LANG):null;
+  EVENTS.forEach(([y,c,tx])=>{yr(y).ev.push({t:tx[LI()],u:bio&&c&&BIO[c]?`#r-biografia-${BIO[c][LANGS.indexOf(bl)]}`:null})});
+  const scan=async(id,label)=>{const w=W(id);if(!w)return;try{const l=effLang(w,LANG),ix=await index(w,l);const seen={};
+    ix.toc.forEach((e,i)=>{const m=(e.t||'').match(/\b(18\d\d)(?:\s*-\s*(18\d\d))?\b/);if(!m)return;const a=+m[1],b=m[2]?+m[2]:a;
+      for(let y=a;y<=b;y++){if(seen[y])continue;seen[y]=1;yr(y).chips.push(`<button class="chip" onclick="location.hash='#r-${id}-${i}'">${esc(label||wTitle(w))}</button>`)}})}catch(e){}};
+  await scan('memorie');await scan('circolari');
+  try{const C=await crono();const n={};Object.values(C).forEach(l=>l.forEach(([y])=>{n[y]=(n[y]||0)+1}));
+    Object.keys(n).forEach(y=>yr(+y).chips.unshift(`<button class="chip fill" onclick="openYearCrono(${y})">${esc(T().crono)} · ${n[y]}</button>`))}catch(e){}
+  const lw=W('lettere');
+  if(lw&&lw.langs.it){try{const ix=await index(lw,'it');const n={};ix.toc.forEach(e=>{const y=lInfo(e).y;if(y)n[y]=(n[y]||0)+1});
+    Object.keys(n).forEach(y=>yr(+y).chips.unshift(`<button class="chip" onclick="openLettersYear(${y})">${esc(wTitle(lw))} · ${n[y]}</button>`))}catch(e){}}
+  let h=`<div class="whead"><h2>${esc(T().dTime)}</h2><div class="s">${esc(T().tlIntro)}</div></div><ul class="tl">`;
+  Object.keys(Y).map(Number).sort((a,b)=>a-b).forEach(y=>{const o=Y[y];
+    h+=`<li class="${o.ev.length?'ev':''}"><div class="yy">${y}</div>${o.ev.map(e=>`<div class="et">${esc(e.t)}${e.u?` <button class="chip" style="margin-left:4px" onclick="location.hash='${e.u}'">${esc(T().bio)}</button>`:''}</div>`).join('')}${o.chips.length?`<div class="chips">${o.chips.join('')}</div>`:''}</li>`});
+  h+=`</ul>`;
+  if(!location.hash.startsWith('#c'))return;
+  $('#main').innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ------------------------------------------------------------------ copia con riferimento */
+let SELTXT='';
+document.addEventListener('selectionchange',()=>{
+  const s=getSelection();const bar=$('#copybar');if(!bar)return;
+  const tx=$('#txt');const t=s&&!s.isCollapsed?s.toString().trim():'';
+  SELTXT=(t&&readerState&&tx&&s.anchorNode&&tx.contains(s.anchorNode))?t:'';
+  if(SELTXT){$('#copybtn').textContent=T().copyRef;bar.style.display='flex'}else bar.style.display='none';
+});
+function refText(){
+  const r=readerState;if(!r)return '';
+  const e=r.e||{};const parts=[r.w.author,wTitle(r.w),e.g?e.g.replace('Volume',T().vol):'',e.t,e.s?lClean(e.s):''].filter(Boolean);
+  return `«${SELTXT.replace(/\s+/g,' ')}» (${parts.join(', ')})`;
+}
+$('#copybtn').addEventListener('pointerdown',e=>e.preventDefault());
+$('#copybtn').addEventListener('click',async()=>{
+  const txt=refText();if(!txt)return;
+  try{await navigator.clipboard.writeText(txt);$('#copybtn').textContent=T().copied;setTimeout(()=>{$('#copybar').style.display='none'},1300)}
+  catch(e){openSheet(`<h4>${esc(T().copyManual)}</h4><textarea readonly style="width:100%;height:9em;font:inherit;font-size:15px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)" onfocus="this.select()">${esc(txt)}</textarea>`)}
+});
+
+/* ------------------------------------------------------------------ instradamento */
+function route(){
+  closeSheet();readerState=null;SELTXT='';$('#copybar').style.display='none';$('#prog').style.width='0';
+  const p=location.hash.replace(/^#/,'').split('-');
+  if(p[0]==='w')return workView(p[1]);
+  if(p[0]==='r'){const hl=PENDING_HL;PENDING_HL=null;return reader(p[1],p[2],hl)}
+  if(p[0]==='s')return searchView(p[1]);
+  if(p[0]==='t')return p[1]?themeView(+p[1]):themesView();
+  if(p[0]==='c')return timelineView();
+  return home();
+}
+addEventListener('hashchange',route);
+(async()=>{
+  try{CAT=await getJSON('data/catalog.json')}catch(e){$('#main').innerHTML=`<div class="notice">${esc(UI[LANG].err)}</div>`;return}
+  route();
+  if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
