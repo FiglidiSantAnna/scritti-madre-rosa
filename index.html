@@ -681,7 +681,11 @@ addEventListener('hashchange',route);
 (async()=>{
   try{CAT=await getJSON('data/catalog.json')}catch(e){$('#main').innerHTML=`<div class="notice">${esc(UI[LANG].err)}</div>`;return}
   route();
-  if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+    const had=!!navigator.serviceWorker.controller;let done=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!done){done=true;location.reload()}});
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden)r.update().catch(()=>{})})}).catch(()=>{});
+  }
 })();
 </script>
 </body>
