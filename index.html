@@ -287,9 +287,13 @@ function dayThought(){
     const i=cands[2+seed%(Math.max(1,cands.length-3))]||1;
     const s=await section(w,l,i);
     const div=document.createElement('div');div.innerHTML=s.html;
-    const ps=[...div.querySelectorAll('p')].map(p=>p.textContent.trim()).filter(t=>t.length>60&&t.length<420&&!/^\d+$/.test(t));
+    const all=[...div.querySelectorAll('p')],ps=[];
+    const isRef=p=>{const t=p.textContent.trim();return (p.children.length===1&&p.children[0].tagName==='EM'&&p.children[0].textContent.trim()===t)||/^\*[\s*]*$/.test(t)};
+    all.forEach((p,k)=>{if(isRef(p))return;const t=p.textContent.trim();if(t.length<60||t.length>420||/^\d+$/.test(t))return;
+      const nx=all[k+1],ref=nx&&isRef(nx)&&!/^\*/.test(nx.textContent.trim())?nx.textContent.trim():'';ps.push({t,ref})});
     if(!ps.length)return null;
-    return {t:ps[seed%ps.length],src:wTitle(w)+' — '+s.e.t,i}
+    const q=ps[seed%ps.length];
+    return {t:q.t,src:wTitle(w)+' — '+s.e.t+(q.ref?' · '+q.ref:''),i}
   }).catch(()=>null)
 }
 /* ---- Lettere: data, luogo e destinatario ricavati dall'indice */
