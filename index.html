@@ -123,8 +123,9 @@ details.grp[open] summary::after{content:"－"}
 .txt{font-size:var(--fs);line-height:1.62;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .txt p{margin:0 0 .75em;text-align:justify}
 .txt h3,.txt h4{font-weight:600;color:var(--wine);font-size:1em;text-align:center;margin:1.3em 0 .6em}
-.txt blockquote{margin:.6em 1.2em;font-style:italic}
-.txt p.nota{font-size:.78em;line-height:1.45;color:var(--muted);text-align:left}
+.txt blockquote{margin:.6em 1.2em;font-style:italic;text-align:justify}
+.txt li,.txt div{text-align:justify}
+.txt p.nota{font-size:.78em;line-height:1.45;color:var(--muted);text-align:justify}
 .txt img{max-width:100%}
 .txt table{border-collapse:collapse;font-size:.85em}
 .txt td,.txt th{border:1px solid var(--line);padding:3px 6px}
@@ -263,8 +264,28 @@ async function index(w,l){return getJSON(`data/${w.id}/${l}/index.json`)}
 async function chunk(w,l,c){return getJSON(`data/${w.id}/${l}/${c}.json`)}
 async function section(w,l,i){
   const ix=await index(w,l);const e=ix.toc[i];const ch=await chunk(w,l,e.c);
-  const s=ch.sections.find(x=>x.i===i);return {toc:ix.toc,e,html:s?s.h:'',notes:ch.notes}
+  const s=ch.sections.find(x=>x.i===i);let h=s?s.h:'';if(JOIN.has(w.id))h=joinLines(h);return {toc:ix.toc,e,html:h,notes:ch.notes}
 }
+// Opere il cui testo digitale (OCR) è spezzato in righe: le righe vengono riunite in paragrafi alla lettura
+const JOIN=new Set(['lettere','docbase']);
+function joinLines(h){
+  const d=document.createElement('div');d.innerHTML=h;
+  let el=d.firstElementChild;
+  while(el){
+    const nx=el.nextElementSibling;
+    if(nx&&el.tagName==='P'&&nx.tagName==='P'&&!el.className&&!nx.className){
+      const ta=el.textContent.trim(),tb=nx.textContent.trim();
+      if(ta&&tb&&!/[.!?:;»”"\)\]…]$/.test(ta)&&/^[a-zà-ÿ]/.test(tb)){
+        if(/[A-Za-zÀ-ÿ]-$/.test(ta))el.innerHTML=el.innerHTML.replace(/-\s*$/,'')+nx.innerHTML.trim();
+        else el.innerHTML=el.innerHTML.trimEnd()+' '+nx.innerHTML.trim();
+        nx.remove();continue;
+      }
+    }
+    el=nx;
+  }
+  return d.innerHTML;
+}
+
 
 /* ------------------------------------------------------------------ intestazione */
 function renderBar(title,canBack){
