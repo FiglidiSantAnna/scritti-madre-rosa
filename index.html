@@ -379,6 +379,7 @@ function lInfo(e){
   const k=norm(to).replace(/\b(sr|suor|a|m)\b\.?/g,' ').replace(/[^a-z]+/g,' ').trim();
   return e._i={y,mo:mm?MESI.indexOf(mm[0].toLowerCase())+1:0,d:dm?+dm[1]:0,pl,to,k};
 }
+function vnum(ix,i){const g=ix.toc[i].g;if(!g)return i+1;if(!ix._vs)ix._vs={};if(ix._vs[g]==null){let k=i;while(k>0&&ix.toc[k-1].g===g)k--;ix._vs[g]=k}return i-ix._vs[g]+(ix.toc[ix._vs[g]].t.match(/^\d+\./)?1:0)}
 function letterGroups(ix,mode){
   const map=new Map();
   ix.toc.forEach((e,i)=>{if(e.x)return;const f=lInfo(e);let key,label;
@@ -500,7 +501,7 @@ async function workView(id){
   if(lmode==='vol')ix.toc.forEach((e,i)=>{if(e.x)return;const gn=e.g||'';if(!g||g.n!==gn){g={n:gn,items:[]};groups.push(g)}g.items.push([e,i])});
   else groups=letterGroups(ix,lmode);
   if(w.letters&&l==='it')h+=`<div style="display:flex;justify-content:center;margin:4px 0 10px"><div class="seg" style="font-family:var(--sans)">${[['vol',T().byVol],['year',T().byYear],['to',T().byTo],['place',T().byPlace]].map(([m,t])=>`<button class="${m===lmode?'on':''}" onclick="setLMode('${m}','${id}')">${esc(t)}</button>`).join('')}</div></div>`;
-  const li=([e,i])=>`<li class="${prog&&prog.i===i?'cur':''}" data-q="${esc((e.t+' '+(e.s||'')).toLowerCase())}"><button onclick="location.hash='#r-${id}-${i}'"><span class="n">${i+1}</span><span class="tt">${esc(e.t)}${e.s?`<span class="ss">${esc(e.s)}</span>`:''}</span></button></li>`;
+  const li=([e,i])=>`<li class="${prog&&prog.i===i?'cur':''}" data-q="${esc((e.t+' '+(e.s||'')).toLowerCase())}"><button onclick="location.hash='#r-${id}-${i}'"><span class="n">${vnum(ix,i)}</span><span class="tt">${lmode!=='vol'&&e.g?`<span class="ss" style="display:inline;margin-right:6px">${esc(e.g.replace(/^Volume\s*(\d+).*/,(m,n)=>T().vol+' '+n))} ·</span>`:''}${esc(e.t)}${e.s?`<span class="ss">${esc(e.s)}</span>`:''}</span></button></li>`;
   if(groups.length>1||ix.toc.length>80){
     h+=`<input class="filter" id="flt" placeholder="${esc(T().filter)}" autocomplete="off">`;
     h+=groups.map(g=>`<details class="grp"${(OPEN_G&&g.key===OPEN_G)?' open data-og="1"':(prog&&!OPEN_G&&g.items.some(x=>x[1]===prog.i)?' open':'')}><summary>${esc((g.n||wTitle(w)).replace('Volume',T().vol))} <span class="muted">${g.items.length}</span></summary><ul class="toc">${g.items.map(li).join('')}</ul></details>`).join('');
