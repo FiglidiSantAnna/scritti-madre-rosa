@@ -177,6 +177,9 @@ mark{background:var(--hl);color:inherit;border-radius:2px}
 .errq{list-style:none;padding:0;margin:0}
 .errq li{border-bottom:1px solid var(--line);padding:8px 0;font-size:13px}
 .errq .del{float:right;color:var(--muted);font-family:var(--sans)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:6px 12px;font-size:13px;font-family:var(--sans);border:1px solid var(--line);border-radius:14px;background:transparent;color:var(--ink)}
+.chips button.on{background:var(--wine);color:#fff;border-color:var(--wine)}
 .empty{text-align:center;color:var(--muted);font-style:italic;padding:30px 0}
 @media (max-width:420px){.langs button{padding:5px 6px;font-size:11.5px}.bar .ib{width:34px}}
 </style>
@@ -209,7 +212,8 @@ const UI = {
    aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
    note:'Nota',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',letters:'lettere',
    reportErr:'Segnala un errore in questo testo',myNotes:'I miei appunti',notePh:'Scriva qui un appunto personale…',
-   selNote:'Salva',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla'},
+   selNote:'Salva',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
+   errCats:['Ortografia','Ripetizione','Sottotitolo','Altro'],errNotePh:'Spiegazione facoltativa…',errType:'Che tipo di errore?',confirm:'Conferma'},
  pt:{app:'Scritti FSA',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
    thought:'Um pensamento de Madre Rosa',cont:'Continuar a leitura',open:'Abrir',cats:{scritti:'Os escritos de Madre Rosa',antologie:'Antologias e introduções',vita:'A vida e a espiritualidade',figure:'Figuras da Família de Sant’Ana',famiglia:'A Família de Sant’Ana e as missões'},byVol:'Volume',byYear:'Ano',byTo:'Destinatário',byPlace:'Lugar',undated:'Sem data',onDay:'Cartas escritas neste dia',noDay:'Nenhuma carta traz esta data.',dThemes:'Temas',dThemesS:'Percursos nos escritos',dTime:'Linha do tempo',dTimeS:'A vida, ano por ano',themesIntro:'Cada tema abre o capítulo dos «Fios de ouro» e a busca em todas as obras.',searchAll:'Buscar em todas as obras',copyRef:'Copiar com referência',copied:'Copiado ✓',copyManual:'Selecione e copie o texto abaixo',tlIntro:'As datas principais da vida de Madre Rosa e, ano por ano, os textos que se podem ler.',bio:'Biografia',onLife:'Neste dia, na vida de Madre Rosa',noLife:'A Cronologia não registra fatos neste dia.',cronoSrc:'Da Cronologia das «Memórias», organizada por Ir. A. Roberta Frati.',ago:'há {n} anos',crono:'Cronologia',seeAll:'Ver tudo',extras:'Introduções e apêndices',dLib:'Biblioteca',dLibS:'Todas as obras',dSearch:'Buscar',dSearchS:'Em todos os textos',dToday:'Hoje com Madre Rosa',dTodayS:'Fatos, pensamento e cartas do dia',dResume:'Retomar',dResumeS:'Última leitura e marcadores',noLast:'Nenhuma leitura em andamento.',works:'obras',avail:'Línguas',time:'Leitura',hrs:'horas aprox.',mins:'minutos aprox.',readSrc:'Ler no texto',
    onlyIt:'Texto italiano',transl:'Traduzido',fallback:'A tradução desta obra está em preparação: por enquanto lê-se o texto italiano.',
@@ -220,7 +224,8 @@ const UI = {
    aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
    note:'Nota',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',letters:'cartas',
    reportErr:'Assinalar um erro neste texto',myNotes:'Minhas anotações',notePh:'Escreva aqui uma anotação pessoal…',
-   selNote:'Salvar',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo'},
+   selNote:'Salvar',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
+   errCats:['Ortografia','Repetição','Subtítulo','Outro'],errNotePh:'Explicação opcional…',errType:'Que tipo de erro?',confirm:'Confirmar'},
  es:{app:'Scritti FSA',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
    thought:'Un pensamiento de Madre Rosa',cont:'Seguir leyendo',open:'Abrir',cats:{scritti:'Los escritos de Madre Rosa',antologie:'Antologías e introducciones',vita:'La vida y la espiritualidad',figure:'Figuras de la Familia de Santa Ana',famiglia:'La Familia de Santa Ana y las misiones'},byVol:'Volumen',byYear:'Año',byTo:'Destinatario',byPlace:'Lugar',undated:'Sin fecha',onDay:'Cartas escritas en este día',noDay:'Ninguna carta lleva esta fecha.',dThemes:'Temas',dThemesS:'Recorridos por los escritos',dTime:'Línea del tiempo',dTimeS:'La vida, año por año',themesIntro:'Cada tema abre el capítulo de los «Hilos de oro» y la búsqueda en todas las obras.',searchAll:'Buscar en todas las obras',copyRef:'Copiar con referencia',copied:'Copiado ✓',copyManual:'Seleccione y copie el texto de abajo',tlIntro:'Las fechas principales de la vida de Madre Rosa y, año por año, los textos que se pueden leer.',bio:'Biografía',onLife:'En este día, en la vida de Madre Rosa',noLife:'La Cronología no registra hechos en este día.',cronoSrc:'De la Cronología de las «Memorias», a cargo de Sor A. Roberta Frati.',ago:'hace {n} años',crono:'Cronología',seeAll:'Ver todo',extras:'Introducciones y apéndices',dLib:'Biblioteca',dLibS:'Todas las obras',dSearch:'Buscar',dSearchS:'En todos los textos',dToday:'Hoy con Madre Rosa',dTodayS:'Hechos, pensamiento y cartas del día',dResume:'Retomar',dResumeS:'Última lectura y marcadores',noLast:'Ninguna lectura en curso.',works:'obras',avail:'Idiomas',time:'Lectura',hrs:'horas aprox.',mins:'minutos aprox.',readSrc:'Leer en el texto',
    onlyIt:'Texto italiano',transl:'Traducido',fallback:'La traducción de esta obra está en preparación: por ahora se lee el texto italiano.',
@@ -231,7 +236,8 @@ const UI = {
    aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
    note:'Nota',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',letters:'cartas',
    reportErr:'Señalar un error en este texto',myNotes:'Mis notas',notePh:'Escriba aquí una nota personal…',
-   selNote:'Guardar',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo'},
+   selNote:'Guardar',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
+   errCats:['Ortografía','Repetición','Subtítulo','Otro'],errNotePh:'Explicación opcional…',errType:'¿Qué tipo de error?',confirm:'Confirmar'},
  en:{app:'Scritti FSA',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
    thought:'A thought from Mother Rosa',cont:'Continue reading',open:'Open',cats:{scritti:'The writings of Mother Rosa',antologie:'Anthologies and introductions',vita:'Life and spirituality',figure:'Figures of the Family of Saint Anne',famiglia:'The Family of Saint Anne and the missions'},byVol:'Volume',byYear:'Year',byTo:'Recipient',byPlace:'Place',undated:'Undated',onDay:'Letters written on this day',noDay:'No letter bears this date.',dThemes:'Themes',dThemesS:'Paths through the writings',dTime:'Timeline',dTimeS:'Her life, year by year',themesIntro:'Each theme opens the chapter of “Threads of Gold” and a search in all the works.',searchAll:'Search in all the works',copyRef:'Copy with reference',copied:'Copied ✓',copyManual:'Select and copy the text below',tlIntro:'The main dates of Mother Rosa’s life and, year by year, the texts available to read.',bio:'Biography',onLife:'On this day in Mother Rosa’s life',noLife:'The Chronology records nothing on this day.',cronoSrc:'From the Chronology in the “Memoirs”, edited by Sr. A. Roberta Frati.',ago:'{n} years ago',crono:'Chronology',seeAll:'See all',extras:'Introductions and appendices',dLib:'Library',dLibS:'All the works',dSearch:'Search',dSearchS:'In all the texts',dToday:'Today with Mother Rosa',dTodayS:'Events, thought and letters of the day',dResume:'Resume',dResumeS:'Last reading and bookmarks',noLast:'No reading in progress.',works:'works',avail:'Languages',time:'Reading',hrs:'hours approx.',mins:'minutes approx.',readSrc:'Read in the text',
    onlyIt:'Italian text',transl:'Translated',fallback:'The translation of this work is in preparation: for now the Italian text is shown.',
@@ -242,7 +248,8 @@ const UI = {
    aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
    note:'Note',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',letters:'letters',
    reportErr:'Report an error in this text',myNotes:'My notes',notePh:'Write a personal note here…',
-   selNote:'Save',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it'}
+   selNote:'Save',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
+   errCats:['Spelling','Repetition','Subtitle','Other'],errNotePh:'Optional explanation…',errType:'What kind of error?',confirm:'Confirm'}
 };
 const LANGS=['it','pt','es','en'];
 const CAT_ICON={scritti:'✠',antologie:'❧',vita:'❦',figure:'✧',famiglia:'✿'};
@@ -584,7 +591,7 @@ function openSettings(){
   h+=bms.length?`<ul class="bm">${bms.map((b,k)=>`<li><div class="row"><button class="go" onclick="closeSheet();location.hash='#r-${b.w}-${b.i}'"><div style="font-size:15px">${esc(W(b.w)?wTitle(W(b.w)):b.w)}</div><div class="muted">${esc(b.t)}</div></button><button class="del" onclick="delBm(${k})">✕</button></div><textarea class="noteBox" placeholder="${esc(T().notePh)}" onblur="saveNote(${k},this.value)">${esc(b.note||'')}</textarea></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noBm)}</div>`;
   const errq=store.get('errq',[]);
   h+=`<h4 style="margin-top:18px">${esc(T().pendingErr)}${errq.length?' ('+errq.length+')':''}</h4>`;
-  h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div></li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
+  h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}${e.cat?` · <b>${esc(e.cat)}</b>`:''}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div>${e.note?`<div class="muted" style="font-size:12px;font-style:italic">${esc(e.note)}</div>`:''}</li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
   openSheet(h);
@@ -604,19 +611,43 @@ function showToast(msg){
   clearTimeout(window._toastT);
   window._toastT=setTimeout(()=>t.classList.remove('on'),1700)
 }
-function queueError(txt){
+function queueError(txt,cat,note){
   const r=readerState;if(!r)return;
   const list=store.get('errq',[]);
-  list.push({w:r.w.id,i:r.i,l:r.l,wt:wTitle(r.w),t:txt||'',ts:Date.now()});
+  list.push({w:r.w.id,i:r.i,l:r.l,wt:wTitle(r.w),t:txt||'',cat:cat||T().errCats[T().errCats.length-1],note:note||'',ts:Date.now()});
   store.set('errq',list.slice(-300));
   showToast(T().errQueued)
 }
-function reportError(){queueError('')}
+function reportError(){askErrorCategory('')}
+function askErrorCategory(txt){
+  const cats=T().errCats;
+  window._pendingErrTxt=txt;window._pendingCat=cats[cats.length-1];
+  openSheet(`<h4>${esc(T().errType)}</h4>
+  ${txt?`<div class="muted" style="margin-bottom:10px">«${esc(txt.slice(0,200))}${txt.length>200?'…':''}»</div>`:''}
+  <div class="chips" id="catChips">${cats.map((c,i)=>`<button class="${i===cats.length-1?'on':''}" data-c="${esc(c)}" onclick="pickCat(this)">${esc(c)}</button>`).join('')}</div>
+  <textarea id="errNoteTA" class="noteBox" style="margin-top:12px;min-height:70px" placeholder="${esc(T().errNotePh)}"></textarea>
+  <button class="btn" style="width:100%;margin-top:4px" onclick="confirmErrQueue()">${esc(T().confirm)}</button>`)
+}
+function pickCat(btn){
+  document.querySelectorAll('#catChips button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');window._pendingCat=btn.dataset.c
+}
+function confirmErrQueue(){
+  const txt=window._pendingErrTxt||'',cat=window._pendingCat||'',note=($('#errNoteTA')||{}).value||'';
+  queueError(txt,cat,note);closeSheet()
+}
 function delErrQueued(k){const list=store.get('errq',[]);list.splice(k,1);store.set('errq',list);openSettings()}
 function sendErrQueue(){
   const list=store.get('errq',[]);if(!list.length)return;
+  const groups={};
+  list.forEach(e=>{const key=e.cat||'';(groups[key]=groups[key]||[]).push(e)});
   const subject='[Scritti FSA] '+list.length+' segnalazion'+(list.length>1?'i':'e');
-  const body=list.map((e,k)=>(k+1)+'. '+e.wt+' ('+e.w+') · sez. '+e.i+' · '+e.l+'\n'+(e.t?'«'+e.t+'»':T().wholeSection)).join('\n\n')+'\n\n';
+  let body='';
+  Object.keys(groups).forEach(cat=>{
+    body+='== '+cat.toUpperCase()+' ==\n\n';
+    body+=groups[cat].map((e,k)=>(k+1)+'. '+e.wt+' ('+e.w+') · sez. '+e.i+' · '+e.l+'\n'+(e.t?'«'+e.t+'»':T().wholeSection)+(e.note?'\n'+e.note:'')).join('\n\n');
+    body+='\n\n'
+  });
   location.href='mailto:pleandrofsa@hotmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
   store.set('errq',[]);
   showToast(T().errSent);
@@ -648,7 +679,7 @@ function showSelToolbar(rect,txt){
   document.body.appendChild(el);
   selToolbarEl=el;
   $('#selNoteBtn').onclick=(e)=>{e.stopPropagation();saveSelAsNote(txt);removeSelToolbar();window.getSelection().removeAllRanges()};
-  $('#selErrBtn').onclick=(e)=>{e.stopPropagation();queueError(txt);removeSelToolbar();window.getSelection().removeAllRanges()};
+  $('#selErrBtn').onclick=(e)=>{e.stopPropagation();removeSelToolbar();window.getSelection().removeAllRanges();askErrorCategory(txt)};
 }
 function saveSelAsNote(txt){
   const r=readerState;if(!r)return;
