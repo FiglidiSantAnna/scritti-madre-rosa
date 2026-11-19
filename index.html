@@ -147,6 +147,16 @@ mark{background:var(--hl);color:inherit;border-radius:2px}
 .sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
 .sheet h4{margin:0 0 10px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .sheet .txt{font-size:calc(var(--fs) * .9)}
+/* Persone/fondazioni cliccabili */
+.plink{border-bottom:1px dotted var(--gold);cursor:pointer;color:inherit;background:none;padding:0;font:inherit;text-decoration:none}
+.plink:hover{color:var(--wine)}
+/* Scheda persona nel popup */
+.scheda-persona h4{margin:0 0 .5em}
+.scheda-persona .scheda-bio{margin-bottom:1em}
+.scheda-persona .scheda-refs h5{font-size:13px;font-weight:600;color:var(--wine);margin:.8em 0 .3em;text-transform:uppercase;letter-spacing:.04em}
+.scheda-persona .scheda-refs .ref-btn{display:block;width:100%;text-align:left;background:none;border:none;padding:5px 0;cursor:pointer;font:inherit;font-size:13.5px;color:var(--link);border-bottom:1px solid var(--line)}
+.scheda-persona .scheda-refs .ref-btn:last-child{border-bottom:none}
+.scheda-persona .scheda-refs .ref-btn:hover{color:var(--wine)}
 .row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:15px;gap:12px}
 .seg{display:flex;border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .seg button{padding:7px 12px;font-size:14px}
@@ -509,6 +519,8 @@ async function reader(id,i,hl){
     if(p&&p.i===i&&p.y)requestAnimationFrame(()=>window.scrollTo(0,p.y*(document.body.scrollHeight-innerHeight)));else window.scrollTo(0,0)}
   store.set('last',{w:id,i,t:s.e.t});
   savePos();
+  // Annota nomi di persone/fondazioni solo nelle Lettere
+  if(id==='lettere')annotateLettere(txt);
 }
 function highlight(root,q){
   const nq=norm(q);if(!nq)return;
@@ -837,7 +849,124 @@ addEventListener('hashchange',route);
 (async()=>{
   try{CAT=await getJSON('data/catalog.json')}catch(e){$('#main').innerHTML=`<div class="notice">${esc(UI[LANG].err)}</div>`;return}
   route();
-  if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+  /* ------------------------------------------------------------------ persone/fondazioni popup */
+let _personeData=null,_fondazioniData=null;
+async function loadPersone(){
+  if(_personeData)return _personeData;
+  try{const r=await fetch('data/lettere/persone.json');_personeData=await r.json()}catch(e){_personeData=[]}
+  return _personeData;
+}
+async function loadFondazioni(){
+  if(_fondazioniData)return _fondazioniData;
+  try{const r=await fetch('data/lettere/fondazioni.json');_fondazioniData=await r.json()}catch(e){_fondazioniData=[]}
+  return _fondazioniData;
+}
+// Corpus label leggibili
+const CORPUS_LABEL={'lettere':'Lettere','memorie':'Memorie','travagli':'Travagli e Conforti'};
+function renderSchedaPersona(p){
+  const bio=p.scheda_html||'';
+  let refs_html='';
+  if(p.refs&&p.refs.length){
+    // raggruppa per corpus
+    const byCorpus={};
+    for(const r of p.refs){
+      const c=r.corpus;if(!byCorpus[c])byCorpus[c]=[];
+      byCorpus[c].push(r);
+    }
+    refs_html='<div class="scheda-refs">';
+    for(const [corpus,list] of Object.entries(byCorpus)){
+      refs_html+=`<h5>${esc(CORPUS_LABEL[corpus]||corpus)}</h5>`;
+      for(const r of list.slice(0,20)){
+        const label=r.label&&r.label!==`sezione ${r.section_i}`?r.label:`${CORPUS_LABEL[corpus]||corpus} — vol. ${r.file_num+1}`;
+        refs_html+=`<button class="ref-btn" onclick="closeSheet();location.hash='#r-${esc(r.corpus)}-${r.section_i}'">${esc(label)}</button>`;
+      }
+      if(list.length>20)refs_html+=`<div class="muted" style="font-size:12px;padding:4px 0">… e altri ${list.length-20}</div>`;
+    }
+    refs_html+='</div>';
+  }
+  return `<div class="scheda-persona"><h4>${esc(p.nome_display)}</h4><div class="scheda-bio txt">${bio}</div>${refs_html}</div>`;
+}
+function openPersonaSheet(id){
+  Promise.all([loadPersone(),loadFondazioni()]).then(([persone,fondazioni])=>{
+    const all=[...persone,...fondazioni];
+    const p=all.find(x=>x.id===id);
+    if(!p)return;
+    openSheet(renderSchedaPersona(p));
+    $('#sheet').scrollTop=0;
+  });
+}
+
+// Applica link al testo delle lettere dopo il rendering
+async function annotateLettere(txtEl){
+  if(!txtEl)return;
+  const [persone,fondazioni]=await Promise.all([loadPersone(),loadFondazioni()]);
+  const all=[...persone,...fondazioni];
+  // Costruisce mappa alias->id, solo alias >= 5 chars per sicurezza
+  const aliasMap=new Map();
+  for(const p of all){
+    for(const a of (p.aliases||[])){
+      if(a.length>=5&&!aliasMap.has(a))aliasMap.set(a,p.id);
+    }
+    // Aggiungi cognome se >= 5 chars
+    if(p.cognome&&p.cognome.length>=5){
+      const nc=norm(p.cognome);
+      if(!aliasMap.has(nc))aliasMap.set(nc,p.id);
+    }
+    if(p.luogo&&p.luogo.length>=5){
+      const nl=norm(p.luogo);
+      if(!aliasMap.has(nl))aliasMap.set(nl,p.id);
+    }
+  }
+  // Ordina alias per lunghezza decrescente (match più specifici prima)
+  const aliases=[...aliasMap.entries()].sort((a,b)=>b[0].length-a[0].length);
+
+  // Annota i nodi testo in txtEl evitando <h3><h4> (intestazioni) e già annotati
+  const walker=document.createTreeWalker(txtEl,NodeFilter.SHOW_TEXT,{
+    acceptNode(node){
+      let el=node.parentElement;
+      while(el&&el!==txtEl){
+        if(['H3','H4','H5','BUTTON','A','MARK'].includes(el.tagName))return NodeFilter.FILTER_REJECT;
+        if(el.classList&&el.classList.contains('plink'))return NodeFilter.FILTER_REJECT;
+        el=el.parentElement;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes=[];
+  let n;while(n=walker.nextNode())nodes.push(n);
+
+  for(const textNode of nodes){
+    const orig=textNode.nodeValue;
+    const normed=norm(orig);
+    // cerca il primo match
+    let best=null,bestStart=-1;
+    for(const [alias,id] of aliases){
+      // word-boundary approssimativo sul testo normalizzato
+      const re=new RegExp('(?<![a-zàèéìòùâêîôûäëïöü])'+alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![a-zàèéìòùâêîôûäëïöü])');
+      const m=normed.match(re);
+      if(m&&(bestStart<0||m.index<bestStart)){bestStart=m.index;best={alias,id,index:m.index,len:alias.length};break}
+    }
+    if(!best||bestStart<0)continue;
+    // Trova la posizione nel testo originale (cerca la stessa sottostringa case-insensitive)
+    // Usa bestStart come offset approssimativo
+    const before=orig.slice(0,bestStart);
+    const matched=orig.slice(bestStart,bestStart+best.len);
+    const after=orig.slice(bestStart+best.len);
+    if(!matched.trim())continue;
+    const frag=document.createDocumentFragment();
+    if(before)frag.appendChild(document.createTextNode(before));
+    const span=document.createElement('button');
+    span.className='plink';
+    span.textContent=matched;
+    span.setAttribute('data-pid',best.id);
+    span.onclick=function(e){e.stopPropagation();openPersonaSheet(this.dataset.pid)};
+    frag.appendChild(span);
+    if(after)frag.appendChild(document.createTextNode(after));
+    textNode.parentNode.replaceChild(frag,textNode);
+  }
+}
+
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
     const had=!!navigator.serviceWorker.controller;let done=false;
     navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!done){done=true;location.reload()}});
     navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden)r.update().catch(()=>{})})}).catch(()=>{});
