@@ -524,7 +524,7 @@ async function reader(id,i,hl){
   readerState={w,l,i,notes:s.notes,e:s.e};
   let h='';
   if(l!==LANG)h+=`<div class="notice">${esc(fbMsg(l))}</div>`;
-  h+=`<article class="reader"><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt${id==='lettere'?' fl':''}" id="txt">${s.html}</div></article>`;
+  h+=`<article class="reader"><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt fl" id="txt">${s.html}</div></article>`;
   h+=`<div class="nav"><button ${pv<0?'disabled':''} onclick="location.hash='#r-${id}-${pv}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${nx>=n?'disabled':''} onclick="location.hash='#r-${id}-${nx}'">${esc(T().next)} ›</button></div>`;
   h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button></div>`;
   $('#main').innerHTML=h;
