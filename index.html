@@ -386,7 +386,7 @@ const CRONO={};
 function crono(){const it=()=>getJSON('data/cronologia.json').catch(()=>({}));return CRONO[LANG]||(CRONO[LANG]=LANG==='it'?it():getJSON('data/cronologia.'+LANG+'.json').catch(it))}
 const dkey=(m,d)=>String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
 const dlabel=(m,d)=>new Date(2024,m-1,d).toLocaleDateString(LANG,{day:'numeric',month:'long'});
-function levHtml(list,nowY){return list.map(([y,t,f,r])=>`<div class="lev"><span class="y">${y}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${nowY?`<span class="ag">${esc(T().ago.replace('{n}',nowY-y))}</span>`:''}${r?`<button class="chip" style="margin-left:6px" onclick="closeSheet();location.hash='#r-${r.w}-${r.i}'">${esc(T().readSrc)}</button>`:''}</span></div>`).join('')}
+function levHtml(list,nowY){return list.map(([y,t,f,r])=>`<div class="lev"><span class="y">${y}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${nowY?`<span class="ag">${esc(T().ago.replace('{n}',nowY-y))}</span>`:''}${r?`<button class="chip" style="margin-left:6px" onclick="${nowY?`goRead('${r.w}',${r.i})`:`closeSheet();location.hash='#r-${r.w}-${r.i}'`}">${esc(T().readSrc)}</button>`:''}</span></div>`).join('')}
 const ICO={lib:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/>',
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
@@ -426,14 +426,15 @@ async function home(){
 }
 function goLib(){const el=$('#lib');if(!el)return;const d=document.querySelector('details.shelf');if(d&&![...document.querySelectorAll('details.shelf')].some(x=>x.open))d.open=true;
   window.scrollTo({top:el.getBoundingClientRect().top+scrollY-64,behavior:'smooth'})}
-let DAYOFF=0;
+let DAYOFF=0;let RET_TODAY=null;
+function goRead(w,i){RET_TODAY=DAYOFF;closeSheet();location.hash='#r-'+w+'-'+i}
 async function openToday(off){
   DAYOFF=off||0;const now=new Date();const day=new Date(now.getFullYear(),now.getMonth(),now.getDate()+DAYOFF);
   const mo=day.getMonth()+1,d=day.getDate(),my=DAYOFF;
   let h=`<div class="daynav"><button onclick="openToday(${DAYOFF-1})" aria-label="‹">‹</button><div class="dn">${esc(dlabel(mo,d))}</div><button onclick="openToday(${DAYOFF+1})" aria-label="›">›</button></div>`;
   h+=`<h4>${esc(T().onLife)}</h4><div id="onlife"><span class="spin"></span></div>`;
   if(DAYOFF===0){const t=await (TODAY||(TODAY=dayThought()));if(my!==DAYOFF)return;
-    if(t)h+=`<h4 style="margin-top:20px">${esc(T().thought)}</h4><div class="txt"><blockquote style="margin:.4em 0">«${esc(t.t)}»</blockquote><p class="nota">${esc(t.src)}</p></div><div style="text-align:center;margin-top:6px"><button class="btn sec" onclick="closeSheet();location.hash='#r-fili-${t.i}'">${esc(T().readSrc)}</button></div>`}
+    if(t)h+=`<h4 style="margin-top:20px">${esc(T().thought)}</h4><div class="txt"><blockquote style="margin:.4em 0">«${esc(t.t)}»</blockquote><p class="nota">${esc(t.src)}</p></div><div style="text-align:center;margin-top:6px"><button class="btn sec" onclick="goRead('fili',${t.i})">${esc(T().readSrc)}</button></div>`}
   h+=`<h4 style="margin-top:20px">${esc(T().onDay)}</h4><div id="onday"><span class="spin"></span></div>`;
   openSheet(h);$('#sheet').scrollTop=0;
   const C=await crono();if(my!==DAYOFF)return;const list=C[dkey(mo,d)]||[];
@@ -446,7 +447,7 @@ async function openToday(off){
     ix.toc.forEach((e,i)=>{if(e.x||usedLetterIdx.has(i))return;const f=lInfo(e);if(f.d===d&&f.mo===mo)hits.push([f,e,i])});
     hits.sort((a,b)=>(a[0].y||'9999').localeCompare(b[0].y||'9999'));
     if(!box())return;
-    box().innerHTML=hits.length?`<ul class="bm">${hits.map(([f,e,i])=>`<li><button class="go" onclick="closeSheet();location.hash='#r-lettere-${i}'"><div style="font-size:16px"><b style="color:var(--gold);font-family:var(--sans);font-size:13px">${esc(f.y||'—')}</b> · ${esc(f.to)}</div><div class="muted">${esc(lClean(e.s))}</div></button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noDay)}</div>`;
+    box().innerHTML=hits.length?`<ul class="bm">${hits.map(([f,e,i])=>`<li><button class="go" onclick="goRead('lettere',${i})"><div style="font-size:16px"><b style="color:var(--gold);font-family:var(--sans);font-size:13px">${esc(f.y||'—')}</b> · ${esc(f.to)}</div><div class="muted">${esc(lClean(e.s))}</div></button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noDay)}</div>`;
   }catch(x){if(box())box().innerHTML=`<div class="muted">${esc(T().err)}</div>`}
 }
 async function openYearCrono(y){
@@ -844,7 +845,8 @@ function route(){
   if(p[0]==='s')return searchView(p[1]);
   if(p[0]==='t')return p[1]?themeView(+p[1]):themesView();
   if(p[0]==='c')return timelineView();
-  return home();
+  home();
+  if(RET_TODAY!==null){const o=RET_TODAY;RET_TODAY=null;openToday(o)}
 }
 addEventListener('hashchange',route);
 (async()=>{
@@ -852,7 +854,7 @@ addEventListener('hashchange',route);
   route();
 })();
 /* ------------------------------------------------------------------ persone/fondazioni popup */
-let _personeData=null,_fondazioniData=null;
+let _personeData=null,_fondazioniData=null,_aliasRe=null;
 async function loadPersone(){
   if(_personeData)return _personeData;
   try{const r=await fetch('data/lettere/persone.json');_personeData=await r.json()}catch(e){_personeData=[]}
@@ -916,7 +918,11 @@ async function annotateLettere(txtEl){
     }
   }
   // Ordina alias per lunghezza decrescente (match più specifici prima)
-  const aliases=[...aliasMap.entries()].sort((a,b)=>b[0].length-a[0].length);
+  if(!_aliasRe){
+    _aliasRe=[...aliasMap.entries()].sort((a,b)=>b[0].length-a[0].length).map(([alias,id])=>
+      [alias,id,new RegExp('(?<![a-zàèéìòùâêîôûäëïöü])'+alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![a-zàèéìòùâêîôûäëïöü])')]);
+  }
+  const aliases=_aliasRe;
 
   // Annota i nodi testo in txtEl evitando <h3><h4> (intestazioni) e già annotati
   const walker=document.createTreeWalker(txtEl,NodeFilter.SHOW_TEXT,{
@@ -938,9 +944,8 @@ async function annotateLettere(txtEl){
     const normed=norm(orig);
     // cerca il primo match
     let best=null,bestStart=-1;
-    for(const [alias,id] of aliases){
-      // word-boundary approssimativo sul testo normalizzato
-      const re=new RegExp('(?<![a-zàèéìòùâêîôûäëïöü])'+alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![a-zàèéìòùâêîôûäëïöü])');
+    for(const [alias,id,re] of aliases){
+      if(!normed.includes(alias))continue;
       const m=normed.match(re);
       if(m&&(bestStart<0||m.index<bestStart)){bestStart=m.index;best={alias,id,index:m.index,len:alias.length};break}
     }
