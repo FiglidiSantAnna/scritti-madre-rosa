@@ -350,7 +350,7 @@ const CRONO={};
 function crono(){const it=()=>getJSON('data/cronologia.json').catch(()=>({}));return CRONO[LANG]||(CRONO[LANG]=LANG==='it'?it():getJSON('data/cronologia.'+LANG+'.json').catch(it))}
 const dkey=(m,d)=>String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
 const dlabel=(m,d)=>new Date(2024,m-1,d).toLocaleDateString(LANG,{day:'numeric',month:'long'});
-function levHtml(list,nowY){return list.map(([y,t,f])=>`<div class="lev"><span class="y">${y}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${nowY?`<span class="ag">${esc(T().ago.replace('{n}',nowY-y))}</span>`:''}</span></div>`).join('')}
+function levHtml(list,nowY){return list.map(([y,t,f,r])=>`<div class="lev"><span class="y">${y}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${nowY?`<span class="ag">${esc(T().ago.replace('{n}',nowY-y))}</span>`:''}${r?`<button class="chip" style="margin-left:6px" onclick="closeSheet();location.hash='#r-${r.w}-${r.i}'">${esc(T().readSrc)}</button>`:''}</span></div>`).join('')}
 const ICO={lib:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/>',
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
@@ -414,8 +414,8 @@ async function openToday(off){
 }
 async function openYearCrono(y){
   const C=await crono();const rows=[];
-  Object.keys(C).sort().forEach(k=>C[k].forEach(([yy,t,f])=>{if(yy===y)rows.push([k,t,f])}));
-  openSheet(`<h4>${esc(T().crono)} · ${y}</h4>${rows.map(([k,t,f])=>`<div class="lev"><span class="y" style="min-width:92px;font-size:12.5px">${esc(dlabel(+k.slice(0,2),+k.slice(3)))}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}</span></div>`).join('')}<p class="muted" style="font-size:12px;margin-top:8px">${esc(T().cronoSrc)}</p>`);$('#sheet').scrollTop=0;
+  Object.keys(C).sort().forEach(k=>C[k].forEach(([yy,t,f,r])=>{if(yy===y)rows.push([k,t,f,r])}));
+  openSheet(`<h4>${esc(T().crono)} · ${y}</h4>${rows.map(([k,t,f,r])=>`<div class="lev"><span class="y" style="min-width:92px;font-size:12.5px">${esc(dlabel(+k.slice(0,2),+k.slice(3)))}</span><span class="x">${esc(t)}${f&&LANG!=='it'?' <span class="muted" style="font-size:11px">(IT)</span>':''}${r?`<button class="chip" style="margin-left:6px" onclick="closeSheet();location.hash='#r-${r.w}-${r.i}'">${esc(T().readSrc)}</button>`:''}</span></div>`).join('')}<p class="muted" style="font-size:12px;margin-top:8px">${esc(T().cronoSrc)}</p>`);$('#sheet').scrollTop=0;
 }
 function openResume(){
   const last=store.get('last',null),bms=store.get('bm',[]);
