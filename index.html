@@ -207,6 +207,7 @@ mark{background:var(--hl);color:inherit;border-radius:2px}
 <body>
 <header class="bar" id="bar">
   <button class="ib" id="back" aria-label="Indietro" style="visibility:hidden"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="ib" id="bhome" aria-label="Pagina iniziale" style="visibility:hidden"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg></button>
   <h1 id="title">Scritti FSA</h1>
   <div class="langs" id="langs"></div>
   <button class="ib" id="bsearch" aria-label="Cerca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
@@ -336,10 +337,12 @@ function joinLines(h){
 function renderBar(title,canBack){
   $('#title').textContent=canBack?title:'';
   $('#back').style.visibility=canBack?'visible':'hidden';
+  $('#bhome').style.visibility=canBack?'visible':'hidden';
   $('#langs').innerHTML=LANGS.map(l=>`<button class="${l===LANG?'on':''}" data-l="${l}">${l.toUpperCase()}</button>`).join('');
 }
 $('#langs').onclick=e=>{const l=e.target.dataset.l;if(!l||l===LANG)return;LANG=l;store.set('lang',l);applyPrefs();route()};
-$('#back').onclick=()=>{if(history.length>1)history.back();else location.hash=''};
+$('#back').onclick=()=>{const m=location.hash.match(/^#r-([a-z]+)-/);if(m){location.hash='#w-'+m[1];return}if(history.length>1)history.back();else location.hash=''};
+$('#bhome').onclick=()=>{location.hash=''};
 $('#bsearch').onclick=()=>{const m=location.hash.match(/^#(?:w|r)-([a-z]+)/);location.hash='#s'+(m?'-'+m[1]:'')};
 $('#bmenu').onclick=()=>openSettings();
 
