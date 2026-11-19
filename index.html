@@ -153,6 +153,7 @@ mark{background:var(--hl);color:inherit;border-radius:2px}
 /* Scheda persona nel popup */
 .scheda-persona h4{margin:0 0 .5em}
 .scheda-persona .scheda-bio{margin-bottom:1em}
+.scheda-persona .vol-label{margin:1.1em 0 .3em;color:var(--gold);font-size:.85em;border-top:1px solid var(--line,#ddd);padding-top:.6em}.scheda-persona .vol-label:first-child{border-top:0;margin-top:0;padding-top:0}
 .scheda-persona .scheda-refs h5{font-size:13px;font-weight:600;color:var(--wine);margin:.8em 0 .3em;text-transform:uppercase;letter-spacing:.04em}
 .scheda-persona .scheda-refs .ref-btn{display:block;width:100%;text-align:left;background:none;border:none;padding:5px 0;cursor:pointer;font:inherit;font-size:13.5px;color:var(--link);border-bottom:1px solid var(--line)}
 .scheda-persona .scheda-refs .ref-btn:last-child{border-bottom:none}
@@ -907,11 +908,7 @@ async function annotateLettere(txtEl){
     for(const a of (p.aliases||[])){
       if(a.length>=5&&!aliasMap.has(a))aliasMap.set(a,p.id);
     }
-    // Aggiungi cognome se >= 5 chars
-    if(p.cognome&&p.cognome.length>=5){
-      const nc=norm(p.cognome);
-      if(!aliasMap.has(nc))aliasMap.set(nc,p.id);
-    }
+    // il cognome da solo e' gia' tra gli alias solo quando non e' ambiguo (vedi build_persone.py)
     if(p.luogo&&p.luogo.length>=5){
       const nl=norm(p.luogo);
       if(!aliasMap.has(nl))aliasMap.set(nl,p.id);
