@@ -264,6 +264,35 @@ def sections_of(html):
             out['fond'] = html[st:end]
     return out
 
+
+def parse_fondazioni_vol_2_5(sec_html, file_num):
+    """Volumi 2 e 5: fondazioni senza la numerazione/formattazione degli altri
+    volumi. Vol. 2: voci numerate "1. PIACENZA, Casa Madre."; vol. 5: voci
+    introdotte da una riga "LUOGO, opera" tutta in maiuscolo iniziale."""
+    paras = re.findall(r'<p>.*?</p>', sec_html, re.S)
+    heads = []                      # (indice paragrafo, riga titolo)
+    for i, p in enumerate(paras):
+        t = strip_tags(p).strip()
+        t = re.sub(r'^\d+\.\s*', '', t)
+        if len(t) < 110 and re.match(rf"^[{UP}][{UP}' ]{{2,}}[,.]\s*", t) and not re.match(r'^[IVX]+\.', t):
+            heads.append((i, t.rstrip('.').strip()))
+    entries = []
+    for k, (i, title) in enumerate(heads):
+        j = heads[k+1][0] if k+1 < len(heads) else len(paras)
+        luogo_raw, _, opera = re.sub(r'^([A-ZÀ-ÖØ-Þ\' ]+)\.\s', r'\1, ', title).partition(',')
+        luogo = luogo_raw.strip().title()
+        opera = opera.strip()
+        display = f"{luogo}, {opera}" if opera else luogo
+        entries.append({
+            'id': f"fond-{file_num}-{k+1}", 'tipo': 'fondazione',
+            'file_source': file_num, 'voce_num': k+1,
+            'nome_display': display, 'luogo': luogo, 'provincia': '',
+            'tipo_opera': opera,
+            'scheda_html': ''.join(paras[i:j]),
+            'lettere_citate': extract_letter_refs(strip_tags(''.join(paras[i:j]))),
+            'aliases': [norm(luogo), norm(display)], 'refs': []})
+    return entries
+
 # ─── dedup / unione ──────────────────────────────────────────────────────────
 
 # Voci di volumi diversi che indicano la stessa persona e che la regola
@@ -399,6 +428,15 @@ def main():
             print(f'  DESTINATARI: {len(entries)} voci')
             all_persone.extend(entries)
 
+        if n in (2, 5):
+            fs = secs.get('fond')
+            if n == 2:
+                i0 = html.find('IV. FONDAZIONI'); j0 = html.find('<h4', i0)
+                fs = html[i0:j0] if i0 >= 0 else None
+            if fs:
+                entries = parse_fondazioni_vol_2_5(fs, n)
+                print(f'  FONDAZIONI (vol. 2/5): {len(entries)} voci')
+                all_fondazioni.extend(entries)
         if 'LE FONDAZIONI' in html:       # fondazioni: solo i volumi con intestazione "LE FONDAZIONI"
             sec = get_section_html(html, 'LE FONDAZIONI')
             entries = parse_fondazioni(sec, n)
@@ -419,6 +457,11 @@ def main():
     for p in final_persone:
         if p.get('unita_da'):
             print('  UNITE:', p['nome_display'], p['unita_da'])
+    # alias di luogo condivisi (es. «piacenza»): vanno alla prima voce
+    seen_al = set()
+    for fd in all_fondazioni:
+        fd['aliases'] = [a for a in dict.fromkeys(fd['aliases']) if a not in seen_al]
+        seen_al.update(fd['aliases'])
     print(f'Fondazioni: {len(all_fondazioni)}')
 
     with open(OUT_DIR / 'persone.json', 'w', encoding='utf-8') as f:
