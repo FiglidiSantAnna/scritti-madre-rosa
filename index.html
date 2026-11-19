@@ -126,6 +126,9 @@ details.grp[open] summary::after{content:"－"}
 .txt.memo .mpg::after{content:"";display:inline-block;width:2px;height:14px;background:var(--wine);margin:0 3px;vertical-align:-2px}
 .txt.memo .pgm{position:absolute;left:0;width:30px;text-align:right;color:var(--wine);font-family:var(--sans);font-size:15px;font-weight:700;line-height:calc(var(--fs) * 1.62);pointer-events:none}
 .txt p{margin:0 0 .75em;text-align:justify}
+.txt.memo h4{font-weight:700}
+.txt.memo h4.tit{font-weight:400;font-variant:small-caps;letter-spacing:.04em;font-size:1.08em}
+.txt.memo h4.tit.sez{font-size:.92em}
 .txt h3,.txt h4{font-weight:600;color:var(--wine);font-size:1em;text-align:center;margin:1.3em 0 .6em}
 .txt blockquote{margin:.6em 1.2em;font-style:italic;text-align:justify}
 .txt li,.txt div{text-align:justify}
@@ -527,7 +530,7 @@ async function reader(id,i,hl){
   savePos();
   // Annota nomi di persone/fondazioni solo nelle Lettere
   if(id==='lettere')annotateLettere(txt);
-  if(id==='memorie')marginNums(txt);
+  if(id==='memorie')marginNums(txt);if(id==='memorie')txt.querySelectorAll('h4').forEach(h=>{const t=h.textContent.trim();if(t.length>2&&t===t.toUpperCase()&&/[A-ZÀ-Ý]/.test(t)){h.className='tit'+(/^SEZIONE\b/.test(t)?' sez':'');h.textContent=t.toLowerCase().replace(/(^|[\s\-—(«“'’])([a-zà-ÿ]+)/g,(m,x,w,o,all)=>{const first=!o||/[-—:]\s*$/.test(all.slice(0,o));return x+((!first&&x!=="’"&&x!=="'"&&/^(di|a|e|ed|in|da|del|della|dello|dei|degli|delle|nel|nella|nei|negli|al|alla|ai|il|lo|la|le|gli|i|per|con|su|o)$/.test(w))?w:w[0].toUpperCase()+w.slice(1))}).replace(/\b(i{1,3}|iv|vi{0,3}|ix|x{1,3})\b/gi,r=>/^[ivx]+$/i.test(r)&&r.length<5?r.toUpperCase():r)}});
 }
 function highlight(root,q){
   const nq=norm(q);if(!nq)return;
