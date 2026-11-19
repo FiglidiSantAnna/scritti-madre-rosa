@@ -324,6 +324,9 @@ def same_person(a, b):
         return False
     return ga <= gb or gb <= ga
 
+VOLUMI = {2: (1, '1864-1870'), 5: (2, '1871-1872'), 8: (3, '1873-1874'),
+          11: (4, '1875-1877'), 13: (5, '1878-1879'), 16: (6, '1880-1881')}
+
 def merge_people(people):
     by_id = {p['id']: p for p in people}
     groups = []     # liste di voci della stessa persona
@@ -348,7 +351,8 @@ def merge_people(people):
                 base[k] = best[k]
             parts = []
             for x in g:
-                parts.append(f'<p class="vol-label"><em>— Dall\'indice del volume {x["file_source"]//1} delle Lettere —</em></p>'
+                v, anni = VOLUMI[x['file_source']]
+                parts.append(f'<p class="vol-label"><em>— Dall\'indice del volume {v} delle Lettere ({anni}) —</em></p>'
                              + x['scheda_html'])
             base['scheda_html'] = '\n'.join(parts)
             base['lettere_citate'] = sorted({n for x in g for n in x['lettere_citate']})
