@@ -482,7 +482,7 @@ async function reader(id,i,hl){
   if(l!==LANG)h+=`<div class="notice">${esc(fbMsg(l))}</div>`;
   h+=`<article class="reader"><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt" id="txt">${s.html}</div></article>`;
   h+=`<div class="nav"><button ${pv<0?'disabled':''} onclick="location.hash='#r-${id}-${pv}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${nx>=n?'disabled':''} onclick="location.hash='#r-${id}-${nx}'">${esc(T().next)} ›</button></div>`;
-  h+=`<div style="text-align:center;margin:10px 0 30px"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button></div>`;
+  h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button></div>`;
   $('#main').innerHTML=h;
   const txt=$('#txt');
   if(hl){highlight(txt,hl)}
@@ -584,10 +584,26 @@ function delBm(k){const bms=store.get('bm',[]);bms.splice(k,1);store.set('bm',bm
 function saveNote(k,v){const bms=store.get('bm',[]);if(!bms[k])return;bms[k].note=v;store.set('bm',bms)}
 function reportError(){
   const r=readerState;if(!r)return;
-  const title='Errore: '+wTitle(r.w)+' · sez. '+r.i;
+  const subject='[Scritti FSA] Errore: '+wTitle(r.w)+' · sez. '+r.i;
   const body='Libro: '+wTitle(r.w)+' ('+r.w.id+')\nSezione: '+r.i+'\nLingua: '+r.l+'\nLink: '+location.href+'\n\nDescriva qui l\'errore trovato, citando se possibile la frase esatta:\n\n';
-  const url='https://github.com/FiglidiSantAnna/scritti-madre-rosa/issues/new?title='+encodeURIComponent(title)+'&body='+encodeURIComponent(body)+'&labels=segnalazione';
-  window.open(url,'_blank')
+  location.href='mailto:pleandrofsa@hotmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)
+}
+function openNoteFor(){
+  const r=readerState;if(!r)return;
+  const bms=store.get('bm',[]);
+  const k=bms.findIndex(b=>b.w===r.w.id&&b.i===r.i);
+  const existing=k>=0?(bms[k].note||''):'';
+  openSheet(`<h4>${esc(T().myNotes)}</h4>
+  <div class="muted" style="margin-bottom:10px">${esc(W(r.w)?wTitle(r.w):'')}</div>
+  <textarea id="noteTA" class="noteBox" style="min-height:140px" placeholder="${esc(T().notePh)}">${esc(existing)}</textarea>`);
+  $('#noteTA').addEventListener('blur',saveNoteQuick)
+}
+function saveNoteQuick(){
+  const r=readerState;if(!r)return;const ta=$('#noteTA');if(!ta)return;const v=ta.value;
+  const bms=store.get('bm',[]);const k=bms.findIndex(b=>b.w===r.w.id&&b.i===r.i);
+  if(k>=0)bms[k].note=v;
+  else bms.unshift({w:r.w.id,i:r.i,t:(document.querySelector('.rt')||{}).textContent||'',note:v});
+  store.set('bm',bms.slice(0,200))
 }
 async function downloadAll(){
   const st=$('#offst');let done=0,tot=0;const urls=[];
