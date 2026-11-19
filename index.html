@@ -403,10 +403,11 @@ async function openToday(off){
   const C=await crono();if(my!==DAYOFF)return;const list=C[dkey(mo,d)]||[];
   const lb=document.getElementById('onlife');
   if(lb)lb.innerHTML=list.length?levHtml(list,now.getFullYear())+`<p class="muted" style="font-size:12px;margin-top:8px">${esc(T().cronoSrc)}</p>`:`<div class="muted">${esc(T().noLife)}</div>`;
+  const usedLetterIdx=new Set(list.filter(it=>it[3]&&it[3].w==='lettere').map(it=>it[3].i));
   const w=W('lettere');const box=()=>document.getElementById('onday');
   if(!w||!w.langs.it){if(box())box().innerHTML=`<div class="muted">—</div>`;return}
   try{const ix=await index(w,'it');if(my!==DAYOFF)return;const hits=[];
-    ix.toc.forEach((e,i)=>{if(e.x)return;const f=lInfo(e);if(f.d===d&&f.mo===mo)hits.push([f,e,i])});
+    ix.toc.forEach((e,i)=>{if(e.x||usedLetterIdx.has(i))return;const f=lInfo(e);if(f.d===d&&f.mo===mo)hits.push([f,e,i])});
     hits.sort((a,b)=>(a[0].y||'9999').localeCompare(b[0].y||'9999'));
     if(!box())return;
     box().innerHTML=hits.length?`<ul class="bm">${hits.map(([f,e,i])=>`<li><button class="go" onclick="closeSheet();location.hash='#r-lettere-${i}'"><div style="font-size:16px"><b style="color:var(--gold);font-family:var(--sans);font-size:13px">${esc(f.y||'—')}</b> · ${esc(f.to)}</div><div class="muted">${esc(lClean(e.s))}</div></button></li>`).join('')}</ul>`:`<div class="muted">${esc(T().noDay)}</div>`;
