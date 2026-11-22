@@ -742,6 +742,18 @@
         "file_num": 0,
         "section_i": 2,
         "label": "PREMESSA"
+      },
+      {
+        "corpus": "lettere",
+        "file_num": 5,
+        "section_i": 626,
+        "label": "sezione 626"
+      },
+      {
+        "corpus": "lettere",
+        "file_num": 15,
+        "section_i": 2294,
+        "label": "sezione 2294"
       }
     ],
     "unita_da": [
