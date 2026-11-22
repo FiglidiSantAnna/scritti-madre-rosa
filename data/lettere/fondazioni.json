@@ -12569,6 +12569,12 @@
         "file_num": 7,
         "section_i": 58,
         "label": "PRESAGI"
+      },
+      {
+        "corpus": "lettere",
+        "file_num": 5,
+        "section_i": 626,
+        "label": "sezione 626"
       }
     ]
   },
@@ -18006,6 +18012,12 @@
         "file_num": 0,
         "section_i": 4,
         "label": "sezione 4"
+      },
+      {
+        "corpus": "lettere",
+        "file_num": 5,
+        "section_i": 626,
+        "label": "sezione 626"
       }
     ]
   },
