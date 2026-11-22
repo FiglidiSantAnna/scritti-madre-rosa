@@ -937,6 +937,16 @@ function renderSchedaPersona(p){
 function openPersonaSheet(id){
   Promise.all([loadPersone(),loadFondazioni()]).then(([persone,fondazioni])=>{
     const all=[...persone,...fondazioni];
+    if(String(id).startsWith('grp:')){
+      // piu' fondazioni nello stesso luogo: elenco da cui scegliere
+      const key=id.slice(4);
+      const list=fondazioni.filter(x=>x.luogo&&norm(x.luogo)===key);
+      const title=list.length?list[0].luogo:key;
+      const snip=x=>{let t=(x.scheda_html||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().replace(/^\d+\.\s*/,'');return t.length>90?t.slice(0,90)+'…':t};
+      openSheet('<div class="scheda-persona"><h4>'+esc(title)+'</h4><div class="scheda-refs">'+list.map(x=>'<button class="ref-btn" onclick="openPersonaSheet(\''+x.id+'\')">'+esc('Vol. '+({2:1,5:2,8:3,11:4,13:5,16:6,18:7}[x.file_source]||x.file_source)+' — '+snip(x))+'</button>').join('')+'</div></div>');
+      $('#sheet').scrollTop=0;
+      return;
+    }
     const p=all.find(x=>x.id===id);
     if(!p)return;
     openSheet(renderSchedaPersona(p));
@@ -959,6 +969,7 @@ async function annotateLettere(txtEl){
     if(p.luogo&&p.luogo.length>=5){
       const nl=norm(p.luogo);
       if(!aliasMap.has(nl))aliasMap.set(nl,p.id);
+      else if(aliasMap.get(nl)!==p.id&&!String(aliasMap.get(nl)).startsWith('grp:')&&all.find(x=>x.id===aliasMap.get(nl)&&x.tipo==='fondazione'))aliasMap.set(nl,'grp:'+nl);
     }
   }
   // Ordina alias per lunghezza decrescente (match più specifici prima)
