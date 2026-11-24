@@ -149,7 +149,7 @@ details.grp[open] summary::after{content:"－"}
 .txt hr::after{content:"✦";color:var(--gold)}
 .footnote-ref{text-decoration:none;color:var(--wine);font-weight:700;padding:0 2px}
 .footnote-ref sup{font-size:.68em}
-mark{background:var(--hl);color:inherit;border-radius:2px}
+mark{background:var(--hl);color:inherit;border-radius:2px}mark.uh{background:#f3d77a;color:#2b2420;border-radius:3px;padding:0 1px}body.dark mark.uh{background:#7a5f1c;color:#f5ecd9}
 .nav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}
 .nav button{flex:1;font-family:var(--sans);font-size:14px;padding:12px;border-radius:12px;background:var(--paper);border:1px solid var(--line);color:var(--wine)}
 .nav button[disabled]{opacity:.35}
@@ -258,7 +258,7 @@ const UI = {
    aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
    note:'Nota',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',letters:'lettere',
    reportErr:'Segnala un errore in questo testo',myNotes:'I miei appunti',notePh:'Scriva qui un appunto personale…',
-   selNote:'Salva',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
+   selNote:'Salva',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
    errCats:['Ortografia','Ripetizione','Numerazione','Dovrebbe essere sottotitolo','Sottotitolo errato','Altro'],errNotePh:'Spiegazione facoltativa…',errType:'Che tipo di errore?',confirm:'Conferma',
    listen:'Ascolta',stopListen:'Interrompi',print:'Stampa'},
  pt:{app:'Scritti FSA',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
@@ -271,7 +271,7 @@ const UI = {
    aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
    note:'Nota',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',letters:'cartas',
    reportErr:'Assinalar um erro neste texto',myNotes:'Minhas anotações',notePh:'Escreva aqui uma anotação pessoal…',
-   selNote:'Salvar',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
+   selNote:'Salvar',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
    errCats:['Ortografia','Repetição','Numeração','Devia ser subtítulo','Subtítulo errado','Outro'],errNotePh:'Explicação opcional…',errType:'Que tipo de erro?',confirm:'Confirmar',
    listen:'Ouvir',stopListen:'Parar',print:'Imprimir'},
  es:{app:'Scritti FSA',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
@@ -284,7 +284,7 @@ const UI = {
    aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
    note:'Nota',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',letters:'cartas',
    reportErr:'Señalar un error en este texto',myNotes:'Mis notas',notePh:'Escriba aquí una nota personal…',
-   selNote:'Guardar',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
+   selNote:'Guardar',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
    errCats:['Ortografía','Repetición','Numeración','Debería ser subtítulo','Subtítulo incorrecto','Otro'],errNotePh:'Explicación opcional…',errType:'¿Qué tipo de error?',confirm:'Confirmar',
    listen:'Escuchar',stopListen:'Detener',print:'Imprimir'},
  en:{app:'Scritti FSA',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
@@ -297,7 +297,7 @@ const UI = {
    aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
    note:'Note',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',letters:'letters',
    reportErr:'Report an error in this text',myNotes:'My notes',notePh:'Write a personal note here…',
-   selNote:'Save',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
+   selNote:'Save',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
    errCats:['Spelling','Repetition','Numbering','Should be a subtitle','Wrong subtitle','Other'],errNotePh:'Optional explanation…',errType:'What kind of error?',confirm:'Confirm',
    listen:'Listen',stopListen:'Stop',print:'Print'}
 };
@@ -433,6 +433,7 @@ const ICO={lib:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
   resume:'<path d="M7 3h10v18l-5-4-5 4z"/>',
+  mine:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
   themes:'<path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/>',
   time:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   path:'<path d="M5 21c0-6 6-6 6-11 0-3-2-5-4-5M19 3c0 6-6 6-6 11 0 3 2 5 4 5"/><circle cx="7" cy="5" r="1.5"/><circle cx="17" cy="19" r="1.5"/>'};
@@ -448,7 +449,7 @@ async function home(){
   renderBar(T().app,false);
   const door=(k,t,s,act,cls)=>`<button class="door${cls?' '+cls:''}" onclick="${act}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span style="min-width:0"><div class="dt">${esc(t)}</div><div class="ds">${esc(s)}</div></span></button>`;
   let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
-  h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}</div>`;
+  h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('mine',T().mine,T().mineS,"location.hash='#m'",'wide')}</div>`;
   h+=`<div class="card thought life" id="life" style="display:none"></div>`;
   h+=`<div class="card thought" id="thought" style="display:none"></div>`;
   h+=`<div id="lib"></div>`;
@@ -647,6 +648,7 @@ async function reader(id,i,hl){
     }
   }catch(e){}
   const txt=$('#txt');
+  try{applyUserHl(txt,id,i)}catch(e){}
   if(hl){highlight(txt,hl)}
   else{const p=store.get('pos.'+id,null);
     if(p&&p.i===i&&p.y)requestAnimationFrame(()=>window.scrollTo(0,p.y*(document.body.scrollHeight-innerHeight)));else window.scrollTo(0,0)}
@@ -780,6 +782,55 @@ function openAbout(){openSheet(`<h4>${esc(T().about)}</h4><div class="txt"><p>${
 function setFs(d){store.set('fs',Math.max(14,Math.min(30,store.get('fs',19)+d)));applyPrefs();openSettings()}
 function setTheme(t){store.set('theme',t);applyPrefs();openSettings()}
 function setLang(l){LANG=l;store.set('lang',l);applyPrefs();closeSheet();route()}
+
+/* ── evidenziazioni personali ── */
+function _hlStream(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),st=[];let n;
+  while(n=w.nextNode()){if(n.parentNode.closest&&n.parentNode.closest('mark.uh'))continue;const v=n.nodeValue;
+    for(let o=0;o<v.length;o++){const c=norm(v[o]).replace(/\s/g,'');for(const ch of c)st.push({ch,n,o})}}
+  return st}
+function _hlWrap(st,a,b){
+  const g=new Map();for(let k=a;k<=b;k++){const e=st[k],r=g.get(e.n);if(r){r[0]=Math.min(r[0],e.o);r[1]=Math.max(r[1],e.o)}else g.set(e.n,[e.o,e.o])}
+  g.forEach((r,n)=>{const rg=document.createRange();rg.setStart(n,r[0]);rg.setEnd(n,r[1]+1);const m=document.createElement('mark');m.className='uh';try{rg.surroundContents(m)}catch(e){}})}
+function applyUserHl(root,w,i){
+  const L=(store.get('hlt',[])).filter(h=>h.w===w&&h.i===i);if(!L.length)return;
+  for(const h of L){const st=_hlStream(root),hay=st.map(x=>x.ch).join(''),nd=norm(h.t).replace(/\s/g,''),k=hay.indexOf(nd);
+    if(k>=0&&nd)_hlWrap(st,k,k+nd.length-1)}
+}
+function addUserHl(txt){
+  const r=readerState;if(!r||!txt)return;const L=store.get('hlt',[]);
+  if(!L.some(h=>h.w===r.w.id&&h.i===r.i&&h.t===txt))L.unshift({w:r.w.id,i:r.i,t:txt,s:(document.querySelector('.rt')||{}).textContent||'',l:LANG,d:Date.now()});
+  store.set('hlt',L.slice(0,500));
+  const root=document.getElementById('txt');applyUserHl(root,r.w.id,r.i);showToast(T().hlDone)}
+function delUserHl(w,i,t){store.set('hlt',store.get('hlt',[]).filter(h=>!(h.w===w&&h.i===i&&h.t===t)))}
+document.addEventListener('click',e=>{
+  const m=e.target.closest&&e.target.closest('mark.uh');if(!m||!readerState)return;
+  const t=m.textContent;const h=store.get('hlt',[]).find(x=>x.w===readerState.w.id&&x.i===readerState.i&&norm(x.t).replace(/\s/g,'').includes(norm(t).replace(/\s/g,'')));
+  if(!h)return;removeSelToolbar();
+  const rect=m.getBoundingClientRect(),el=document.createElement('div');el.className='seltoolbar';
+  el.style.left=Math.max(8,Math.min(innerWidth-190,rect.left))+'px';el.style.top=Math.max(8,rect.top-46)+'px';
+  el.innerHTML=`<button id="uhShare">↗ ${esc(T().share)}</button><button id="uhDel">✕ ${esc(T().hlDel)}</button>`;
+  el.addEventListener('pointerdown',ev=>ev.preventDefault());document.body.appendChild(el);selToolbarEl=el;
+  $('#uhDel').onclick=ev=>{ev.stopPropagation();delUserHl(h.w,h.i,h.t);removeSelToolbar();route()};
+  $('#uhShare').onclick=ev=>{ev.stopPropagation();removeSelToolbar();_Q={t:h.t,src:(W(h.w)?wTitle(W(h.w)):h.w)+' — '+h.s};openShareQuote()};
+});
+/* ── I miei segni ── */
+function mineView(){
+  renderBar(T().mine,true);
+  const H=store.get('hlt',[]),B=store.get('bm',[]);
+  let h=`<div class="whead"><h2>${esc(T().mine)}</h2><div class="s">${esc(T().mineS)}</div></div>`;
+  if(!H.length&&!B.length){$('#main').innerHTML=h+`<div class="notice">${esc(T().mEmpty)}</div>`;return}
+  h+=`<div style="margin:8px 0 14px"><button class="btn sec" onclick="exportMine()">⇪ ${esc(T().mExp)}</button></div>`;
+  if(H.length)h+=`<h4>${esc(T().mHl)} · ${H.length}</h4>`+H.map((x,k)=>`<div class="res" style="position:relative"><button class="del" style="position:absolute;right:0;top:8px" onclick="delMineHl(${k})">✕</button><button style="text-align:left;display:block;width:100%;padding-right:26px" onclick="location.hash='#r-${x.w}-${x.i}'"><div class="w" style="font-family:var(--sans);font-size:12px;color:var(--gold);font-weight:700">${esc(W(x.w)?wTitle(W(x.w)):x.w)}</div><div class="c" style="font-size:14.5px;color:var(--wine)">${esc(x.s)}</div><div class="x"><mark class="uh">${esc(x.t.length>320?x.t.slice(0,320)+'…':x.t)}</mark></div></button></div>`).join('');
+  if(B.length)h+=`<h4 style="margin-top:20px">${esc(T().bookmarks)} · ${esc(T().myNotes)} · ${B.length}</h4>`+B.map(b=>`<div class="res"><button style="text-align:left;display:block;width:100%" onclick="location.hash='#r-${b.w}-${b.i}'"><div class="w" style="font-family:var(--sans);font-size:12px;color:var(--gold);font-weight:700">${esc(W(b.w)?wTitle(W(b.w)):b.w)}</div><div class="c" style="font-size:14.5px;color:var(--wine)">${esc(b.t)}</div>${b.note?`<div class="x" style="white-space:pre-wrap">${esc(b.note.length>400?b.note.slice(0,400)+'…':b.note)}</div>`:''}</button></div>`).join('');
+  $('#main').innerHTML=h;window.scrollTo(0,0)}
+function delMineHl(k){const L=store.get('hlt',[]);L.splice(k,1);store.set('hlt',L);mineView()}
+async function exportMine(){
+  const H=store.get('hlt',[]),B=store.get('bm',[]);let t=T().app+' — '+T().mine+'\n\n';
+  H.forEach(x=>{t+='«'+x.t+'»\n— '+(W(x.w)?wTitle(W(x.w)):x.w)+', '+x.s+'\n\n'});
+  B.filter(b=>b.note).forEach(b=>{t+=(W(b.w)?wTitle(W(b.w)):b.w)+', '+b.t+'\n'+b.note+'\n\n'});
+  try{if(navigator.share){await navigator.share({title:T().mine,text:t});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(t);showToast(T().copied)}catch(e){}}
 function addBm(){const r=readerState;if(!r)return;const bms=store.get('bm',[]);
   bms.unshift({w:r.w.id,i:r.i,t:(document.querySelector('.rt')||{}).textContent||'',note:''});store.set('bm',bms.slice(0,200));openSettings()}
 function delBm(k){const bms=store.get('bm',[]);bms.splice(k,1);store.set('bm',bms);openSettings()}
@@ -981,13 +1032,14 @@ function showSelToolbar(rect,txt){
   removeSelToolbar();
   const el=document.createElement('div');
   el.className='seltoolbar';
-  const left=Math.max(8,Math.min(window.innerWidth-160,rect.left));
+  const left=Math.max(8,Math.min(window.innerWidth-250,rect.left));
   const top=Math.max(8,rect.top-46);
   el.style.left=left+'px';el.style.top=top+'px';
-  el.innerHTML=`<button id="selNoteBtn">✎ ${esc(T().selNote)}</button><button id="selErrBtn">⚑ ${esc(T().selErr)}</button>`;
+  el.innerHTML=`<button id="selHlBtn">🖍 ${esc(T().hlBtn)}</button><button id="selNoteBtn">✎ ${esc(T().selNote)}</button><button id="selErrBtn">⚑ ${esc(T().selErr)}</button>`;
   el.addEventListener('pointerdown',e=>e.preventDefault());
   document.body.appendChild(el);
   selToolbarEl=el;
+  $('#selHlBtn').onclick=(e)=>{e.stopPropagation();addUserHl(txt);removeSelToolbar();window.getSelection().removeAllRanges()};
   $('#selNoteBtn').onclick=(e)=>{e.stopPropagation();saveSelAsNote(txt);removeSelToolbar();window.getSelection().removeAllRanges()};
   $('#selErrBtn').onclick=(e)=>{e.stopPropagation();removeSelToolbar();window.getSelection().removeAllRanges();askErrorCategory(txt)};
 }
@@ -1152,6 +1204,7 @@ function route(){
   const p=location.hash.replace(/^#/,'').split('-');
   if(p[0]==='w')return workView(p[1]);
   if(p[0]==='r'){const hl=PENDING_HL;PENDING_HL=null;return reader(p[1],p[2],hl)}
+  if(p[0]==='m')return mineView();
   if(p[0]==='s')return searchView(p[1]);
   if(p[0]==='t')return p[1]?themeView(+p[1]):themesView();
   if(p[0]==='c')return timelineView();
