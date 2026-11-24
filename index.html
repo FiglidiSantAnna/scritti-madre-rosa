@@ -464,7 +464,7 @@ async function home(){
     el.style.display='';el.innerHTML=`<div class="lbl">${esc(T().onLife)}</div><div class="d">${esc(dlabel(n.getMonth()+1,n.getDate()))}</div>${levHtml(list.slice(0,3),n.getFullYear())}<div style="text-align:right;margin-top:6px"><button class="btn sec" onclick="openToday()">${esc(list.length>3?T().seeAll+' ('+list.length+')':T().dToday)}</button></div>`});
   TODAY=dayThought();
   TODAY.then(t=>{if(!t)return;const el=$('#thought');if(!el)return;el.style.display='';
-    _Q=t;el.innerHTML=`<div class="lbl">${esc(T().thought)}</div><blockquote>«${esc(t.t)}»</blockquote><div class="src">${esc(t.src)}</div><div style="text-align:right;margin-top:8px"><button class="btn sec" onclick="openShareQuote()">↗ ${esc(T().share)}</button></div>`});
+    _Q=t;el.innerHTML=`<div class="lbl">${esc(T().thought)}</div><blockquote>«${esc(t.t)}»</blockquote><div class="src">${esc(t.src)}</div><div style="text-align:right;margin-top:8px;display:flex;gap:8px;justify-content:flex-end"><button class="btn sec" onclick="listenShort(this,_Q.t)">🔊 ${esc(T().listen)}</button><button class="btn sec" onclick="openShareQuote()">↗ ${esc(T().share)}</button></div>`});
 }
 
 /* ---- Citazione del giorno condivisibile come immagine */
@@ -530,10 +530,10 @@ async function pathView(id,day){
   const w=W('fili'),l=effLang(w,LANG);let src=wTitle(w);
   try{const ix=await index(w,l);const sec=ix.toc[q.s];src+=' — '+(sec?sec.t:'')}catch(e){}
   const ref=q['r_'+LANG]||q.r_it||'';if(ref)src+=' · '+ref;
-  window._PQ={t:q[LANG]||q.it,src};
+  window._PQ={t:q[LANG]||q.it,src};window._PD={q:d.q[LANG],p:d.p[LANG]};
   $('#main').innerHTML=`<div class="whead"><div class="s">${esc(p.n[LANG])} · ${esc(T().pDay)} ${n} ${esc(T().pOf)} 7</div><h2>${esc(d.t[LANG])}</h2></div>
   <div class="card thought"><blockquote style="margin:4px 0 8px;font-size:19px;line-height:1.55;font-style:italic">«${esc(window._PQ.t)}»</blockquote><div class="src">${esc(src)}</div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn sec" onclick="goRead('fili',${q.s})">${esc(T().readSrc)}</button><button class="btn sec" onclick="_Q=window._PQ;openShareQuote()">↗ ${esc(T().share)}</button></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn sec" onclick="goRead('fili',${q.s})">${esc(T().readSrc)}</button><button class="btn sec" onclick="_Q=window._PQ;openShareQuote()">↗ ${esc(T().share)}</button><button class="btn sec" onclick="listenShort(this,window._PQ.t+'\\n\\n'+window._PD.q+'\\n\\n'+window._PD.p)">🔊 ${esc(T().listen)}</button></div></div>
   <div class="plbl">${esc(T().pReflect)}</div><div class="pq">${esc(d.q[LANG])}</div>
   <div class="plbl">${esc(T().pPray)}</div><div class="pp2">${esc(d.p[LANG])}</div>
   <div style="display:flex;gap:8px;justify-content:space-between;margin:26px 0 8px">${n>1?`<button class="btn sec" onclick="location.hash='#p-${id}-${n-1}'">‹ ${esc(T().pPrev)}</button>`:'<span></span>'}<button class="btn" onclick="pDone('${id}',${n})">${esc(n<7?T().pNext:T().pFinish)}</button></div>`;
@@ -631,15 +631,15 @@ async function reader(id,i,hl){
   const _appName='Scritti FSA';
   h+=`<article class="reader"><div class="print-header">${_appName} · ${esc(s.e.t)}${s.e.s?' – '+esc(s.e.s):''}</div><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt fl" id="txt">${s.html}</div></article>`;
   h+=`<div class="nav"><button ${pv<0?'disabled':''} onclick="location.hash='#r-${id}-${pv}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${nx>=n?'disabled':''} onclick="location.hash='#r-${id}-${nx}'">${esc(T().next)} ›</button></div>`;
-  h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button><button id="tts-btn" class="btn sec tts-btn" style="font-size:12.5px;padding:6px 12px" onclick="toggleTTS()">🔊 ${esc(T().listen)}</button><button id="tts-voice" class="btn sec" style="font-size:12.5px;padding:6px 10px" onclick="cycleTTSVoice()" title="voce">🎙</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="printSection()">🖨 ${esc(T().print)}</button></div>`;
+  h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button><button id="tts-btn" class="btn sec tts-btn" style="font-size:12.5px;padding:6px 12px" onclick="toggleTTS()">🔊 ${esc(T().listen)}</button><button id="tts-voice" class="btn sec" style="font-size:12.5px;padding:6px 10px" onclick="cycleTTSVoice()" title="voce">🎙</button>${audCtl()}<button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="printSection()">🖨 ${esc(T().print)}</button></div>`;
   $('#main').innerHTML=h;
   /* audio registrato (voce neurale): continua anche a schermo spento */
   try{
     const am=await audioManifest(),list=am[id]&&am[id][l];
     if(list&&list.includes(i)){
       const lab={it:'Ascolta la lettura registrata',pt:'Ouvir a leitura gravada',es:'Escuchar la lectura grabada',en:'Listen to the recorded reading'}[LANG]||'';
-      $('#main').insertAdjacentHTML('afterbegin',`<div class="audbox" style="margin:0 0 14px;text-align:center"><div class="muted" style="font-size:12.5px;margin-bottom:4px">🎧 ${esc(lab)}</div><audio id="aud" controls preload="none" style="width:100%" src="data/audio/${id}/${l}/${i}.mp3"></audio></div>`);
-      const a=document.getElementById('aud');
+      $('#main').insertAdjacentHTML('afterbegin',`<div class="audbox" style="margin:0 0 14px;text-align:center"><div class="muted" style="font-size:12.5px;margin-bottom:4px">🎧 ${esc(lab)}</div><audio id="aud" controls preload="none" style="width:100%" src="data/audio/${id}/${l}/${i}.mp3"></audio><div style="display:flex;gap:8px;justify-content:center;margin-top:6px">${audCtl()}</div></div>`);
+      const a=document.getElementById('aud');a.playbackRate=ttsRate()/0.9;a.addEventListener('play',()=>{a.playbackRate=ttsRate()/0.9});
       a.addEventListener('play',()=>{try{navigator.mediaSession.metadata=new MediaMetadata({title:s.e.t,artist:'Scritti FSA'});}catch(e){}});
       a.addEventListener('ended',()=>{if(list.includes(i+1)){window._audAuto=true;location.hash='#r-'+id+'-'+(i+1);}});
       if(window._audAuto){window._audAuto=false;a.play().catch(()=>{});}
@@ -840,7 +840,7 @@ function _ttsSpeak(i){
   if(i>=_ttsQ.length){_ttsStop();return;}
   const c=_ttsQ[i],u=new SpeechSynthesisUtterance(c.t),v=_ttsVoice();
   if(v){u.voice=v;u.lang=v.lang;}else u.lang=_ttsLang();
-  u.rate=0.9;u.pitch=1;
+  u.rate=ttsRate();u.pitch=1;
   u.onend=()=>{if(!_ttsActive)return;_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),c.p?450:60);};
   u.onerror=e=>{if(e&&(e.error==='interrupted'||e.error==='canceled'))return;if(_ttsActive)_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),60);};
   speechSynthesis.speak(u);
@@ -849,6 +849,7 @@ function _ttsStop(){
   clearTimeout(_ttsTimer);
   try{speechSynthesis.cancel();}catch(e){}
   _ttsActive=false;_ttsBtn(false);_ttsWake(false);
+  if(window._lbtn){window._lbtn.textContent='🔊 '+T().listen;window._lbtn=null;}
   try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='none';}catch(e){}
 }
 function toggleTTS(){
@@ -872,6 +873,20 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>{};speechSynthesis.getVoices();}
+
+/* ── velocità, timer di spegnimento, ascolto breve ── */
+const RATES=[0.8,0.9,1,1.15,1.3],SLEEPS=[0,15,30,60];let _slT=null,_slM=0;
+function ttsRate(){const r=+store.get('rate',0.9);return RATES.includes(r)?r:0.9}
+function applyRate(){const r=ttsRate();document.querySelectorAll('.rate-btn').forEach(b=>b.textContent='⏩ '+r+'×');const a=document.getElementById('aud');if(a)a.playbackRate=r/0.9}
+function cycleRate(){store.set('rate',RATES[(RATES.indexOf(ttsRate())+1)%RATES.length]);applyRate();if(_ttsActive)_ttsSpeak(_ttsI)}
+function stopAllAudio(){try{if(_ttsActive)_ttsStop();const a=document.getElementById('aud');if(a)a.pause();}catch(e){}_slM=0;document.querySelectorAll('.sleep-btn').forEach(b=>b.textContent='☾ –')}
+function cycleSleep(){_slM=SLEEPS[(SLEEPS.indexOf(_slM)+1)%SLEEPS.length];clearTimeout(_slT);if(_slM)_slT=setTimeout(stopAllAudio,_slM*60000);document.querySelectorAll('.sleep-btn').forEach(b=>b.textContent='☾ '+(_slM?_slM+'′':'–'))}
+function listenShort(btn,text){
+  if(!('speechSynthesis' in window))return;
+  if(_ttsActive){_ttsStop();return;}
+  _ttsQ=_ttsChunks(text);_ttsActive=true;_ttsWake(true);window._lbtn=btn;btn.textContent='⏹ '+T().stopListen;_ttsSpeak(0);
+}
+function audCtl(){return `<button class="btn sec rate-btn" style="font-size:12.5px;padding:6px 10px" onclick="cycleRate()">⏩ ${ttsRate()}×</button><button class="btn sec sleep-btn" style="font-size:12.5px;padding:6px 10px" onclick="cycleSleep()">☾ ${_slM?_slM+'′':'–'}</button>`}
 function stopTTSIfActive(){if(_ttsActive)_ttsStop();}
 
 /* ── Stampa ── */
