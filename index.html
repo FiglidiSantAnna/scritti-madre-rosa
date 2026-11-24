@@ -679,7 +679,9 @@ function _ttsText(){
   if(!r)return '';
   const parts=[];
   r.querySelectorAll('.rt,.rs,.txt p,.txt h2,.txt h3,.txt blockquote').forEach(el=>{
-    const t=el.innerText||el.textContent;
+    const c=el.cloneNode(true);
+    c.querySelectorAll('sup,.footnote-ref,a[role="doc-noteref"]').forEach(x=>x.remove());   /* niente numeri di nota */
+    const t=c.textContent;
     if(t&&t.trim())parts.push(t.trim());
   });
   return parts.join('\n\n');
