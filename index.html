@@ -371,22 +371,20 @@ $('#bsearch').onclick=()=>{const m=location.hash.match(/^#(?:w|r)-([a-z]+)/);loc
 $('#bmenu').onclick=()=>openSettings();
 
 /* ------------------------------------------------------------------ biblioteca */
+let _CIT=null;
+function citazioni(){return _CIT||(_CIT=fetch('data/citazioni.json').then(r=>r.json()).catch(()=>null))}
+function inWin(w,d){const k=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return w[0]<=w[1]?(k>=w[0]&&k<=w[1]):(k>=w[0]||k<=w[1])}
 function dayThought(){
   const w=W('fili');if(!w)return Promise.resolve(null);
   const l=effLang(w,LANG);
-  return index(w,l).then(async ix=>{
+  return Promise.all([index(w,l),citazioni()]).then(([ix,C])=>{
+    if(!C||!C.items||!C.items.length)return null;
     const d=new Date();const seed=d.getFullYear()*400+d.getMonth()*32+d.getDate();
-    const cands=[];for(let i=0;i<ix.toc.length;i++)if(!ix.toc[i].x)cands.push(i);
-    const i=cands[2+seed%(Math.max(1,cands.length-3))]||1;
-    const s=await section(w,l,i);
-    const div=document.createElement('div');div.innerHTML=s.html;
-    const all=[...div.querySelectorAll('p')],ps=[];
-    const isRef=p=>{const t=p.textContent.trim();return (p.children.length===1&&p.children[0].tagName==='EM'&&p.children[0].textContent.trim()===t)||/^\*[\s*]*$/.test(t)};
-    all.forEach((p,k)=>{if(isRef(p))return;const t=p.textContent.trim();if(t.length<60||t.length>420||/^\d+$/.test(t))return;
-      const nx=all[k+1],ref=nx&&isRef(nx)&&!/^\*/.test(nx.textContent.trim())?nx.textContent.trim():'';ps.push({t,ref})});
-    if(!ps.length)return null;
-    const q=ps[seed%ps.length];
-    return {t:q.t,src:wTitle(w)+' — '+s.e.t+(q.ref?' · '+q.ref:''),i}
+    const sea=C.items.filter(e=>e.d&&inWin(e.d,d)),gen=C.items.filter(e=>!e.d);
+    const pool=sea.length?sea:gen;const q=pool[seed%pool.length];
+    const txt=q[l]||q.it,ref=q['r_'+l]||q.r_it||'';
+    const sec=ix.toc[q.s];
+    return {t:txt,src:wTitle(w)+' — '+(sec?sec.t:'')+(ref?' · '+ref:''),i:q.s}
   }).catch(()=>null)
 }
 /* ---- Lettere: data, luogo e destinatario ricavati dall'indice */
