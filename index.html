@@ -980,12 +980,12 @@ function addBm(){const r=readerState;if(!r)return;const bms=store.get('bm',[]);
   bms.unshift({w:r.w.id,i:r.i,t:(document.querySelector('.rt')||{}).textContent||'',note:''});store.set('bm',bms.slice(0,200));openSettings()}
 function delBm(k){const bms=store.get('bm',[]);bms.splice(k,1);store.set('bm',bms);openSettings()}
 function saveNote(k,v){const bms=store.get('bm',[]);if(!bms[k])return;bms[k].note=v;store.set('bm',bms)}
-function showToast(msg){
+function showToast(msg,ms){
   let t=document.getElementById('toast');
   if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}
   t.textContent=msg;t.classList.add('on');
   clearTimeout(window._toastT);
-  window._toastT=setTimeout(()=>t.classList.remove('on'),1700)
+  window._toastT=setTimeout(()=>t.classList.remove('on'),ms||1700)
 }
 function queueError(txt,cat,note){
   const r=readerState;if(!r)return;
@@ -1066,7 +1066,7 @@ async function _ttsWake(on){
   }catch(e){}
 }
 function _ttsSpeak(i){
-  clearTimeout(_ttsTimer);speechSynthesis.cancel();
+  clearTimeout(_ttsTimer);const _busy=speechSynthesis.speaking||speechSynthesis.pending;if(_busy)speechSynthesis.cancel();
   _ttsI=i;
   if(i>=_ttsQ.length){_ttsStop();return;}
   const c=_ttsQ[i],u=new SpeechSynthesisUtterance(c.t),v=_ttsVoice();
@@ -1074,7 +1074,11 @@ function _ttsSpeak(i){
   u.rate=ttsRate();u.pitch=1;
   u.onend=()=>{if(!_ttsActive)return;_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),c.p?450:60);};
   u.onerror=e=>{if(e&&(e.error==='interrupted'||e.error==='canceled'))return;if(_ttsActive)_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),60);};
-  _ttsTimer=setTimeout(()=>{if(_ttsActive)speechSynthesis.speak(u)},120);   /* iOS: dopo cancel() serve una breve pausa, altrimenti non parte */
+  u.onstart=()=>{window._ttsStarted=true};
+  const go=()=>{try{speechSynthesis.resume()}catch(e){}speechSynthesis.speak(u)};
+  /* iOS: il primo enunciato deve partire subito, dentro il tocco dell'utente; dopo un cancel() serve una breve pausa */
+  if(_busy)_ttsTimer=setTimeout(()=>{if(_ttsActive)go()},120);else go();
+  if(i===0){window._ttsStarted=false;setTimeout(()=>{if(_ttsActive&&!window._ttsStarted&&!speechSynthesis.speaking){showToast(({it:'La voce non parte: controlla volume, tasto silenzioso e che sia scaricata una voce italiana.',pt:'A voz não inicia: verifique volume, botão de silêncio e se há uma voz instalada.',es:'La voz no arranca: revisa el volumen, el botón de silencio y que haya una voz instalada.',en:'The voice does not start: check volume, silent switch and that a voice is installed.'})[LANG],7000);_ttsStop()}},3000)}
 }
 function _ttsStop(){
   clearTimeout(_ttsTimer);
