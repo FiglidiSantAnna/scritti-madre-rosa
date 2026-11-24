@@ -183,6 +183,7 @@ mark{background:var(--hl);color:inherit;border-radius:2px}
 .sbox input{flex:1;font:inherit;font-size:17px;padding:11px 16px;border-radius:24px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
 .scope{font-family:var(--sans);font-size:14px;color:var(--muted);display:flex;gap:14px;align-items:center;margin:4px 6px 10px}
 .res{padding:12px 4px;border-bottom:1px solid var(--line);width:100%;text-align:left;display:block}
+#fl{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}#fl .chip{white-space:nowrap;flex:0 0 auto}.rgrp{margin-top:14px}.rh{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--gold);border-bottom:2px solid var(--gold2);padding-bottom:4px}.rh span{background:var(--wine);color:#fff;border-radius:10px;padding:1px 8px;font-size:11.5px;margin-left:6px}.rmore{margin:8px 0}
 .res .w{font-family:var(--sans);font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.04em}
 .res .c{font-size:15px;color:var(--wine);margin:2px 0}
 .res .x{font-size:15px;line-height:1.45;color:var(--ink)}
@@ -656,14 +657,17 @@ async function reader(id,i,hl){
   if(id==='memorie')marginNums(txt);if(id==='memorie')txt.querySelectorAll('h4').forEach(h=>{const t=h.textContent.trim();if(t.length>2&&t===t.toUpperCase()&&/[A-ZÀ-Ý]/.test(t)){h.className='tit'+(/^SEZIONE\b/.test(t)?' sez':'');h.textContent=t.toLowerCase().replace(/(^|[\s\-—(«“'’])([a-zà-ÿ]+)/g,(m,x,w,o,all)=>{const first=!o||/[-—:]\s*$/.test(all.slice(0,o));return x+((!first&&x!=="’"&&x!=="'"&&/^(di|a|e|ed|in|da|del|della|dello|dei|degli|delle|nel|nella|nei|negli|al|alla|ai|il|lo|la|le|gli|i|per|con|su|o)$/.test(w))?w:w[0].toUpperCase()+w.slice(1))}).replace(/\b(i{1,3}|iv|vi{0,3}|ix|x{1,3})\b/gi,r=>/^[ivx]+$/i.test(r)&&r.length<5?r.toUpperCase():r)}});
 }
 function highlight(root,q){
-  const nq=norm(q);if(!nq)return;
+  const qs=q.split('|').map(norm).filter(Boolean);if(!qs.length)return;
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node,first=null;
   const nodes=[];while(node=walker.nextNode())nodes.push(node);
-  for(const t of nodes){const nt=norm(t.nodeValue);let k=nt.indexOf(nq);if(k<0)continue;
-    const r=document.createRange();r.setStart(t,k);r.setEnd(t,Math.min(t.nodeValue.length,k+q.length));
-    const m=document.createElement('mark');try{r.surroundContents(m)}catch(e){continue}
-    if(!first)first=m}
-  if(first)setTimeout(()=>first.scrollIntoView({block:'center'}),60);
+  for(const t of nodes){const nt=norm(t.nodeValue);
+    const pos=[];for(const nq of qs){let k=0;while((k=nt.indexOf(nq,k))>=0){pos.push([k,nq.length]);k+=nq.length}}
+    pos.sort((a,b)=>b[0]-a[0]);let lastS=1e9,cur=t;
+    for(const [k,len] of pos){if(k+len>lastS)continue;lastS=k;
+      const r=document.createRange();r.setStart(t,k);r.setEnd(t,Math.min(t.nodeValue.length,k+len));
+      const m=document.createElement('mark');try{r.surroundContents(m)}catch(e){continue}
+      first=m}}
+  if(first){const ms=root.querySelectorAll('mark');setTimeout(()=>ms[0].scrollIntoView({block:'center'}),60)}
 }
 let posT=null;
 function savePos(){if(!readerState)return;const max=document.body.scrollHeight-innerHeight;
@@ -679,45 +683,76 @@ document.addEventListener('click',e=>{
 
 /* ------------------------------------------------------------------ ricerca */
 const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’‘`´]/g,"'").replace(/\s+/g,' ');
-let searchTok=0,PENDING_Q=null;
+let searchTok=0,PENDING_Q=null,SLANG=null;const _stx=new Map();let _stxN=0;
 function searchView(id){
   const w=id&&W(id);
   renderBar(T().search,true);
-  const scope=store.get('scope','work');
+  const scope=store.get('scope','work');SLANG=SLANG||LANG;
   let h=`<div class="sbox"><input id="q" type="search" placeholder="${esc(T().searchPh)}" value="${esc(store.get('lastq',''))}" enterkeyhint="search"><button class="btn" id="go">${esc(T().search)}</button></div>`;
+  h+=`<div class="chips" id="slang" style="margin:2px 6px 6px">${LANGS.map(l=>`<button class="chip ${l===SLANG?'fill':''}" data-l="${l}">${l.toUpperCase()}</button>`).join('')}</div>`;
   if(w)h+=`<div class="scope"><label><input type="radio" name="sc" value="work" ${scope==='work'?'checked':''}> ${esc(T().inWork)}: <i>${esc(wTitle(w))}</i></label></div><div class="scope"><label><input type="radio" name="sc" value="all" ${scope!=='work'?'checked':''}> ${esc(T().inAll)}</label></div>`;
-  h+=`<div id="st" class="muted"></div><div id="res"></div>`;
+  const rec=store.get('recq',[]);
+  if(rec.length)h+=`<div class="chips" id="recq" style="margin:2px 6px">${rec.map(r=>`<button class="chip" data-q="${esc(r)}">${esc(r)}</button>`).join('')}</div>`;
+  h+=`<div id="st" class="muted"></div><div id="fl" class="chips"></div><div id="res"></div>`;
   $('#main').innerHTML=h;
   const q=$('#q');q.focus();
   const run=()=>{const sc=w?(document.querySelector('input[name=sc]:checked')||{}).value:'all';store.set('scope',sc);doSearch(q.value,sc==='work'?[w]:CAT)};
   $('#go').onclick=run;q.onkeydown=e=>{if(e.key==='Enter')run()};
+  document.querySelectorAll('#slang .chip').forEach(b=>b.onclick=()=>{SLANG=b.dataset.l;document.querySelectorAll('#slang .chip').forEach(x=>x.classList.toggle('fill',x===b));if(q.value.trim().length>1)run()});
+  document.querySelectorAll('#recq .chip').forEach(b=>b.onclick=()=>{q.value=b.dataset.q;run()});
   if(PENDING_Q){q.value=PENDING_Q;PENDING_Q=null;const a=document.querySelector('input[name=sc][value=all]');if(a)a.checked=true;run()}
+}
+/* testo di ogni capitolo, già ripulito dai tag; tenuto in memoria per rendere veloci le ricerche successive */
+async function _secTexts(w,l,c){
+  const key=w.id+'|'+l+'|'+c;if(_stx.has(key))return _stx.get(key);
+  const ch=await chunk(w,l,c),tmp=document.createElement('div');
+  const arr=ch.sections.map(s=>{tmp.innerHTML=s.h;return{i:s.i,t:tmp.textContent.replace(/\s+/g,' ')}});
+  const n=arr.reduce((a,x)=>a+x.t.length,0);if(_stxN+n<45e6){_stx.set(key,arr);_stxN+=n}
+  return arr;
 }
 async function doSearch(q,works){
   q=q.trim();if(q.length<2)return;store.set('lastq',q);
-  const tok=++searchTok;const nq=norm(q);
-  const res=$('#res'),st=$('#st');res.innerHTML='';let count=0;const MAX=300;
+  try{const r=store.get('recq',[]).filter(x=>x!==q);r.unshift(q);store.set('recq',r.slice(0,6))}catch(e){}
+  const tok=++searchTok,nq=norm(q),toks=[...new Set(nq.split(' ').filter(x=>x.length>1))];
+  if(!toks.length)return;
+  const res=$('#res'),st=$('#st'),fl=$('#fl');res.innerHTML='';fl.innerHTML='';let count=0;
+  const L=SLANG||LANG,groups=[];
   st.innerHTML=`<span class="spin"></span>${esc(T().searching)}`;
-  const tmp=document.createElement('div');
-  for(const w of works){const l=effLang(w,LANG);let ix;
+  for(const w of works){const l=effLang(w,L);let ix;
     try{ix=await index(w,l)}catch(e){continue}
+    const hits=[];
     for(let c=0;c<ix.chunks;c++){
-      let ch;try{ch=await chunk(w,l,c)}catch(e){continue}
+      let arr;try{arr=await _secTexts(w,l,c)}catch(e){continue}
       if(tok!==searchTok)return;
-      let out='';
-      for(const s of ch.sections){
-        tmp.innerHTML=s.h;const text=tmp.textContent.replace(/\s+/g,' ');const nt=norm(text);
-        let k=nt.indexOf(nq);if(k<0)continue;
-        const a=Math.max(0,k-70),b=Math.min(text.length,k+q.length+90);
-        const snip=(a>0?'…':'')+esc(text.slice(a,k))+'<mark>'+esc(text.slice(k,k+q.length))+'</mark>'+esc(text.slice(k+q.length,b))+(b<text.length?'…':'');
-        const e=ix.toc[s.i];count++;
-        out+=`<button class="res" onclick="PENDING_HL=${esc(JSON.stringify(q))};location.hash='#r-${w.id}-${s.i}'"><div class="w">${esc(wTitle(w))}</div><div class="c">${esc(e.t)}${e.s?' · '+esc(e.s):''}</div><div class="x">${snip}</div></button>`;
-        if(count>=MAX)break}
-      if(out)res.insertAdjacentHTML('beforeend',out);
+      for(const s of arr){
+        const nt=norm(s.t);let k=nt.indexOf(nq),phrase=k>=0,sc=0;
+        if(!phrase){if(!toks.every(x=>nt.includes(x)))continue;k=nt.indexOf(toks[0])}
+        else sc=100;
+        let occ=0,p=0;while((p=nt.indexOf(toks[0],p))>=0&&occ<50){occ++;p+=toks[0].length}
+        sc+=occ;
+        const e=ix.toc[s.i];if(e&&norm(e.t).includes(nq))sc+=40;
+        hits.push({w,l,i:s.i,e,k,sc,phrase,text:s.t});count++}
       st.innerHTML=`<span class="spin"></span>${esc(T().searching)} ${count} ${esc(T().results)}`;
-      if(count>=MAX)break}
-    if(count>=MAX)break}
-  if(tok===searchTok)st.textContent=count?`${count}${count>=MAX?'+':''} ${T().results}`:T().noRes;
+      await new Promise(r=>setTimeout(r,0))}
+    if(hits.length){hits.sort((a,b)=>b.sc-a.sc);groups.push({w,hits})}}
+  if(tok!==searchTok)return;
+  st.textContent=count?`${count} ${T().results} · ${groups.length} ${LANG==='en'?'works':LANG==='es'?'obras':LANG==='pt'?'obras':'opere'}`:T().noRes;
+  groups.sort((a,b)=>b.hits[0].sc-a.hits[0].sc||b.hits.length-a.hits.length);
+  const snip=(h)=>{const t=h.text,k=h.k,len=h.phrase?q.length:toks[0].length;
+    const a=Math.max(0,k-70),b=Math.min(t.length,k+len+90);
+    let x=esc(t.slice(a,k))+'<mark>'+esc(t.slice(k,k+len))+'</mark>'+esc(t.slice(k+len,b));
+    return (a>0?'…':'')+x+(b<t.length?'…':'')};
+  const item=h=>{const hl=h.phrase?q:toks.join('|');
+    return `<button class="res" onclick="PENDING_HL=${esc(JSON.stringify(hl))};location.hash='#r-${h.w.id}-${h.i}'"><div class="c">${esc(h.e.t)}${h.e.s?' · '+esc(h.e.s):''}</div><div class="x">${snip(h)}</div></button>`};
+  const PAGE=15;
+  const draw=only=>{
+    res.innerHTML=groups.filter(g=>!only||g.w.id===only).map(g=>`<div class="rgrp" data-w="${g.w.id}"><div class="rh">${esc(wTitle(g.w))} <span>${g.hits.length}</span></div>${g.hits.slice(0,PAGE).map(item).join('')}${g.hits.length>PAGE?`<button class="btn sec rmore" data-w="${g.w.id}" data-n="${PAGE}">+ ${g.hits.length-PAGE}</button>`:''}</div>`).join('');
+    res.querySelectorAll('.rmore').forEach(b=>b.onclick=()=>{const g=groups.find(x=>x.w.id===b.dataset.w),n=+b.dataset.n;
+      b.insertAdjacentHTML('beforebegin',g.hits.slice(n,n+PAGE).map(item).join(''));
+      if(n+PAGE>=g.hits.length)b.remove();else{b.dataset.n=n+PAGE;b.textContent='+ '+(g.hits.length-n-PAGE)}})};
+  draw(null);
+  if(groups.length>1){fl.innerHTML=`<button class="chip fill" data-w="">${esc(T().inAll)}</button>`+groups.map(g=>`<button class="chip" data-w="${g.w.id}">${esc(wTitle(g.w))} · ${g.hits.length}</button>`).join('');
+    fl.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{fl.querySelectorAll('.chip').forEach(x=>x.classList.toggle('fill',x===b));draw(b.dataset.w||null)})}
 }
 
 /* ------------------------------------------------------------------ fogli: impostazioni, note, segnalibri */
