@@ -549,7 +549,7 @@ async function reader(id,i,hl){
   const _appName='Scritti FSA';
   h+=`<article class="reader"><div class="print-header">${_appName} · ${esc(s.e.t)}${s.e.s?' – '+esc(s.e.s):''}</div><div class="rt">${esc(s.e.t)}</div>${s.e.s?`<div class="rs">${esc(s.e.s)}</div>`:''}${s.e.g?`<div class="rs" style="font-size:13px">${esc(s.e.g.replace('Volume',T().vol))}</div>`:''}<div class="orn">✦</div><div class="txt fl" id="txt">${s.html}</div></article>`;
   h+=`<div class="nav"><button ${pv<0?'disabled':''} onclick="location.hash='#r-${id}-${pv}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${nx>=n?'disabled':''} onclick="location.hash='#r-${id}-${nx}'">${esc(T().next)} ›</button></div>`;
-  h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button><button id="tts-btn" class="btn sec tts-btn" style="font-size:12.5px;padding:6px 12px" onclick="toggleTTS()">🔊 ${esc(T().listen)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="printSection()">🖨 ${esc(T().print)}</button></div>`;
+  h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button><button id="tts-btn" class="btn sec tts-btn" style="font-size:12.5px;padding:6px 12px" onclick="toggleTTS()">🔊 ${esc(T().listen)}</button><button id="tts-voice" class="btn sec" style="font-size:12.5px;padding:6px 10px" onclick="cycleTTSVoice()" title="voce">🎙</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="printSection()">🖨 ${esc(T().print)}</button></div>`;
   $('#main').innerHTML=h;
   const txt=$('#txt');
   if(hl){highlight(txt,hl)}
@@ -672,10 +672,9 @@ function queueError(txt,cat,note){
 function reportError(){askErrorCategory('')}
 
 /* ── TTS (audiolibro) ── */
-let _ttsActive=false;
-function _ttsLang(){const m={it:'it-IT',pt:'pt-BR',es:'es-ES',en:'en-US'};return m[LANG]||'it-IT';}
+let _ttsActive=false,_ttsQ=[],_ttsI=0,_ttsLock=null,_ttsTimer=null;
+function _ttsLang(){const m={it:'it-IT',pt:'pt-BR',es:'es-PE',en:'en-PH'};return m[LANG]||'it-IT';}
 function _ttsText(){
-  // raccoglie il testo visibile del lettore: titolo + testo
   const r=document.querySelector('.reader');
   if(!r)return '';
   const parts=[];
@@ -685,28 +684,99 @@ function _ttsText(){
   });
   return parts.join('\n\n');
 }
-function toggleTTS(){
-  const btn=document.getElementById('tts-btn');
-  if(!('speechSynthesis' in window)){alert('Il tuo browser non supporta la lettura vocale.');return;}
-  if(_ttsActive){
-    speechSynthesis.cancel();
-    _ttsActive=false;
-    if(btn){btn.classList.remove('playing');btn.textContent='🔊 '+T().listen;}
-    return;
-  }
-  const text=_ttsText();
-  if(!text)return;
-  const utt=new SpeechSynthesisUtterance(text);
-  utt.lang=_ttsLang();
-  utt.rate=0.95;
-  utt.onend=()=>{_ttsActive=false;const b=document.getElementById('tts-btn');if(b){b.classList.remove('playing');b.textContent='🔊 '+T().listen;}};
-  utt.onerror=()=>{_ttsActive=false;const b=document.getElementById('tts-btn');if(b){b.classList.remove('playing');b.textContent='🔊 '+T().listen;}};
-  speechSynthesis.cancel();
-  speechSynthesis.speak(utt);
-  _ttsActive=true;
-  if(btn){btn.classList.add('playing');btn.textContent='⏹ '+T().stopListen;}
+/* voci: scelta della più naturale disponibile nella lingua; l'utente può cambiarla con il tasto 🎙 */
+function _ttsVoices(){
+  const base=LANG, pref={it:['it-IT','it'],pt:['pt-BR','pt-PT','pt'],es:['es-PE','es-US','es-MX','es-419','es-CO','es-AR','es-ES','es'],en:['en-PH','en-KE','en-US','en-GB','en-AU','en']}[base]||['it'];
+  const all=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
+  const v=all.filter(x=>x.lang&&x.lang.toLowerCase().startsWith(base));
+  const score=x=>{
+    let s=0;const n=(x.name||'').toLowerCase(),l=x.lang.replace('_','-');
+    if(/natural|neural|premium|enhanced|online|wavenet|studio|siri/.test(n))s+=50;
+    if(/google/.test(n))s+=30;
+    if(/compact|espeak|novelty/.test(n))s-=40;
+    const k=pref.findIndex(p=>l.toLowerCase()===p.toLowerCase());
+    if(k>=0)s+=20-k;
+    if(!x.localService)s+=10;
+    return s;
+  };
+  return v.sort((a,b)=>score(b)-score(a));
 }
-function stopTTSIfActive(){if(_ttsActive){speechSynthesis.cancel();_ttsActive=false;}}
+function _ttsVoice(){
+  const vs=_ttsVoices();if(!vs.length)return null;
+  let saved='';try{saved=localStorage.getItem('ttsVoice_'+LANG)||'';}catch(e){}
+  return vs.find(x=>x.name===saved)||vs[0];
+}
+function cycleTTSVoice(){
+  const vs=_ttsVoices();if(vs.length<2){return;}
+  const cur=_ttsVoice();const nx=vs[(vs.indexOf(cur)+1)%vs.length];
+  try{localStorage.setItem('ttsVoice_'+LANG,nx.name);}catch(e){}
+  const b=document.getElementById('tts-voice');if(b){b.title=nx.name;}
+  if(_ttsActive){_ttsSpeak(_ttsI);}
+  else{const u=new SpeechSynthesisUtterance({it:'Così suona questa voce.',pt:'Assim soa esta voz.',es:'Así suena esta voz.',en:'This is how this voice sounds.'}[LANG]);u.voice=nx;u.lang=nx.lang;speechSynthesis.cancel();speechSynthesis.speak(u);}
+}
+/* il testo si legge a frasi, con una breve pausa tra i paragrafi: più naturale e senza interruzioni a metà */
+function _ttsChunks(text){
+  const out=[];
+  text.split(/\n{2,}/).forEach(par=>{
+    const s=par.replace(/\s+/g,' ').trim();if(!s)return;
+    const sent=s.match(/[^.!?;:…]+[.!?;:…]*["»”)]*\s*/g)||[s];
+    let cur='';
+    sent.forEach(x=>{
+      if((cur+x).length>200&&cur){out.push({t:cur.trim(),p:0});cur=x;}else cur+=x;
+    });
+    if(cur.trim())out.push({t:cur.trim(),p:1});
+  });
+  return out;
+}
+function _ttsBtn(on){
+  const b=document.getElementById('tts-btn');
+  if(b){b.classList.toggle('playing',on);b.textContent=(on?'⏹ '+T().stopListen:'🔊 '+T().listen);}
+}
+async function _ttsWake(on){
+  try{
+    if(on&&'wakeLock' in navigator&&!_ttsLock){_ttsLock=await navigator.wakeLock.request('screen');_ttsLock.addEventListener('release',()=>{_ttsLock=null;});}
+    if(!on&&_ttsLock){await _ttsLock.release();_ttsLock=null;}
+  }catch(e){}
+}
+function _ttsSpeak(i){
+  clearTimeout(_ttsTimer);speechSynthesis.cancel();
+  _ttsI=i;
+  if(i>=_ttsQ.length){_ttsStop();return;}
+  const c=_ttsQ[i],u=new SpeechSynthesisUtterance(c.t),v=_ttsVoice();
+  if(v){u.voice=v;u.lang=v.lang;}else u.lang=_ttsLang();
+  u.rate=0.9;u.pitch=1;
+  u.onend=()=>{if(!_ttsActive)return;_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),c.p?450:60);};
+  u.onerror=e=>{if(e&&(e.error==='interrupted'||e.error==='canceled'))return;if(_ttsActive)_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),60);};
+  speechSynthesis.speak(u);
+}
+function _ttsStop(){
+  clearTimeout(_ttsTimer);
+  try{speechSynthesis.cancel();}catch(e){}
+  _ttsActive=false;_ttsBtn(false);_ttsWake(false);
+  try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='none';}catch(e){}
+}
+function toggleTTS(){
+  if(!('speechSynthesis' in window)){alert('Il tuo browser non supporta la lettura vocale.');return;}
+  if(_ttsActive){_ttsStop();return;}
+  const text=_ttsText();if(!text)return;
+  _ttsQ=_ttsChunks(text);_ttsActive=true;_ttsBtn(true);_ttsWake(true);
+  try{if('mediaSession' in navigator){
+    const t=document.querySelector('.reader .rt');
+    navigator.mediaSession.metadata=new MediaMetadata({title:(t&&t.textContent.trim())||'Scritti FSA',artist:'Scritti FSA'});
+    navigator.mediaSession.playbackState='playing';
+    navigator.mediaSession.setActionHandler('pause',_ttsStop);
+    navigator.mediaSession.setActionHandler('stop',_ttsStop);
+  }}catch(e){}
+  _ttsSpeak(0);
+}
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&_ttsActive){
+    _ttsWake(true);
+    if(!speechSynthesis.speaking)_ttsSpeak(_ttsI);   /* se lo schermo si è spento, riprende dalla frase in corso */
+  }
+});
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>{};speechSynthesis.getVoices();}
+function stopTTSIfActive(){if(_ttsActive)_ttsStop();}
 
 /* ── Stampa ── */
 function printSection(){
