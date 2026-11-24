@@ -151,6 +151,7 @@ details.grp[open] summary::after{content:"－"}
 .footnote-ref{text-decoration:none;color:var(--wine);font-weight:700;padding:0 2px}
 .footnote-ref sup{font-size:.68em}
 em.xl{cursor:pointer;color:var(--wine);text-decoration:underline dotted;text-underline-offset:3px}em.xl::after{content:' ›';font-style:normal;font-weight:700}
+.qo{display:block;width:100%;text-align:left;padding:13px 14px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:var(--paper);font-size:16px;line-height:1.35}.qo.ok{border-color:#3f7a4f;background:#e4f1e6;color:#1f4a2c}.qo.no{border-color:#a33;background:#f6e1e1;color:#6b1c1c}body.dark .qo.ok{background:#1f3a27;color:#bfe3c8}body.dark .qo.no{background:#3d1f22;color:#f1c4c4}.qfb{margin-top:12px;font-family:var(--sans);font-size:14px;line-height:1.45}
 .mapbox{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:6px;margin:6px 0}.mapbox svg{width:100%;height:auto;display:block;max-height:68vh}.land polygon{fill:var(--bg);stroke:var(--gold);stroke-width:1.2;stroke-linejoin:round}.dot{cursor:pointer}.maplg{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:center;font-family:var(--sans);font-size:11px;color:var(--muted);margin:8px 0}.maplg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}.maprow{display:flex;gap:10px;align-items:center;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:8px 4px 0;flex-wrap:wrap}.maprow input{flex:1 1 100%;accent-color:var(--wine)}
 mark{background:var(--hl);color:inherit;border-radius:2px}mark.uh{background:#f3d77a;color:#2b2420;border-radius:3px;padding:0 1px}body.dark mark.uh{background:#7a5f1c;color:#f5ecd9}
 .nav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}
@@ -261,7 +262,7 @@ const UI = {
    aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
    note:'Nota',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',letters:'lettere',
    reportErr:'Segnala un errore in questo testo',myNotes:'I miei appunti',notePh:'Scriva qui un appunto personale…',
-   selNote:'Salva',mapT:'Mappa delle case',mapS:'Le fondazioni di Madre Rosa sulla carta',mapUp:'Scegli fino a quando',mapLet:'Lettere',mapW:'opere',mapOut:'Fuori dall’Italia',mapTap:'Tocca un punto per vedere le opere.',mapNote:'Le posizioni sono indicative. L’anno si riferisce al volume delle Lettere in cui la casa compare.',fontL:'Tipo di testo',fSerif:'Classico',fSans:'Moderno',lhL:'Interlinea',lhS:'Stretta',lhM:'Normale',lhW:'Ampia',autoT:'Auto',gm:'Buongiorno',ga:'Buon pomeriggio',ge:'Buonasera',inFili:'Pensieri di questa lettera nei «Fili d’oro»',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
+   selNote:'Salva',qzT:'Quiz',qzS:'Metti alla prova ciò che hai letto',qzMix:'Misto',qzWho:'Di chi?',qzWhen:'Quando?',qzPWho:'A chi scrisse Madre Rosa queste parole?',qzPWhere:'Da quale luogo scrisse questa lettera?',qzPWhen:'In quale anno avvenne?',qzQ:'Domanda',qzNext:'Avanti',qzEnd:'Vedi il risultato',qzOf:'su',qzAgain:'Rifai',qzOk:'Giusto!',qzNo:'Non proprio.',qzAns:'La risposta è',qzBest:'Il tuo record',qzR1:'Un buon inizio: continua a leggere!',qzR2:'Bene! Conosci già molto.',qzR3:'Ottimo! Conosci davvero bene Madre Rosa.',mapT:'Mappa delle case',mapS:'Le fondazioni di Madre Rosa sulla carta',mapUp:'Scegli fino a quando',mapLet:'Lettere',mapW:'opere',mapOut:'Fuori dall’Italia',mapTap:'Tocca un punto per vedere le opere.',mapNote:'Le posizioni sono indicative. L’anno si riferisce al volume delle Lettere in cui la casa compare.',fontL:'Tipo di testo',fSerif:'Classico',fSans:'Moderno',lhL:'Interlinea',lhS:'Stretta',lhM:'Normale',lhW:'Ampia',autoT:'Auto',gm:'Buongiorno',ga:'Buon pomeriggio',ge:'Buonasera',inFili:'Pensieri di questa lettera nei «Fili d’oro»',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
    errCats:['Ortografia','Ripetizione','Numerazione','Dovrebbe essere sottotitolo','Sottotitolo errato','Altro'],errNotePh:'Spiegazione facoltativa…',errType:'Che tipo di errore?',confirm:'Conferma',
    listen:'Ascolta',stopListen:'Interrompi',print:'Stampa'},
  pt:{app:'Scritti FSA',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
@@ -274,7 +275,7 @@ const UI = {
    aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
    note:'Nota',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',letters:'cartas',
    reportErr:'Assinalar um erro neste texto',myNotes:'Minhas anotações',notePh:'Escreva aqui uma anotação pessoal…',
-   selNote:'Salvar',mapT:'Mapa das casas',mapS:'As fundações de Madre Rosa no mapa',mapUp:'Escolha até quando',mapLet:'Cartas',mapW:'obras',mapOut:'Fora da Itália',mapTap:'Toque num ponto para ver as obras.',mapNote:'As posições são indicativas. O ano se refere ao volume das Cartas em que a casa aparece.',fontL:'Tipo de letra',fSerif:'Clássico',fSans:'Moderno',lhL:'Entrelinha',lhS:'Estreita',lhM:'Normal',lhW:'Ampla',autoT:'Auto',gm:'Bom dia',ga:'Boa tarde',ge:'Boa noite',inFili:'Pensamentos desta carta nos «Fios de ouro»',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
+   selNote:'Salvar',qzT:'Quiz',qzS:'Teste o que você leu',qzMix:'Misto',qzWho:'De quem?',qzWhen:'Quando?',qzPWho:'A quem Madre Rosa escreveu estas palavras?',qzPWhere:'De que lugar ela escreveu esta carta?',qzPWhen:'Em que ano aconteceu?',qzQ:'Pergunta',qzNext:'Próxima',qzEnd:'Ver o resultado',qzOf:'de',qzAgain:'Refazer',qzOk:'Certo!',qzNo:'Não exatamente.',qzAns:'A resposta é',qzBest:'Seu recorde',qzR1:'Um bom começo: continue lendo!',qzR2:'Bem! Você já conhece muito.',qzR3:'Ótimo! Você conhece muito bem Madre Rosa.',mapT:'Mapa das casas',mapS:'As fundações de Madre Rosa no mapa',mapUp:'Escolha até quando',mapLet:'Cartas',mapW:'obras',mapOut:'Fora da Itália',mapTap:'Toque num ponto para ver as obras.',mapNote:'As posições são indicativas. O ano se refere ao volume das Cartas em que a casa aparece.',fontL:'Tipo de letra',fSerif:'Clássico',fSans:'Moderno',lhL:'Entrelinha',lhS:'Estreita',lhM:'Normal',lhW:'Ampla',autoT:'Auto',gm:'Bom dia',ga:'Boa tarde',ge:'Boa noite',inFili:'Pensamentos desta carta nos «Fios de ouro»',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
    errCats:['Ortografia','Repetição','Numeração','Devia ser subtítulo','Subtítulo errado','Outro'],errNotePh:'Explicação opcional…',errType:'Que tipo de erro?',confirm:'Confirmar',
    listen:'Ouvir',stopListen:'Parar',print:'Imprimir'},
  es:{app:'Scritti FSA',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
@@ -287,7 +288,7 @@ const UI = {
    aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
    note:'Nota',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',letters:'cartas',
    reportErr:'Señalar un error en este texto',myNotes:'Mis notas',notePh:'Escriba aquí una nota personal…',
-   selNote:'Guardar',mapT:'Mapa de las casas',mapS:'Las fundaciones de Madre Rosa en el mapa',mapUp:'Elige hasta cuándo',mapLet:'Cartas',mapW:'obras',mapOut:'Fuera de Italia',mapTap:'Toca un punto para ver las obras.',mapNote:'Las posiciones son indicativas. El año se refiere al volumen de las Cartas en que aparece la casa.',fontL:'Tipo de letra',fSerif:'Clásico',fSans:'Moderno',lhL:'Interlineado',lhS:'Estrecho',lhM:'Normal',lhW:'Amplio',autoT:'Auto',gm:'Buenos días',ga:'Buenas tardes',ge:'Buenas noches',inFili:'Pensamientos de esta carta en los «Hilos de oro»',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
+   selNote:'Guardar',qzT:'Quiz',qzS:'Pon a prueba lo que has leído',qzMix:'Mixto',qzWho:'¿De quién?',qzWhen:'¿Cuándo?',qzPWho:'¿A quién escribió Madre Rosa estas palabras?',qzPWhere:'¿Desde qué lugar escribió esta carta?',qzPWhen:'¿En qué año ocurrió?',qzQ:'Pregunta',qzNext:'Siguiente',qzEnd:'Ver el resultado',qzOf:'de',qzAgain:'Repetir',qzOk:'¡Correcto!',qzNo:'No exactamente.',qzAns:'La respuesta es',qzBest:'Tu récord',qzR1:'Un buen comienzo: ¡sigue leyendo!',qzR2:'¡Bien! Ya conoces mucho.',qzR3:'¡Excelente! Conoces muy bien a Madre Rosa.',mapT:'Mapa de las casas',mapS:'Las fundaciones de Madre Rosa en el mapa',mapUp:'Elige hasta cuándo',mapLet:'Cartas',mapW:'obras',mapOut:'Fuera de Italia',mapTap:'Toca un punto para ver las obras.',mapNote:'Las posiciones son indicativas. El año se refiere al volumen de las Cartas en que aparece la casa.',fontL:'Tipo de letra',fSerif:'Clásico',fSans:'Moderno',lhL:'Interlineado',lhS:'Estrecho',lhM:'Normal',lhW:'Amplio',autoT:'Auto',gm:'Buenos días',ga:'Buenas tardes',ge:'Buenas noches',inFili:'Pensamientos de esta carta en los «Hilos de oro»',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
    errCats:['Ortografía','Repetición','Numeración','Debería ser subtítulo','Subtítulo incorrecto','Otro'],errNotePh:'Explicación opcional…',errType:'¿Qué tipo de error?',confirm:'Confirmar',
    listen:'Escuchar',stopListen:'Detener',print:'Imprimir'},
  en:{app:'Scritti FSA',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
@@ -300,7 +301,7 @@ const UI = {
    aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
    note:'Note',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',letters:'letters',
    reportErr:'Report an error in this text',myNotes:'My notes',notePh:'Write a personal note here…',
-   selNote:'Save',mapT:'Map of the houses',mapS:'Mother Rosa’s foundations on the map',mapUp:'Choose up to when',mapLet:'Letters',mapW:'works',mapOut:'Outside Italy',mapTap:'Tap a point to see the works.',mapNote:'Positions are approximate. The year refers to the volume of the Letters in which the house appears.',fontL:'Typeface',fSerif:'Classic',fSans:'Modern',lhL:'Line spacing',lhS:'Tight',lhM:'Normal',lhW:'Wide',autoT:'Auto',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',inFili:'Thoughts from this letter in «Threads of Gold»',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
+   selNote:'Save',qzT:'Quiz',qzS:'Test what you have read',qzMix:'Mixed',qzWho:'Whose?',qzWhen:'When?',qzPWho:'To whom did Mother Rosa write these words?',qzPWhere:'From which place did she write this letter?',qzPWhen:'In which year did this happen?',qzQ:'Question',qzNext:'Next',qzEnd:'See the result',qzOf:'out of',qzAgain:'Try again',qzOk:'Correct!',qzNo:'Not quite.',qzAns:'The answer is',qzBest:'Your best',qzR1:'A good start: keep reading!',qzR2:'Well done! You already know a lot.',qzR3:'Excellent! You know Mother Rosa very well.',mapT:'Map of the houses',mapS:'Mother Rosa’s foundations on the map',mapUp:'Choose up to when',mapLet:'Letters',mapW:'works',mapOut:'Outside Italy',mapTap:'Tap a point to see the works.',mapNote:'Positions are approximate. The year refers to the volume of the Letters in which the house appears.',fontL:'Typeface',fSerif:'Classic',fSans:'Modern',lhL:'Line spacing',lhS:'Tight',lhM:'Normal',lhW:'Wide',autoT:'Auto',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',inFili:'Thoughts from this letter in «Threads of Gold»',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
    errCats:['Spelling','Repetition','Numbering','Should be a subtitle','Wrong subtitle','Other'],errNotePh:'Optional explanation…',errType:'What kind of error?',confirm:'Confirm',
    listen:'Listen',stopListen:'Stop',print:'Print'}
 };
@@ -440,6 +441,7 @@ const ICO={lib:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
   today:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
   resume:'<path d="M7 3h10v18l-5-4-5 4z"/>',
+  quiz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
   map:'<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
   mine:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
   themes:'<path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/>',
@@ -458,7 +460,7 @@ async function home(){
   const door=(k,t,s,act,cls)=>`<button class="door${cls?' '+cls:''}" onclick="${act}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span style="min-width:0"><div class="dt">${esc(t)}</div><div class="ds">${esc(s)}</div></span></button>`;
   const _hr=new Date().getHours(),_gr=_hr<5||_hr>=18?T().ge:_hr<13?T().gm:T().ga;
   let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><div class="greet">${esc(_gr)}</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
-  h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('map',T().mapT,T().mapS,"location.hash='#map'")}${door('mine',T().mine,T().mineS,"location.hash='#m'")}</div>`;
+  h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('map',T().mapT,T().mapS,"location.hash='#map'")}${door('mine',T().mine,T().mineS,"location.hash='#m'")}${door('quiz',T().qzT,T().qzS,"location.hash='#quiz'",'wide')}</div>`;
   h+=`<div class="card thought life" id="life" style="display:none"></div>`;
   h+=`<div class="card thought" id="thought" style="display:none"></div>`;
   h+=`<div id="lib"></div>`;
@@ -882,6 +884,62 @@ function mapOpen(p){
   openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><div class="scheda-refs">${f.map(x=>`<button class="ref-btn" onclick="openPersonaSheet('${x.id}')">${esc(x.t)} <span class="muted" style="font-size:12px">· ${esc(T().mapLet)} ${MAP_VOL[x.v]}</span></button>`).join('')}</div></div>`);
   $('#sheet').scrollTop=0}
 
+
+/* ── quiz ── */
+let _QZ=null,_qzMode='mix';
+const _shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function _recip(r){const p=(r||'').split(',');if(p.length<4)return null;
+  const who=p[1].trim().replace(/^(a|à|al|alla|to)\s+/i,'').replace(/^(Sr\.|Sor|Hna\.|Ir\.)\s*(a\.|A\.)?\s*(A\.)?\s*/i,'').trim();
+  return{who,where:p[2].trim()}}
+async function quizBuild(mode){
+  const C=await citazioni(),qs=[],items=(C&&C.items||[]).filter(e=>e['r_'+LANG]&&!/^cfr/i.test(e['r_'+LANG])&&(e[LANG]||'').length<=380).map(e=>({e,r:_recip(e['r_'+LANG])})).filter(x=>x.r);
+  const whos=[...new Set(items.map(x=>x.r.who))],wheres=[...new Set(items.map(x=>x.r.where))];
+  const pick=(arr,right)=>_shuf([right,..._shuf(arr.filter(x=>x!==right)).slice(0,3)]);
+  const mk=(kind)=>{
+    if(kind==='who'||kind==='where'){
+      const x=_shuf(items).find(x=>!qs.some(q=>q.id===x.e.k+kind));if(!x)return;
+      const pool=kind==='who'?whos:wheres,right=x.r[kind];if(pool.length<4)return;
+      qs.push({id:x.e.k+kind,p:kind==='who'?T().qzPWho:T().qzPWhere,body:'«'+x.e[LANG]+'»',o:pick(pool,right),a:right,src:x.e['r_'+LANG],go:['fili',x.e.s]});
+    }}
+  const n=10;
+  if(mode==='who')for(let i=0;i<n*3&&qs.length<n;i++)mk('who');
+  else if(mode==='when'){}
+  else{for(let i=0;i<n*3&&qs.length<5;i++)mk(i%2?'where':'who')}
+  if(mode!=='who'){
+    const cr=await crono(),ev=[];
+    for(const d in cr)for(const e of cr[d]){const t=e[1]||'';if(t.length>70&&!/^(Scrive|Parte|Torna|Writes|Leaves|Returns|Escreve|Parte|Regresa)/i.test(t)&&e[0]>=1850&&e[0]<=1900)ev.push({y:e[0],t,l:e[3]})}
+    const need=mode==='when'?n:n-qs.length;
+    for(const x of _shuf(ev).slice(0,need)){
+      const ys=[x.y];let tries=0;while(ys.length<4&&tries++<50){const y=x.y+(Math.floor(Math.random()*21)-10);if(y>1830&&y<1935&&!ys.includes(y))ys.push(y)}
+      qs.push({id:'w'+x.y+x.t.slice(0,8),p:T().qzPWhen,body:x.t,o:_shuf(ys).map(String),a:String(x.y),src:'',go:x.l?[x.l.w,x.l.i]:null});
+    }}
+  return _shuf(qs).slice(0,n)}
+function quizView(){
+  renderBar(T().qzT,true);_QZ=null;
+  const best=store.get('quizbest',0);
+  $('#main').innerHTML=`<div class="whead"><h2>${esc(T().qzT)}</h2><div class="s">${esc(T().qzS)}</div></div>
+  <div class="chips" style="justify-content:center;margin:14px 0">${[['mix',T().qzMix],['who',T().qzWho],['when',T().qzWhen]].map(([k,n])=>`<button class="chip ${k===_qzMode?'fill':''}" onclick="_qzMode='${k}';quizView()">${esc(n)}</button>`).join('')}</div>
+  <div style="text-align:center;margin:20px 0"><button class="btn" onclick="quizStart()">▶ ${esc(T().qzT)}</button></div>
+  ${best?`<div class="muted" style="text-align:center">${esc(T().qzBest)}: ${best}/10</div>`:''}`;window.scrollTo(0,0)}
+async function quizStart(){const qs=await quizBuild(_qzMode);if(!qs.length){$('#main').innerHTML=`<div class="notice">${esc(T().noRes)}</div>`;return}
+  _QZ={qs,i:0,sc:0};quizShow()}
+function quizShow(){
+  const Z=_QZ,q=Z.qs[Z.i];
+  $('#main').innerHTML=`<div class="whead"><div class="s">${esc(T().qzQ)} ${Z.i+1} ${esc(T().qzOf)} ${Z.qs.length}</div><h2 style="font-size:19px">${esc(q.p)}</h2></div>
+  <div class="card thought"><div style="font-size:17.5px;line-height:1.55;font-style:italic">${esc(q.body)}</div></div>
+  <div id="qzo">${q.o.map((o,k)=>`<button class="qo" data-k="${k}">${esc(o)}</button>`).join('')}</div><div id="qzf"></div>`;
+  document.querySelectorAll('#qzo .qo').forEach(b=>b.onclick=()=>{
+    if(Z.done)return;Z.done=true;const ok=q.o[+b.dataset.k]===q.a;if(ok)Z.sc++;
+    document.querySelectorAll('#qzo .qo').forEach(x=>{if(q.o[+x.dataset.k]===q.a)x.classList.add('ok');else if(x===b)x.classList.add('no')});
+    const last=Z.i+1>=Z.qs.length;
+    $('#qzf').innerHTML=`<div class="qfb"><b>${esc(ok?T().qzOk:T().qzNo)}</b> ${ok?'':esc(T().qzAns)+' <b>'+esc(q.a)+'</b>.'}${q.src?`<div class="muted" style="margin-top:4px">${esc(q.src)}</div>`:''}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">${q.go?`<button class="btn sec" onclick="goRead('${q.go[0]}',${q.go[1]})">${esc(T().readSrc)}</button>`:''}<button class="btn" onclick="${last?'quizEnd()':'_QZ.i++;_QZ.done=false;quizShow()'}">${esc(last?T().qzEnd:T().qzNext)} ›</button></div>`;
+    $('#qzf').scrollIntoView({block:'nearest',behavior:'smooth'})})}
+function quizEnd(){const Z=_QZ,n=Z.qs.length,r=Z.sc/n;
+  if(Z.sc>store.get('quizbest',0)&&n===10)store.set('quizbest',Z.sc);
+  $('#main').innerHTML=`<div class="whead"><h2>${Z.sc} ${esc(T().qzOf)} ${n}</h2><div class="s">${esc(r>=.8?T().qzR3:r>=.5?T().qzR2:T().qzR1)}</div></div>
+  <div style="text-align:center;margin:26px 0"><button class="btn" onclick="quizStart()">↻ ${esc(T().qzAgain)}</button> <button class="btn sec" onclick="quizView()">${esc(T().qzT)}</button></div>`;window.scrollTo(0,0)}
+
 /* ── I miei segni ── */
 function mineView(){
   renderBar(T().mine,true);
@@ -1272,6 +1330,7 @@ function route(){
   const p=location.hash.replace(/^#/,'').split('-');
   if(p[0]==='w')return workView(p[1]);
   if(p[0]==='r'){const hl=PENDING_HL;PENDING_HL=null;return reader(p[1],p[2],hl)}
+  if(p[0]==='quiz')return quizView();
   if(p[0]==='map')return mapView();
   if(p[0]==='m')return mineView();
   if(p[0]==='s')return searchView(p[1]);
