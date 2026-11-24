@@ -843,7 +843,7 @@ function _ttsSpeak(i){
   u.rate=ttsRate();u.pitch=1;
   u.onend=()=>{if(!_ttsActive)return;_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),c.p?450:60);};
   u.onerror=e=>{if(e&&(e.error==='interrupted'||e.error==='canceled'))return;if(_ttsActive)_ttsTimer=setTimeout(()=>_ttsSpeak(i+1),60);};
-  speechSynthesis.speak(u);
+  _ttsTimer=setTimeout(()=>{if(_ttsActive)speechSynthesis.speak(u)},120);   /* iOS: dopo cancel() serve una breve pausa, altrimenti non parte */
 }
 function _ttsStop(){
   clearTimeout(_ttsTimer);
