@@ -149,6 +149,7 @@ details.grp[open] summary::after{content:"－"}
 .txt hr::after{content:"✦";color:var(--gold)}
 .footnote-ref{text-decoration:none;color:var(--wine);font-weight:700;padding:0 2px}
 .footnote-ref sup{font-size:.68em}
+em.xl{cursor:pointer;color:var(--wine);text-decoration:underline dotted;text-underline-offset:3px}em.xl::after{content:' ›';font-style:normal;font-weight:700}
 mark{background:var(--hl);color:inherit;border-radius:2px}mark.uh{background:#f3d77a;color:#2b2420;border-radius:3px;padding:0 1px}body.dark mark.uh{background:#7a5f1c;color:#f5ecd9}
 .nav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}
 .nav button{flex:1;font-family:var(--sans);font-size:14px;padding:12px;border-radius:12px;background:var(--paper);border:1px solid var(--line);color:var(--wine)}
@@ -258,7 +259,7 @@ const UI = {
    aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
    note:'Nota',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',letters:'lettere',
    reportErr:'Segnala un errore in questo testo',myNotes:'I miei appunti',notePh:'Scriva qui un appunto personale…',
-   selNote:'Salva',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
+   selNote:'Salva',inFili:'Pensieri di questa lettera nei «Fili d’oro»',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
    errCats:['Ortografia','Ripetizione','Numerazione','Dovrebbe essere sottotitolo','Sottotitolo errato','Altro'],errNotePh:'Spiegazione facoltativa…',errType:'Che tipo di errore?',confirm:'Conferma',
    listen:'Ascolta',stopListen:'Interrompi',print:'Stampa'},
  pt:{app:'Scritti FSA',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
@@ -271,7 +272,7 @@ const UI = {
    aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
    note:'Nota',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',letters:'cartas',
    reportErr:'Assinalar um erro neste texto',myNotes:'Minhas anotações',notePh:'Escreva aqui uma anotação pessoal…',
-   selNote:'Salvar',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
+   selNote:'Salvar',inFili:'Pensamentos desta carta nos «Fios de ouro»',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
    errCats:['Ortografia','Repetição','Numeração','Devia ser subtítulo','Subtítulo errado','Outro'],errNotePh:'Explicação opcional…',errType:'Que tipo de erro?',confirm:'Confirmar',
    listen:'Ouvir',stopListen:'Parar',print:'Imprimir'},
  es:{app:'Scritti FSA',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
@@ -284,7 +285,7 @@ const UI = {
    aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
    note:'Nota',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',letters:'cartas',
    reportErr:'Señalar un error en este texto',myNotes:'Mis notas',notePh:'Escriba aquí una nota personal…',
-   selNote:'Guardar',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
+   selNote:'Guardar',inFili:'Pensamientos de esta carta en los «Hilos de oro»',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
    errCats:['Ortografía','Repetición','Numeración','Debería ser subtítulo','Subtítulo incorrecto','Otro'],errNotePh:'Explicación opcional…',errType:'¿Qué tipo de error?',confirm:'Confirmar',
    listen:'Escuchar',stopListen:'Detener',print:'Imprimir'},
  en:{app:'Scritti FSA',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
@@ -297,7 +298,7 @@ const UI = {
    aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
    note:'Note',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',letters:'letters',
    reportErr:'Report an error in this text',myNotes:'My notes',notePh:'Write a personal note here…',
-   selNote:'Save',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
+   selNote:'Save',inFili:'Thoughts from this letter in «Threads of Gold»',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
    errCats:['Spelling','Repetition','Numbering','Should be a subtitle','Wrong subtitle','Other'],errNotePh:'Optional explanation…',errType:'What kind of error?',confirm:'Confirm',
    listen:'Listen',stopListen:'Stop',print:'Print'}
 };
@@ -649,6 +650,7 @@ async function reader(id,i,hl){
   }catch(e){}
   const txt=$('#txt');
   try{applyUserHl(txt,id,i)}catch(e){}
+  crossLinks(id,i,s,txt).catch(()=>{});
   if(hl){highlight(txt,hl)}
   else{const p=store.get('pos.'+id,null);
     if(p&&p.i===i&&p.y)requestAnimationFrame(()=>window.scrollTo(0,p.y*(document.body.scrollHeight-innerHeight)));else window.scrollTo(0,0)}
@@ -782,6 +784,28 @@ function openAbout(){openSheet(`<h4>${esc(T().about)}</h4><div class="txt"><p>${
 function setFs(d){store.set('fs',Math.max(14,Math.min(30,store.get('fs',19)+d)));applyPrefs();openSettings()}
 function setTheme(t){store.set('theme',t);applyPrefs();openSettings()}
 function setLang(l){LANG=l;store.set('lang',l);applyPrefs();closeSheet();route()}
+
+
+/* ── collegamenti tra i testi: Fili d'oro ↔ Lettere ── */
+let _LEG=null;function legami(){return _LEG||(_LEG=fetch('data/legami.json').then(r=>r.json()).catch(()=>null))}
+let _LMAP=null;
+async function letterMap(){
+  if(_LMAP)return _LMAP;const lw=W('lettere');if(!lw)return null;
+  const ix=await index(lw,effLang(lw,LANG)),m=new Map();
+  ix.toc.forEach((e,k)=>{const g=(e.g||'').match(/(\d+)/),n=(e.t||'').match(/^(\d+)\.\s/);if(g&&n)m.set(g[1]+'.'+n[1],k)});
+  return _LMAP=m}
+async function crossLinks(id,i,s,txt){
+  if(id==='fili'){
+    const m=await letterMap();if(!m)return;
+    txt.querySelectorAll('p em').forEach(em=>{const x=em.textContent.match(/Lett\.\s*(\d+).*?vol\.\s*(\d)/);if(!x)return;
+      const k=m.get(x[2]+'.'+x[1]);if(k==null)return;em.classList.add('xl');em.onclick=()=>{location.hash='#r-lettere-'+k}})
+  }else if(id==='lettere'){
+    const g=((s.e&&s.e.g)||'').match(/(\d+)/),n=((s.e&&s.e.t)||'').match(/^(\d+)\.\s/);if(!g||!n)return;
+    const L=await legami(),arr=L&&L[g[1]+'.'+n[1]];if(!arr||!arr.length)return;
+    const fw=W('fili'),ix=await index(fw,effLang(fw,LANG));
+    txt.insertAdjacentHTML('beforeend',`<div class="card" style="margin-top:22px"><div style="font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--gold);text-transform:uppercase">${esc(T().inFili)}</div><div class="chips">${arr.map(si=>`<button class="chip" onclick="goRead('fili',${si})">❧ ${esc((ix.toc[si]||{}).t||si)}</button>`).join('')}</div></div>`)
+  }
+}
 
 /* ── evidenziazioni personali ── */
 function _hlStream(root){
