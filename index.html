@@ -37,6 +37,7 @@ main{max-width:760px;margin:0 auto;padding:0 16px 120px}
 .hero{text-align:center;padding:28px 8px 14px}
 .hero .orn{color:var(--gold);font-size:22px;letter-spacing:.4em}
 .hero h2{font-weight:500;font-size:28px;margin:6px 0 2px;color:var(--wine);letter-spacing:.03em}
+.greet{font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:-2px 0 6px}
 .hero p{margin:0;color:var(--muted);font-style:italic}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(80,50,20,.06)}
 .thought{border-left:4px solid var(--gold)}
@@ -126,7 +127,7 @@ details.grp[open] summary::after{content:"－"}
 .reader .rt{text-align:center;color:var(--wine);font-size:calc(var(--fs) * 1.15);font-weight:500;margin:0 0 4px;letter-spacing:.02em}
 .reader .rs{text-align:center;color:var(--muted);font-style:italic;font-size:calc(var(--fs) * .85);margin-bottom:6px}
 .reader .orn{text-align:center;color:var(--gold);letter-spacing:.5em;margin:6px 0 18px}
-.txt{font-size:var(--fs);line-height:1.62;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.txt{font-size:var(--fs);line-height:var(--lh,1.62);font-family:var(--rfont,var(--serif));hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .txt.memo{position:relative;padding-left:36px}
 .txt.memo .mpg{font-size:0;color:transparent}
 .txt.memo .mpg::after{content:"";display:inline-block;width:2px;height:14px;background:var(--wine);margin:0 3px;vertical-align:-2px}
@@ -259,7 +260,7 @@ const UI = {
    aboutT:'Questa app raccoglie gli scritti della Beata Anna Rosa Gattorno (1831-1900), fondatrice delle Figlie di Sant’Anna, e i principali libri sulla sua vita e spiritualità. Le traduzioni recenti sono edizioni di lavoro (ottobre-novembre 2026) in attesa di revisione.',
    note:'Nota',sections:'sezioni',vol:'Volume',err:'Impossibile caricare il testo. Controllare la connessione.',letters:'lettere',
    reportErr:'Segnala un errore in questo testo',myNotes:'I miei appunti',notePh:'Scriva qui un appunto personale…',
-   selNote:'Salva',inFili:'Pensieri di questa lettera nei «Fili d’oro»',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
+   selNote:'Salva',fontL:'Tipo di testo',fSerif:'Classico',fSans:'Moderno',lhL:'Interlinea',lhS:'Stretta',lhM:'Normale',lhW:'Ampia',autoT:'Auto',gm:'Buongiorno',ga:'Buon pomeriggio',ge:'Buonasera',inFili:'Pensieri di questa lettera nei «Fili d’oro»',hlBtn:'Evidenzia',hlDel:'Rimuovi',mine:'I miei segni',mineS:'Evidenziazioni, note e segnalibri',mEmpty:'Qui troverai i passi che evidenzi, le note e i segnalibri. Seleziona un testo mentre leggi.',mHl:'Evidenziazioni',mExp:'Esporta',copied:'Copiato ✓',hlDone:'Evidenziato ✓',selErr:'Segnala',noteSaved:'Appunto salvato ✓',errQueued:'Segnalazione aggiunta ✓',pendingErr:'Segnalazioni in attesa',sendAll:'Invia tutte per email',noPending:'Nessuna segnalazione in attesa.',wholeSection:'(l’intera sezione)',errSent:'Email aperta — ricordi di inviarla',
    errCats:['Ortografia','Ripetizione','Numerazione','Dovrebbe essere sottotitolo','Sottotitolo errato','Altro'],errNotePh:'Spiegazione facoltativa…',errType:'Che tipo di errore?',confirm:'Conferma',
    listen:'Ascolta',stopListen:'Interrompi',print:'Stampa'},
  pt:{app:'Scritti FSA',hero:'Bem-aventurada Ana Rosa Gattorno',heroS:'Escritos e livros da espiritualidade da Família de Sant’Ana',
@@ -272,7 +273,7 @@ const UI = {
    aboutT:'Este aplicativo reúne os escritos da Bem-aventurada Ana Rosa Gattorno (1831-1900), fundadora das Filhas de Sant’Ana, e os principais livros sobre a sua vida e espiritualidade. As traduções recentes são edições de trabalho (outubro-novembro de 2026), à espera de revisão.',
    note:'Nota',sections:'seções',vol:'Volume',err:'Não foi possível carregar o texto. Verifique a conexão.',letters:'cartas',
    reportErr:'Assinalar um erro neste texto',myNotes:'Minhas anotações',notePh:'Escreva aqui uma anotação pessoal…',
-   selNote:'Salvar',inFili:'Pensamentos desta carta nos «Fios de ouro»',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
+   selNote:'Salvar',fontL:'Tipo de letra',fSerif:'Clássico',fSans:'Moderno',lhL:'Entrelinha',lhS:'Estreita',lhM:'Normal',lhW:'Ampla',autoT:'Auto',gm:'Bom dia',ga:'Boa tarde',ge:'Boa noite',inFili:'Pensamentos desta carta nos «Fios de ouro»',hlBtn:'Destacar',hlDel:'Remover',mine:'Meus marcadores',mineS:'Destaques, notas e marcadores',mEmpty:'Aqui você encontrará os trechos destacados, as notas e os marcadores. Selecione um texto durante a leitura.',mHl:'Destaques',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Destacado ✓',selErr:'Assinalar',noteSaved:'Anotação salva ✓',errQueued:'Assinalação adicionada ✓',pendingErr:'Assinalações pendentes',sendAll:'Enviar todas por e-mail',noPending:'Nenhuma assinalação pendente.',wholeSection:'(toda a seção)',errSent:'E-mail aberto — lembre-se de enviá-lo',
    errCats:['Ortografia','Repetição','Numeração','Devia ser subtítulo','Subtítulo errado','Outro'],errNotePh:'Explicação opcional…',errType:'Que tipo de erro?',confirm:'Confirmar',
    listen:'Ouvir',stopListen:'Parar',print:'Imprimir'},
  es:{app:'Scritti FSA',hero:'Beata Ana Rosa Gattorno',heroS:'Escritos y libros de la espiritualidad de la Familia de Santa Ana',
@@ -285,7 +286,7 @@ const UI = {
    aboutT:'Esta aplicación reúne los escritos de la Beata Ana Rosa Gattorno (1831-1900), fundadora de las Hijas de Santa Ana, y los principales libros sobre su vida y espiritualidad. Las traducciones recientes son ediciones de trabajo (octubre-noviembre de 2026), pendientes de revisión.',
    note:'Nota',sections:'secciones',vol:'Volumen',err:'No se pudo cargar el texto. Compruebe la conexión.',letters:'cartas',
    reportErr:'Señalar un error en este texto',myNotes:'Mis notas',notePh:'Escriba aquí una nota personal…',
-   selNote:'Guardar',inFili:'Pensamientos de esta carta en los «Hilos de oro»',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
+   selNote:'Guardar',fontL:'Tipo de letra',fSerif:'Clásico',fSans:'Moderno',lhL:'Interlineado',lhS:'Estrecho',lhM:'Normal',lhW:'Amplio',autoT:'Auto',gm:'Buenos días',ga:'Buenas tardes',ge:'Buenas noches',inFili:'Pensamientos de esta carta en los «Hilos de oro»',hlBtn:'Resaltar',hlDel:'Quitar',mine:'Mis marcas',mineS:'Resaltados, notas y marcadores',mEmpty:'Aquí encontrarás los pasajes resaltados, las notas y los marcadores. Selecciona un texto mientras lees.',mHl:'Resaltados',mExp:'Exportar',copied:'Copiado ✓',hlDone:'Resaltado ✓',selErr:'Señalar',noteSaved:'Nota guardada ✓',errQueued:'Señalización añadida ✓',pendingErr:'Señalizaciones pendientes',sendAll:'Enviar todas por email',noPending:'Ninguna señalización pendiente.',wholeSection:'(toda la sección)',errSent:'Correo abierto — recuerde enviarlo',
    errCats:['Ortografía','Repetición','Numeración','Debería ser subtítulo','Subtítulo incorrecto','Otro'],errNotePh:'Explicación opcional…',errType:'¿Qué tipo de error?',confirm:'Confirmar',
    listen:'Escuchar',stopListen:'Detener',print:'Imprimir'},
  en:{app:'Scritti FSA',hero:'Blessed Anna Rosa Gattorno',heroS:'Writings and books of the spirituality of the Family of Saint Anne',
@@ -298,7 +299,7 @@ const UI = {
    aboutT:'This app gathers the writings of Blessed Anna Rosa Gattorno (1831-1900), foundress of the Daughters of Saint Anne, and the main books on her life and spirituality. Recent translations are working editions (October-November 2026) awaiting review.',
    note:'Note',sections:'sections',vol:'Volume',err:'Could not load the text. Please check the connection.',letters:'letters',
    reportErr:'Report an error in this text',myNotes:'My notes',notePh:'Write a personal note here…',
-   selNote:'Save',inFili:'Thoughts from this letter in «Threads of Gold»',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
+   selNote:'Save',fontL:'Typeface',fSerif:'Classic',fSans:'Modern',lhL:'Line spacing',lhS:'Tight',lhM:'Normal',lhW:'Wide',autoT:'Auto',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',inFili:'Thoughts from this letter in «Threads of Gold»',hlBtn:'Highlight',hlDel:'Remove',mine:'My marks',mineS:'Highlights, notes and bookmarks',mEmpty:'Here you will find your highlighted passages, notes and bookmarks. Select a text while reading.',mHl:'Highlights',mExp:'Export',copied:'Copied ✓',hlDone:'Highlighted ✓',selErr:'Flag',noteSaved:'Note saved ✓',errQueued:'Report added ✓',pendingErr:'Pending reports',sendAll:'Send all by email',noPending:'No pending reports.',wholeSection:'(the whole section)',errSent:'Email opened — remember to send it',
    errCats:['Spelling','Repetition','Numbering','Should be a subtitle','Wrong subtitle','Other'],errNotePh:'Optional explanation…',errType:'What kind of error?',confirm:'Confirm',
    listen:'Listen',stopListen:'Stop',print:'Print'}
 };
@@ -320,10 +321,14 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const T=()=>UI[LANG];
 function applyPrefs(){
   document.documentElement.style.setProperty('--fs',store.get('fs',19)+'px');
-  document.body.className=store.get('theme','light')==='light'?'':store.get('theme');
+  let th=store.get('theme','light');if(th==='auto')th=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  document.body.className=th==='light'?'':th;
+  document.documentElement.style.setProperty('--lh',store.get('lh',1.62));
+  document.documentElement.style.setProperty('--rfont',store.get('font','serif')==='sans'?'var(--sans)':'var(--serif)');
   document.documentElement.lang=LANG;
 }
 applyPrefs();
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(store.get('theme','light')==='auto')applyPrefs()})}catch(e){}
 
 let _audM=null;
 async function audioManifest(){if(_audM)return _audM;try{const r=await fetch('data/audio/manifest.json',{cache:'no-cache'});_audM=r.ok?await r.json():{};}catch(e){_audM={};}return _audM;}
@@ -449,7 +454,8 @@ function workRow(w,c){
 async function home(){
   renderBar(T().app,false);
   const door=(k,t,s,act,cls)=>`<button class="door${cls?' '+cls:''}" onclick="${act}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span style="min-width:0"><div class="dt">${esc(t)}</div><div class="ds">${esc(s)}</div></span></button>`;
-  let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
+  const _hr=new Date().getHours(),_gr=_hr<5||_hr>=18?T().ge:_hr<13?T().gm:T().ga;
+  let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><div class="greet">${esc(_gr)}</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
   h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('mine',T().mine,T().mineS,"location.hash='#m'",'wide')}</div>`;
   h+=`<div class="card thought life" id="life" style="display:none"></div>`;
   h+=`<div class="card thought" id="thought" style="display:none"></div>`;
@@ -767,7 +773,9 @@ function openSettings(){
   const th=store.get('theme','light'),fs=store.get('fs',19);
   let h=`<h4>${esc(T().settings)}</h4>
   <div class="row"><span>${esc(T().size)}</span><div class="seg"><button onclick="setFs(-1)">A−</button><button disabled>${fs}</button><button onclick="setFs(1)">A+</button></div></div>
-  <div class="row"><span>${esc(T().theme)}</span><div class="seg">${['light','sepia','dark'].map(t=>`<button class="${t===th?'on':''}" onclick="setTheme('${t}')">${esc(T()[t])}</button>`).join('')}</div></div>
+  <div class="row"><span>${esc(T().theme)}</span><div class="seg">${['auto','light','sepia','dark'].map(t=>`<button class="${t===th?'on':''}" onclick="setTheme('${t}')">${esc(t==='auto'?T().autoT:T()[t])}</button>`).join('')}</div></div>
+  <div class="row"><span>${esc(T().fontL)}</span><div class="seg">${[['serif',T().fSerif],['sans',T().fSans]].map(([k,n])=>`<button class="${store.get('font','serif')===k?'on':''}" onclick="setFont('${k}')">${esc(n)}</button>`).join('')}</div></div>
+  <div class="row"><span>${esc(T().lhL)}</span><div class="seg">${[[1.45,T().lhS],[1.62,T().lhM],[1.85,T().lhW]].map(([k,n])=>`<button class="${+store.get('lh',1.62)===k?'on':''}" onclick="setLh(${k})">${esc(n)}</button>`).join('')}</div></div>
   <div class="row"><span>${esc(T().lang)}</span><div class="seg">${LANGS.map(l=>`<button class="${l===LANG?'on':''}" onclick="setLang('${l}')">${l.toUpperCase()}</button>`).join('')}</div></div>`;
   if(readerState&&location.hash.startsWith('#r-'))h+=`<div class="row"><span>${esc(T().addBm)}</span><button class="btn" onclick="addBm()">＋</button></div>`;
   const bms=store.get('bm',[]);
@@ -782,6 +790,8 @@ function openSettings(){
 }
 function openAbout(){openSheet(`<h4>${esc(T().about)}</h4><div class="txt"><p>${esc(T().aboutT)}</p></div>`)}
 function setFs(d){store.set('fs',Math.max(14,Math.min(30,store.get('fs',19)+d)));applyPrefs();openSettings()}
+function setFont(k){store.set('font',k);applyPrefs();openSettings()}
+function setLh(k){store.set('lh',k);applyPrefs();openSettings()}
 function setTheme(t){store.set('theme',t);applyPrefs();openSettings()}
 function setLang(l){LANG=l;store.set('lang',l);applyPrefs();closeSheet();route()}
 
