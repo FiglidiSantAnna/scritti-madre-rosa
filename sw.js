@@ -1,10 +1,11 @@
-const V='mr-v334';
+const V='mr-v335';
 const SHELL=['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','data/catalog.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
   const u=new URL(e.request.url);
   if(e.request.method!=='GET'||u.origin!==location.origin)return;
+  if(u.pathname.endsWith('.mp3')||u.pathname.endsWith('audio/manifest.json'))return; // audio: gestito dal browser (Range) e senza cache
   const isShell=u.pathname.endsWith('/')||u.pathname.endsWith('index.html')||u.pathname.endsWith('catalog.json');
   if(isShell){ // rete prima, poi cache
     e.respondWith(fetch(e.request.url,{cache:'no-cache'}).then(r=>{const c=r.clone();caches.open(V).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request)));

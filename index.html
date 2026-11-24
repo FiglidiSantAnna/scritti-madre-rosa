@@ -317,6 +317,8 @@ function applyPrefs(){
 }
 applyPrefs();
 
+let _audM=null;
+async function audioManifest(){if(_audM)return _audM;try{const r=await fetch('data/audio/manifest.json',{cache:'no-cache'});_audM=r.ok?await r.json():{};}catch(e){_audM={};}return _audM;}
 async function getJSON(u){
   if(CACHE[u])return CACHE[u];
   const r=await fetch(u);if(!r.ok)throw new Error(r.status);
@@ -551,6 +553,18 @@ async function reader(id,i,hl){
   h+=`<div class="nav"><button ${pv<0?'disabled':''} onclick="location.hash='#r-${id}-${pv}'">‹ ${esc(T().prev)}</button><button onclick="location.hash='#w-${id}'">${esc(T().toc)}</button><button ${nx>=n?'disabled':''} onclick="location.hash='#r-${id}-${nx}'">${esc(T().next)} ›</button></div>`;
   h+=`<div style="text-align:center;margin:10px 0 30px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="openNoteFor()">✎ ${esc(T().myNotes)}</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="reportError()">⚑ ${esc(T().reportErr)}</button><button id="tts-btn" class="btn sec tts-btn" style="font-size:12.5px;padding:6px 12px" onclick="toggleTTS()">🔊 ${esc(T().listen)}</button><button id="tts-voice" class="btn sec" style="font-size:12.5px;padding:6px 10px" onclick="cycleTTSVoice()" title="voce">🎙</button><button class="btn sec" style="font-size:12.5px;padding:6px 12px" onclick="printSection()">🖨 ${esc(T().print)}</button></div>`;
   $('#main').innerHTML=h;
+  /* audio registrato (voce neurale): continua anche a schermo spento */
+  try{
+    const am=await audioManifest(),list=am[id]&&am[id][l];
+    if(list&&list.includes(i)){
+      const lab={it:'Ascolta la lettura registrata',pt:'Ouvir a leitura gravada',es:'Escuchar la lectura grabada',en:'Listen to the recorded reading'}[LANG]||'';
+      $('#main').insertAdjacentHTML('afterbegin',`<div class="audbox" style="margin:0 0 14px;text-align:center"><div class="muted" style="font-size:12.5px;margin-bottom:4px">🎧 ${esc(lab)}</div><audio id="aud" controls preload="none" style="width:100%" src="data/audio/${id}/${l}/${i}.mp3"></audio></div>`);
+      const a=document.getElementById('aud');
+      a.addEventListener('play',()=>{try{navigator.mediaSession.metadata=new MediaMetadata({title:s.e.t,artist:'Scritti FSA'});}catch(e){}});
+      a.addEventListener('ended',()=>{if(list.includes(i+1)){window._audAuto=true;location.hash='#r-'+id+'-'+(i+1);}});
+      if(window._audAuto){window._audAuto=false;a.play().catch(()=>{});}
+    }
+  }catch(e){}
   const txt=$('#txt');
   if(hl){highlight(txt,hl)}
   else{const p=store.get('pos.'+id,null);
