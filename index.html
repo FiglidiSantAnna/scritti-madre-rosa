@@ -792,7 +792,7 @@ function openSettings(){
   h+=`<h4 style="margin-top:18px">${esc(T().pendingErr)}${errq.length?' ('+errq.length+')':''}</h4>`;
   h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}${e.cat?` · <b>${esc(e.cat)}</b>`:''}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div>${e.note?`<div class="muted" style="font-size:12px;font-style:italic">${esc(e.note)}</div>`:''}</li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
-  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v352</div>`;
+  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v354</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
   openSheet(h);
 }
@@ -858,34 +858,36 @@ document.addEventListener('click',e=>{
 });
 
 /* ── mappa delle case (fondazioni di Madre Rosa) ── */
-let _MAP=null,_mapV=7;
+let _MAP=null,_mapV=9;
 function mapData(){return _MAP||(_MAP=fetch('data/mappa.json').then(r=>r.json()).catch(()=>null))}
-const MAP_VOL={1:'1864-70',2:'1870-72',3:'1873-74',4:'1875-77',5:'1878-79',6:'1880-81',7:'1882-83'};
+const MAP_VOL={1:'1864-70',2:'1870-72',3:'1873-74',4:'1875-77',5:'1878-79',6:'1880-81',7:'1882-83',8:'1884-1900',9:'1991→'},MAP_END={1:'1870',2:'1872',3:'1874',4:'1877',5:'1879',6:'1881',7:'1883',8:'1900',9:'oggi'};
 async function mapView(){
   renderBar(T().mapT,true);const D=await mapData();
   if(!D){$('#main').innerHTML=`<div class="notice">${esc(T().err)}</div>`;return}
-  const P=D.places,it=P.filter(p=>p.lat>30),out=P.filter(p=>p.lat<=30);
+  const P=D.places,isIt=p=>p.lat>35&&p.lon>6&&p.lon<19,it=P.filter(isIt),out=P.filter(p=>!isIt(p));
   const X=lo=>((lo-6.5)*0.743*50).toFixed(1),Y=la=>((47.2-la)*50).toFixed(1);
-  const col=v=>['#6d1a2a','#8b2a3c','#b08a3e','#7a6a5d','#3f6b5a','#35577a','#5c3f7a'][v-1];
+  const col=v=>['#6d1a2a','#8b2a3c','#b08a3e','#7a6a5d','#3f6b5a','#35577a','#5c3f7a','#a0522d','#1f6f78'][v-1];
   $('#main').innerHTml;
   $('#main').innerHTML=`<div class="whead"><h2>${esc(T().mapT)}</h2><div class="s">${esc(T().mapS)}</div></div>
   <div class="mapbox"><svg id="mapsvg" viewBox="0 0 455 535" role="img"><g class="land"><polygon points="38.3,170.5 55.7,167.5 78.0,147.5 90.3,140.0 102.2,144.0 124.5,157.5 139.3,165.0 148.6,182.5 150.5,200.0 163.5,222.5 170.9,240.0 196.9,255.0 211.8,272.5 224.8,287.5 245.2,297.5 263.8,300.0 280.5,315.0 287.9,320.0 291.6,330.0 306.5,327.5 315.8,345.0 326.9,360.0 341.8,365.0 352.9,390.0 360.4,415.0 349.2,427.5 341.8,447.5 339.9,462.5 354.8,463.5 373.4,425.0 393.8,415.0 394.9,406.0 395.6,390.0 371.5,372.5 380.8,345.0 398.6,336.5 426.5,357.5 440.6,370.0 445.8,352.5 425.4,327.5 385.2,304.0 350.0,278.5 359.6,266.0 349.2,263.5 328.8,265.0 315.4,260.0 286.8,237.0 260.0,179.0 237.8,165.0 225.5,157.0 215.5,140.0 222.9,112.5 217.3,88.5 270.1,77.5 263.8,60.0 256.3,35.0 219.2,27.5 170.9,12.5 148.6,17.5 133.7,30.0 107.7,35.0 92.9,60.0 74.3,55.0 55.7,65.0 18.6,65.0 11.1,75.0 18.6,100.0 18.6,135.0 37.1,152.5"/><polygon points="220.3,470.0 222.9,459.0 254.8,452.5 278.6,458.0 325.1,446.5 336.2,450.0 319.5,485.0 326.9,506.5 321.3,526.0 310.2,525.0 287.9,507.5 260.0,497.5 226.6,477.5"/><polygon points="61.3,330.0 66.9,305.0 100.3,297.5 111.5,314.0 118.9,340.0 115.2,395.0 96.6,400.0 79.9,415.0 72.4,385.0 74.3,365.0 66.9,332.5"/></g><g id="dots"></g></svg></div>
-  <div class="maprow"><span id="mapyr"></span><input id="mapr" type="range" min="1" max="7" step="1" value="${_mapV}" aria-label="${esc(T().mapUp)}"></div>
-  <div class="maplg">${[1,2,3,4,5,6,7].map(v=>`<span><i style="background:${col(v)}"></i>${MAP_VOL[v]}</span>`).join('')}</div>
+  <div class="maprow"><span id="mapyr"></span><input id="mapr" type="range" min="1" max="9" step="1" value="${_mapV}" aria-label="${esc(T().mapUp)}"></div>
+  <div class="maplg">${[1,2,3,4,5,6,7,8,9].map(v=>`<span><i style="background:${col(v)}"></i>${MAP_VOL[v]}</span>`).join('')}</div>
   <div class="muted" style="text-align:center;margin:2px 0 10px">${esc(T().mapTap)}</div>
   <div id="mapout"></div><div class="muted" style="font-size:12px;line-height:1.45;margin:16px 4px">${esc(T().mapNote)}</div>`;
   const draw=()=>{const v=_mapV;
-    $('#mapyr').textContent=T().mapLet+' '+MAP_VOL[v].replace(/^\d+/,'1864').replace(/-.*$/,'')+'–'+'18'+MAP_VOL[v].slice(-2)+' · '+P.reduce((a,p)=>a+p.f.filter(f=>f.v<=v).length,0)+' '+T().mapW;
+    $('#mapyr').textContent='1864 → '+MAP_END[v]+' · '+P.reduce((a,p)=>a+p.f.filter(f=>f.v<=v).length,0)+' '+T().mapW;
     $('#dots').innerHTML=it.map((p,k)=>{const f=p.f.filter(f=>f.v<=v);if(!f.length)return '';const e=Math.min(...f.map(x=>x.v));
       return `<g class="dot" data-k="${k}"><circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="${(5+Math.min(f.length,6)*1.1).toFixed(1)}" fill="${col(e)}" fill-opacity=".85" stroke="#fff" stroke-width="1.2"/><circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="16" fill="transparent"/></g>`}).join('');
     document.querySelectorAll('#dots .dot').forEach(g=>g.onclick=()=>mapOpen(it[+g.dataset.k]));
     $('#mapout').innerHTML=out.filter(p=>p.f.some(f=>f.v<=v)).length?`<h4>${esc(T().mapOut)}</h4><div class="chips">${out.filter(p=>p.f.some(f=>f.v<=v)).map(p=>`<button class="chip fill" onclick='mapOpenN(${JSON.stringify(p.n)})'>${esc(p.n)}</button>`).join('')}</div>`:''};
   draw();$('#mapr').oninput=e=>{_mapV=+e.target.value;draw()};
   window.scrollTo(0,0)}
+function mapInfo(n,id){mapData().then(D=>{const p=D.places.find(x=>x.n===n),x=p&&p.f.find(y=>y.id===id);if(!x)return;
+  openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><p><b>${esc(x.t)}</b>${x.y?' · '+esc(x.y):''}</p><p>${esc(x.txt)}</p></div>`)})}
 function mapOpenN(n){mapData().then(D=>{const p=D.places.find(x=>x.n===n);if(p)mapOpen(p)})}
 function mapOpen(p){
   const f=p.f.filter(x=>x.v<=_mapV);
-  openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><div class="scheda-refs">${f.map(x=>`<button class="ref-btn" onclick="openPersonaSheet('${x.id}')">${esc(x.t)} <span class="muted" style="font-size:12px">· ${esc(T().mapLet)} ${MAP_VOL[x.v]}</span></button>`).join('')}</div></div>`);
+  openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><div class="scheda-refs">${f.map(x=>`<button class="ref-btn" onclick="${x.txt?`mapInfo(${esc(JSON.stringify(p.n))},${esc(JSON.stringify(x.id))})`:`openPersonaSheet('${x.id}')`}">${esc(x.t)} <span class="muted" style="font-size:12px">· ${x.y?esc(x.y):esc(T().mapLet)+' '+MAP_VOL[x.v]}</span></button>`).join('')}</div></div>`);
   $('#sheet').scrollTop=0}
 
 
