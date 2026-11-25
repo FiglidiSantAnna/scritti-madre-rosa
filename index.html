@@ -1385,6 +1385,10 @@ $('#copybtn').addEventListener('click',async()=>{
 });
 
 /* ------------------------------------------------------------------ instradamento */
+async function gotoConc(w,n){
+  try{const c=await fetch('data/concordanza.json').then(r=>r.json());const a=c&&c[w]&&c[w][LANG==='it'?'it':LANG];const k=a&&a[+n];
+    location.replace(k!=null?'#r-'+w+'-'+k:'#w-'+w)}catch(e){location.replace('#w-'+w)}
+}
 async function gotoLetter(v,n){
   try{const m=await letterMap();const k=m&&m.get(v+'.'+n);location.replace(k!=null?'#r-lettere-'+k:'#w-lettere')}
   catch(e){location.replace('#w-lettere')}
@@ -1394,6 +1398,7 @@ function route(){
   closeSheet();readerState=null;SELTXT='';$('#copybar').style.display='none';$('#prog').style.width='0';
   const p=location.hash.replace(/^#/,'').split('-');
   if(p[0]==='L')return gotoLetter(p[1],p[2]);
+  if(p[0]==='C')return gotoConc(p[1],p[2]);
   if(p[0]==='w')return workView(p[1]);
   if(p[0]==='r'){const hl=PENDING_HL;PENDING_HL=null;return reader(p[1],p[2],hl)}
   if(p[0]==='quiz')return quizView();
