@@ -792,7 +792,7 @@ function openSettings(){
   h+=`<h4 style="margin-top:18px">${esc(T().pendingErr)}${errq.length?' ('+errq.length+')':''}</h4>`;
   h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}${e.cat?` · <b>${esc(e.cat)}</b>`:''}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div>${e.note?`<div class="muted" style="font-size:12px;font-style:italic">${esc(e.note)}</div>`:''}</li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
-  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v355</div>`;
+  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v356</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
   openSheet(h);
 }
@@ -878,16 +878,16 @@ async function mapView(){
     $('#mapyr').textContent='1864 → '+MAP_END[v]+' · '+P.reduce((a,p)=>a+p.f.filter(f=>f.v<=v).length,0)+' '+T().mapW;
     $('#dots').innerHTML=it.map((p,k)=>{const f=p.f.filter(f=>f.v<=v);if(!f.length)return '';const e=Math.min(...f.map(x=>x.v));
       return `<g class="dot" data-k="${k}"><circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="${(5+Math.min(f.length,6)*1.1).toFixed(1)}" fill="${col(e)}" fill-opacity=".85" stroke="#fff" stroke-width="1.2"/><circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="16" fill="transparent"/></g>`}).join('');
-    document.querySelectorAll('#dots .dot').forEach(g=>g.onclick=()=>mapOpen(it[+g.dataset.k]));
+    document.querySelectorAll('#dots .dot').forEach(g=>g.onclick=()=>{const p=it[+g.dataset.k],px=+X(p.lon),py=+Y(p.lat);const grp=it.filter(q=>q.f.some(f=>f.v<=_mapV)&&Math.hypot(+X(q.lon)-px,+Y(q.lat)-py)<=11);mapOpen(p,grp.length>1?grp:null)});
     $('#mapout').innerHTML=out.filter(p=>p.f.some(f=>f.v<=v)).length?`<h4>${esc(T().mapOut)}</h4><div class="chips">${out.filter(p=>p.f.some(f=>f.v<=v)).map(p=>`<button class="chip fill" onclick='mapOpenN(${JSON.stringify(p.n)})'>${esc(p.n)}</button>`).join('')}</div>`:''};
   draw();$('#mapr').oninput=e=>{_mapV=+e.target.value;draw()};
   window.scrollTo(0,0)}
 function mapInfo(n,id){mapData().then(D=>{const p=D.places.find(x=>x.n===n),x=p&&p.f.find(y=>y.id===id);if(!x)return;
   openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><p><b>${esc(x.t)}</b>${x.y?' · '+esc(x.y):''}</p><p>${esc(x.txt)}</p></div>`)})}
 function mapOpenN(n){mapData().then(D=>{const p=D.places.find(x=>x.n===n);if(p)mapOpen(p)})}
-function mapOpen(p){
-  const f=p.f.filter(x=>x.v<=_mapV);
-  openSheet(`<div class="scheda-persona"><h4>${esc(p.n)}</h4><div class="scheda-refs">${f.map(x=>`<button class="ref-btn" onclick="${x.txt?`mapInfo(${esc(JSON.stringify(p.n))},${esc(JSON.stringify(x.id))})`:`openPersonaSheet('${x.id}')`}">${esc(x.t)} <span class="muted" style="font-size:12px">· ${x.y?esc(x.y):esc(T().mapLet)+' '+MAP_VOL[x.v]}</span></button>`).join('')}</div></div>`);
+function mapOpen(p,grp){
+  const one=(p,h)=>{const f=p.f.filter(x=>x.v<=_mapV);return `${h?`<h4>${esc(p.n)}</h4>`:''}<div class="scheda-refs">${f.map(x=>`<button class="ref-btn" onclick="${x.txt?`mapInfo(${esc(JSON.stringify(p.n))},${esc(JSON.stringify(x.id))})`:`openPersonaSheet('${x.id}')`}">${esc(x.t)} <span class="muted" style="font-size:12px">· ${x.y?esc(x.y):esc(T().mapLet)+' '+MAP_VOL[x.v]}</span></button>`).join('')}</div>`};
+  openSheet(`<div class="scheda-persona">${grp?`<h4>${esc(T().mapNear||'Case vicine')}</h4>`+grp.map(q=>`<p style="margin:12px 0 4px;font-weight:700;color:var(--gold)">${esc(q.n)}</p>`+one(q,false)).join(''):one(p,true).replace('<div class="scheda-refs">','<div class="scheda-refs">')}</div>`);
   $('#sheet').scrollTop=0}
 
 
