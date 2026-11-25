@@ -792,7 +792,7 @@ function openSettings(){
   h+=`<h4 style="margin-top:18px">${esc(T().pendingErr)}${errq.length?' ('+errq.length+')':''}</h4>`;
   h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}${e.cat?` · <b>${esc(e.cat)}</b>`:''}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div>${e.note?`<div class="muted" style="font-size:12px;font-style:italic">${esc(e.note)}</div>`:''}</li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
-  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v354</div>`;
+  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v355</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
   openSheet(h);
 }
@@ -858,7 +858,7 @@ document.addEventListener('click',e=>{
 });
 
 /* ── mappa delle case (fondazioni di Madre Rosa) ── */
-let _MAP=null,_mapV=9;
+let _MAP=null,_mapV=8;
 function mapData(){return _MAP||(_MAP=fetch('data/mappa.json').then(r=>r.json()).catch(()=>null))}
 const MAP_VOL={1:'1864-70',2:'1870-72',3:'1873-74',4:'1875-77',5:'1878-79',6:'1880-81',7:'1882-83',8:'1884-1900',9:'1991→'},MAP_END={1:'1870',2:'1872',3:'1874',4:'1877',5:'1879',6:'1881',7:'1883',8:'1900',9:'oggi'};
 async function mapView(){
@@ -870,8 +870,8 @@ async function mapView(){
   $('#main').innerHTml;
   $('#main').innerHTML=`<div class="whead"><h2>${esc(T().mapT)}</h2><div class="s">${esc(T().mapS)}</div></div>
   <div class="mapbox"><svg id="mapsvg" viewBox="0 0 455 535" role="img"><g class="land"><polygon points="38.3,170.5 55.7,167.5 78.0,147.5 90.3,140.0 102.2,144.0 124.5,157.5 139.3,165.0 148.6,182.5 150.5,200.0 163.5,222.5 170.9,240.0 196.9,255.0 211.8,272.5 224.8,287.5 245.2,297.5 263.8,300.0 280.5,315.0 287.9,320.0 291.6,330.0 306.5,327.5 315.8,345.0 326.9,360.0 341.8,365.0 352.9,390.0 360.4,415.0 349.2,427.5 341.8,447.5 339.9,462.5 354.8,463.5 373.4,425.0 393.8,415.0 394.9,406.0 395.6,390.0 371.5,372.5 380.8,345.0 398.6,336.5 426.5,357.5 440.6,370.0 445.8,352.5 425.4,327.5 385.2,304.0 350.0,278.5 359.6,266.0 349.2,263.5 328.8,265.0 315.4,260.0 286.8,237.0 260.0,179.0 237.8,165.0 225.5,157.0 215.5,140.0 222.9,112.5 217.3,88.5 270.1,77.5 263.8,60.0 256.3,35.0 219.2,27.5 170.9,12.5 148.6,17.5 133.7,30.0 107.7,35.0 92.9,60.0 74.3,55.0 55.7,65.0 18.6,65.0 11.1,75.0 18.6,100.0 18.6,135.0 37.1,152.5"/><polygon points="220.3,470.0 222.9,459.0 254.8,452.5 278.6,458.0 325.1,446.5 336.2,450.0 319.5,485.0 326.9,506.5 321.3,526.0 310.2,525.0 287.9,507.5 260.0,497.5 226.6,477.5"/><polygon points="61.3,330.0 66.9,305.0 100.3,297.5 111.5,314.0 118.9,340.0 115.2,395.0 96.6,400.0 79.9,415.0 72.4,385.0 74.3,365.0 66.9,332.5"/></g><g id="dots"></g></svg></div>
-  <div class="maprow"><span id="mapyr"></span><input id="mapr" type="range" min="1" max="9" step="1" value="${_mapV}" aria-label="${esc(T().mapUp)}"></div>
-  <div class="maplg">${[1,2,3,4,5,6,7,8,9].map(v=>`<span><i style="background:${col(v)}"></i>${MAP_VOL[v]}</span>`).join('')}</div>
+  <div class="maprow"><span id="mapyr"></span><input id="mapr" type="range" min="1" max="8" step="1" value="${_mapV}" aria-label="${esc(T().mapUp)}"></div>
+  <div class="maplg">${[1,2,3,4,5,6,7,8].map(v=>`<span><i style="background:${col(v)}"></i>${MAP_VOL[v]}</span>`).join('')}</div>
   <div class="muted" style="text-align:center;margin:2px 0 10px">${esc(T().mapTap)}</div>
   <div id="mapout"></div><div class="muted" style="font-size:12px;line-height:1.45;margin:16px 4px">${esc(T().mapNote)}</div>`;
   const draw=()=>{const v=_mapV;
