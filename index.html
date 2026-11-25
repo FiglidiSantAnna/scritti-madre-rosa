@@ -58,6 +58,7 @@ main{max-width:760px;margin:0 auto;padding:0 16px 120px}
 .btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 14px;border-radius:20px;background:var(--wine);color:#fff}
 .btn.sec{background:transparent;color:var(--wine);border:1px solid var(--wine)}
 /* porte e scaffali */
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:6px 0 14px}.tile{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 6px 12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(80,50,20,.06);text-align:center;min-width:0}.tile:active{background:var(--bg)}.tile .di{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--wine);color:var(--gold2)}.tile .di svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.tile .tt{font-size:14.5px;line-height:1.15;color:var(--ink)}
 .exl{font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:16px 4px 2px}.exr .chip{font-size:14px}
 .doors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 6px}
 .door{display:flex;gap:10px;align-items:center;text-align:left;padding:13px 12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(80,50,20,.06);min-width:0}
@@ -466,20 +467,34 @@ async function home(){
   const _hr=new Date().getHours(),_gr=_hr<5||_hr>=18?T().ge:_hr<13?T().gm:T().ga;
   let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><div class="greet">${esc(_gr)}</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
   const EX={it:['Esplora','Oggi','Riprendi','Temi','Linea del tempo','Mappa delle case','I miei segni','Quiz','La biblioteca'],pt:['Explorar','Hoje','Continuar','Temas','Linha do tempo','Mapa das casas','Meus marcadores','Quiz','A biblioteca'],es:['Explorar','Hoy','Continuar','Temas','Línea del tiempo','Mapa de las casas','Mis marcas','Quiz','La biblioteca'],en:['Explore','Today','Resume','Themes','Timeline','Map of the houses','My marks','Quiz','The library']}[LANG]||[];
+  const HL=store.get('hl','b');
+  if(HL==='a'){
+    h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('map',T().mapT,T().mapS,"location.hash='#map'")}${door('mine',T().mine,T().mineS,"location.hash='#m'")}${door('quiz',T().qzT,T().qzS,"location.hash='#quiz'",'wide')}</div>`;
+    h+=prayDoor();
+    h+=`<div class="card thought life" id="life" style="display:none"></div>`;
+    h+=`<div class="card thought" id="thought" style="display:none"></div>`;
+  }else if(HL==='c'){
+    const tile=(k,t,a)=>`<button class="tile" onclick="${a}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span class="tt">${esc(t)}</span></button>`;
+    h+=`<div class="tiles">${tile('lib',T().dLib,'goLib()')}${tile('path',T().paths,"location.hash='#p'")}${tile('search',T().dSearch,"location.hash='#s'")}${tile('today',EX[1],'openToday()')}${tile('themes',EX[3],"location.hash='#t'")}${tile('time',EX[4],"location.hash='#c'")}${tile('map',EX[5],"location.hash='#map'")}${tile('mine',EX[6],"location.hash='#m'")}${tile('quiz',EX[7],"location.hash='#quiz'")}<a class="tile" href="https://figlidisantanna.github.io/preghiere-fsa/?l=${LANG}" style="text-decoration:none;color:inherit;grid-column:1/-1;flex-direction:row;justify-content:center;padding:12px"><span class="di" style="font-size:20px">✠</span><span class="tt">${esc((PRAY[LANG]||PRAY.it)[0])}</span></a></div>`;
+    h+=`<div class="card thought" id="thought" style="display:none"></div>`;
+  }else{
   h+=`<div class="card thought" id="thought" style="display:none"></div>`;
   h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}</div>`;
   h+=prayDoor();
   const ch=(t,a)=>`<button class="chip" onclick="${a}">${esc(t)}</button>`;
   h+=`<div class="exl">${esc(EX[0])}</div><div class="chips exr">${ch(EX[1],'openToday()')}${ch(EX[2],'openResume()')}${ch(EX[3],"location.hash='#t'")}${ch(EX[4],"location.hash='#c'")}${ch(EX[5],"location.hash='#map'")}${ch(EX[6],"location.hash='#m'")}${ch(EX[7],"location.hash='#quiz'")}</div>`;
+  }
   if(!store.get('guide',0))setTimeout(()=>{if(!store.get('guide',0)&&!document.getElementById('guide'))openGuide(0)},600);
-  h+=`<div class="exl" style="margin-top:20px">${esc(EX[8])}</div>`;
+  if(HL==='b')h+=`<div class="exl" style="margin-top:20px">${esc(EX[8])}</div>`;
   h+=`<div id="lib"></div>`;
-  const open=store.get('shelf2',{});
+  const open=HL==='a'?store.get('shelf',{scritti:1}):HL==='c'?{}:store.get('shelf2',{});
   const known=new Set(CATS);
   for(const c of CATS.concat([...new Set(CAT.map(w=>w.cat))].filter(x=>!known.has(x)))){
     const ws=CAT.filter(x=>x.cat===c);if(!ws.length)continue;
     h+=`<details class="grp shelf" data-c="${c}"${open[c]?' open':''}><summary><span>${CAT_ICON[c]||'✦'}</span><span class="sn">${esc(T().cats[c]||c)}</span><span class="sc">${ws.length} ${esc(T().works)}</span></summary>${ws.map(w=>workRow(w,c)).join('')}</details>`;
   }
+  const LY={it:['Aspetto','Completa','Semplice','Icone'],pt:['Aspecto','Completa','Simples','Ícones'],es:['Aspecto','Completa','Sencilla','Iconos'],en:['Layout','Full','Simple','Icons']}[LANG];
+  h+=`<div class="exl" style="text-align:center;margin-top:22px">${esc(LY[0])}</div><div class="chips" style="justify-content:center">${[['a',LY[1]],['b',LY[2]],['c',LY[3]]].map(([k,n])=>`<button class="chip${HL===k?' fill':''}" onclick="store.set('hl','${k}');home()">${esc(n)}</button>`).join('')}</div>`;
   h+=`<div class="foot">Figlie di Sant’Anna · Figli di Sant’Anna<br>${esc(T().about)}: <a href="#" onclick="openAbout();return false">ⓘ</a></div>`;
   $('#main').innerHTML=h;
   document.querySelectorAll('details.shelf').forEach(d=>d.addEventListener('toggle',()=>{const s=store.get('shelf2',{});s[d.dataset.c]=d.open?1:0;store.set('shelf2',s)}));
@@ -800,7 +815,7 @@ function openSettings(){
   h+=`<h4 style="margin-top:18px">${esc(T().pendingErr)}${errq.length?' ('+errq.length+')':''}</h4>`;
   h+=errq.length?`<ul class="errq">${errq.map((e,k)=>`<li><button class="del" onclick="delErrQueued(${k})">✕</button><div style="font-size:13px">${esc(e.wt)} · sez. ${e.i} · ${e.l.toUpperCase()}${e.cat?` · <b>${esc(e.cat)}</b>`:''}</div><div class="muted" style="font-size:12.5px">${e.t?esc(e.t.slice(0,140)):esc(T().wholeSection)}</div>${e.note?`<div class="muted" style="font-size:12px;font-style:italic">${esc(e.note)}</div>`:''}</li>`).join('')}</ul><button class="btn" style="margin-top:10px;width:100%" onclick="sendErrQueue()">${esc(T().sendAll)}</button>`:`<div class="muted">${esc(T().noPending)}</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().offline)}</h4><div class="row"><span id="offst" class="muted">${navigator.serviceWorker?'':'—'}</span><button class="btn sec" onclick="downloadAll()">${esc(T().offlineDo)}</button></div>`;
-  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v358</div>`;
+  h+=`<div class="muted" style="margin-top:16px;font-size:12px">v359</div>`;
   h+=`<h4 style="margin-top:18px">${esc(T().about)}</h4><div class="muted" style="line-height:1.5">${esc(T().aboutT)}</div>`;
   openSheet(h);
 }
