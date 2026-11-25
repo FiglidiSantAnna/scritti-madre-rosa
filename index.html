@@ -318,6 +318,7 @@ const store={get(k,d){try{const v=localStorage.getItem('mr.'+k);return v==null?d
   set(k,v){try{localStorage.setItem('mr.'+k,JSON.stringify(v))}catch(e){}}};
 let LANG=store.get('lang',null)||((navigator.language||'it').slice(0,2));
 if(!LANGS.includes(LANG))LANG='it';
+try{const _ql=new URLSearchParams(location.search).get('l');if(_ql&&LANGS.includes(_ql)){LANG=_ql;store.set('lang',_ql)}if(location.search)history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
 let CAT=null; const CACHE={};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -456,12 +457,15 @@ function workRow(w,c){
   const extra=w.letters?` · ${w.letters.toLocaleString(LANG)} ${esc(T().letters)}`:'';
   return `<button class="work" onclick="location.hash='#w-${w.id}'"><div class="ic">${CAT_ICON[c]||'✦'}</div><div class="tx"><div class="t">${esc(wTitle(w))}</div>${wSub(w)?`<div class="s">${esc(wSub(w))}${extra}</div>`:''}${w.author?`<div class="muted" style="font-size:12.5px;margin-top:2px">${esc(w.author)}</div>`:''}${badge}</div></button>`;
 }
+const PRAY={it:['Preghiere FSA','La preghiera di ogni giorno: liturgia, novene, veglie'],pt:['Orações FSA','A oração de cada dia: liturgia, novenas, vigílias'],es:['Oraciones FSA','La oración de cada día: liturgia, novenas, vigilias'],en:['Prayers FSA','Daily prayer: liturgy, novenas, vigils']};
+function prayDoor(){const t=PRAY[LANG]||PRAY.it;return `<div class="doors"><a class="door wide" href="https://figlidisantanna.github.io/preghiere-fsa/?l=${LANG}" style="text-decoration:none;color:inherit"><span class="di" style="font-size:20px">✠</span><span style="min-width:0"><div class="dt">${esc(t[0])}</div><div class="ds">${esc(t[1])}</div></span></a></div>`}
 async function home(){
   renderBar(T().app,false);
   const door=(k,t,s,act,cls)=>`<button class="door${cls?' '+cls:''}" onclick="${act}"><span class="di"><svg viewBox="0 0 24 24">${ICO[k]}</svg></span><span style="min-width:0"><div class="dt">${esc(t)}</div><div class="ds">${esc(s)}</div></span></button>`;
   const _hr=new Date().getHours(),_gr=_hr<5||_hr>=18?T().ge:_hr<13?T().gm:T().ga;
   let h=`<div class="hero"><div class="orn">✦ ✦ ✦</div><div class="greet">${esc(_gr)}</div><h2>${esc(T().hero)}</h2><p>${esc(T().heroS)}</p></div>`;
   h+=`<div class="doors">${door('path',T().paths,T().pathsS,"location.hash='#p'",'wide')}${door('lib',T().dLib,T().dLibS,'goLib()')}${door('search',T().dSearch,T().dSearchS,"location.hash='#s'")}${door('today',T().dToday,T().dTodayS,'openToday()')}${door('resume',T().dResume,T().dResumeS,'openResume()')}${door('themes',T().dThemes,T().dThemesS,"location.hash='#t'")}${door('time',T().dTime,T().dTimeS,"location.hash='#c'")}${door('map',T().mapT,T().mapS,"location.hash='#map'")}${door('mine',T().mine,T().mineS,"location.hash='#m'")}${door('quiz',T().qzT,T().qzS,"location.hash='#quiz'",'wide')}</div>`;
+  h+=prayDoor();
   h+=`<div class="card thought life" id="life" style="display:none"></div>`;
   if(!store.get('guide',0))setTimeout(()=>{if(!store.get('guide',0)&&!document.getElementById('guide'))openGuide(0)},600);
   h+=`<div class="card thought" id="thought" style="display:none"></div>`;
@@ -1362,10 +1366,15 @@ $('#copybtn').addEventListener('click',async()=>{
 });
 
 /* ------------------------------------------------------------------ instradamento */
+async function gotoLetter(v,n){
+  try{const m=await letterMap();const k=m&&m.get(v+'.'+n);location.replace(k!=null?'#r-lettere-'+k:'#w-lettere')}
+  catch(e){location.replace('#w-lettere')}
+}
 function route(){
   if(typeof stopTTSIfActive==='function')stopTTSIfActive();
   closeSheet();readerState=null;SELTXT='';$('#copybar').style.display='none';$('#prog').style.width='0';
   const p=location.hash.replace(/^#/,'').split('-');
+  if(p[0]==='L')return gotoLetter(p[1],p[2]);
   if(p[0]==='w')return workView(p[1]);
   if(p[0]==='r'){const hl=PENDING_HL;PENDING_HL=null;return reader(p[1],p[2],hl)}
   if(p[0]==='quiz')return quizView();
