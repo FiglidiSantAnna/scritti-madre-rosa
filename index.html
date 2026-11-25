@@ -393,7 +393,16 @@ $('#bmenu').onclick=()=>openSettings();
 let _CIT=null;
 function citazioni(){return _CIT||(_CIT=fetch('data/citazioni.json').then(r=>r.json()).catch(()=>null))}
 function inWin(w,d){const k=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return w[0]<=w[1]?(k>=w[0]&&k<=w[1]):(k>=w[0]||k<=w[1])}
+let _GIO=null;function giorni(){return _GIO||(_GIO=fetch('data/pensieri_giorno.json').then(r=>r.json()).catch(()=>null))}
 function dayThought(){
+  const d0=new Date(),gk=(d0.getMonth()+1)+'-'+d0.getDate();
+  return giorni().then(async G=>{
+    const q=G&&G[gk];
+    if(q){try{const lw=W('lettere');if(lw){const ll=effLang(lw,LANG),lx=await index(lw,ll),e=lx.toc[q.k];
+      if(e)return{t:q[ll]||q.it,src:wTitle(lw)+' — '+lClean(e.t)+(e.s?' · '+lClean(e.s):''),i:q.k,w:'lettere'}}}catch(x){}}
+    return dayThoughtBase()})
+}
+function dayThoughtBase(){
   const w=W('fili');if(!w)return Promise.resolve(null);
   const l=effLang(w,LANG);
   return Promise.all([index(w,l),citazioni()]).then(([ix,C])=>{
@@ -589,7 +598,7 @@ async function openToday(off){
   let h=`<div class="daynav"><button onclick="openToday(${DAYOFF-1})" aria-label="‹">‹</button><div class="dn">${esc(dlabel(mo,d))}</div><button onclick="openToday(${DAYOFF+1})" aria-label="›">›</button></div>`;
   h+=`<h4>${esc(T().onLife)}</h4><div id="onlife"><span class="spin"></span></div>`;
   if(DAYOFF===0){const t=await (TODAY||(TODAY=dayThought()));if(my!==DAYOFF)return;
-    if(t)h+=`<h4 style="margin-top:20px">${esc(T().thought)}</h4><div class="txt"><blockquote style="margin:.4em 0">«${esc(t.t)}»</blockquote><p class="nota">${esc(t.src)}</p></div><div style="text-align:center;margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" onclick="goRead('fili',${t.i})">${esc(T().readSrc)}</button><button class="btn" onclick="_Q=null;openShareQuote()">↗ ${esc(T().share)}</button></div>`}
+    if(t)h+=`<h4 style="margin-top:20px">${esc(T().thought)}</h4><div class="txt"><blockquote style="margin:.4em 0">«${esc(t.t)}»</blockquote><p class="nota">${esc(t.src)}</p></div><div style="text-align:center;margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn sec" onclick="goRead('${t.w||'fili'}',${t.i})">${esc(T().readSrc)}</button><button class="btn" onclick="_Q=null;openShareQuote()">↗ ${esc(T().share)}</button></div>`}
   h+=`<h4 style="margin-top:20px">${esc(T().onDay)}</h4><div id="onday"><span class="spin"></span></div>`;
   openSheet(h);$('#sheet').scrollTop=0;
   const C=await crono();if(my!==DAYOFF)return;const list=C[dkey(mo,d)]||[];
