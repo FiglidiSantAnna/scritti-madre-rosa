@@ -410,7 +410,7 @@ function dayThoughtBase(){
     if(!C||!C.items||!C.items.length)return null;
     const d=new Date();const seed=d.getFullYear()*400+d.getMonth()*32+d.getDate();
     const sea=C.items.filter(e=>e.d&&inWin(e.d,d)),gen=C.items.filter(e=>!e.d);
-    const pool=sea.length?sea:gen;const q=pool[seed%pool.length];
+    const useSea=sea.length>=5||(sea.length>0&&seed%3===0);const pool=useSea?sea:gen;const q=pool[(useSea&&sea.length<5?Math.floor(seed/3):seed)%pool.length];
     const txt=q[l]||q.it,ref=q['r_'+l]||q.r_it||'';
     const sec=ix.toc[q.s];
     return {t:txt,src:wTitle(w)+' — '+(sec?sec.t:'')+(ref?' · '+ref:''),i:q.s}
