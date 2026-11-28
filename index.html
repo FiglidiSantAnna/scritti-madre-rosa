@@ -385,7 +385,7 @@ function renderBar(title,canBack){
   $('#langs').innerHTML=LANGS.map(l=>`<button class="${l===LANG?'on':''}" data-l="${l}">${l.toUpperCase()}</button>`).join('');
 }
 $('#langs').onclick=e=>{const l=e.target.dataset.l;if(!l||l===LANG)return;LANG=l;store.set('lang',l);applyPrefs();route()};
-$('#back').onclick=()=>{const m=location.hash.match(/^#r-([a-z]+)-/);if(m){location.hash='#w-'+m[1];return}if(history.length>1)history.back();else location.hash=''};
+$('#back').onclick=()=>{const m=location.hash.match(/^#r-([a-z]+)-/);if(m&&RETSTACK.length){const e=RETSTACK.pop();RESTORE_Y=e.y;RET_TODAY=e.today;location.hash=e.h;return}if(m){location.hash='#w-'+m[1];return}if(history.length>1)history.back();else location.hash=''};
 $('#bhome').onclick=()=>{location.hash=''};
 $('#bsearch').onclick=()=>{const m=location.hash.match(/^#(?:w|r)-([a-z]+)/);location.hash='#s'+(m?'-'+m[1]:'')};
 $('#bmenu').onclick=()=>openSettings();
@@ -597,7 +597,11 @@ function pDone(id,n){
 function goLib(){const el=$('#lib');if(!el)return;const d=document.querySelector('details.shelf');if(d&&![...document.querySelectorAll('details.shelf')].some(x=>x.open))d.open=true;
   window.scrollTo({top:el.getBoundingClientRect().top+scrollY-64,behavior:'smooth'})}
 let DAYOFF=0;let RET_TODAY=null;
-function goRead(w,i){RET_TODAY=DAYOFF;closeSheet();location.hash='#r-'+w+'-'+i}
+/* pila di ritorno: da un salto (scheda, Oggi, Fili↔Lettere) il tasto «indietro» riporta dove eri, alla stessa riga */
+let RETSTACK=[],RESTORE_Y=null;
+function pushRet(){const h=location.hash;const home=(h===''||h==='#');RETSTACK.push({h:home?'':h,y:home?0:scrollY,today:home?DAYOFF:null});if(RETSTACK.length>25)RETSTACK.shift()}
+function jumpTo(h){pushRet();closeSheet();location.hash=h}
+function goRead(w,i){jumpTo('#r-'+w+'-'+i)}
 async function openToday(off){
   DAYOFF=off||0;const now=new Date();const day=new Date(now.getFullYear(),now.getMonth(),now.getDate()+DAYOFF);
   const mo=day.getMonth()+1,d=day.getDate(),my=DAYOFF;
@@ -704,6 +708,7 @@ async function reader(id,i,hl){
   if(hl){highlight(txt,hl)}
   else{const p=store.get('pos.'+id,null);
     if(p&&p.i===i&&p.y)requestAnimationFrame(()=>window.scrollTo(0,p.y*(document.body.scrollHeight-innerHeight)));else window.scrollTo(0,0)}
+  if(RESTORE_Y!=null){const y=RESTORE_Y;RESTORE_Y=null;setTimeout(()=>scrollTo(0,y),80);setTimeout(()=>scrollTo(0,y),450)}
   store.set('last',{w:id,i,t:s.e.t});
   savePos();
   // Annota nomi di persone/fondazioni solo nelle Lettere
@@ -854,7 +859,7 @@ async function crossLinks(id,i,s,txt){
   if(id==='fili'){
     const m=await letterMap();if(!m)return;
     txt.querySelectorAll('p em').forEach(em=>{const x=em.textContent.match(/Lett\.\s*(\d+).*?vol\.\s*(\d)/);if(!x)return;
-      const k=m.get(x[2]+'.'+x[1]);if(k==null)return;em.classList.add('xl');em.onclick=()=>{location.hash='#r-lettere-'+k}})
+      const k=m.get(x[2]+'.'+x[1]);if(k==null)return;em.classList.add('xl');em.onclick=()=>{jumpTo('#r-lettere-'+k)}})
   }else if(id==='lettere'){
     const g=((s.e&&s.e.g)||'').match(/(\d+)/),n=((s.e&&s.e.t)||'').match(/^(\d+)\.\s/);if(!g||!n)return;
     const L=await legami(),arr=L&&L[g[1]+'.'+n[1]];if(!arr||!arr.length)return;
@@ -1427,7 +1432,7 @@ async function gotoLetter(v,n){
 }
 function route(){
   if(typeof stopTTSIfActive==='function')stopTTSIfActive();
-  closeSheet();readerState=null;SELTXT='';$('#copybar').style.display='none';$('#prog').style.width='0';
+  closeSheet();readerState=null;SELTXT='';if(!/^#r-/.test(location.hash)&&RET_TODAY===null)RETSTACK=[];$('#copybar').style.display='none';$('#prog').style.width='0';
   const p=location.hash.replace(/^#/,'').split('-');
   if(p[0]==='L')return gotoLetter(p[1],p[2]);
   if(p[0]==='C')return gotoConc(p[1],p[2]);
@@ -1506,7 +1511,7 @@ function renderSchedaPersona(p){
       refs_html+=`<h5>${esc(CORPUS_LABEL[corpus]||corpus)}</h5>`;
       for(const r of list.slice(0,20)){
         const label=r.label&&r.label!==`sezione ${r.section_i}`?r.label:`${CORPUS_LABEL[corpus]||corpus} — vol. ${r.file_num+1}`;
-        refs_html+=`<button class="ref-btn" onclick="closeSheet();location.hash='#r-${esc(r.corpus)}-${r.section_i}'">${esc(label)}</button>`;
+        refs_html+=`<button class="ref-btn" onclick="jumpTo('#r-${esc(r.corpus)}-${r.section_i}')">${esc(label)}</button>`;
       }
       if(list.length>20)refs_html+=`<div class="muted" style="font-size:12px;padding:4px 0">… e altri ${list.length-20}</div>`;
     }
