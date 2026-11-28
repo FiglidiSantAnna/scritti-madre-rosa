@@ -367,6 +367,7 @@ PREFER = {'padre tornatore': 'Tornatore (Padre) Giovanni Battista',
 EXTRA_ALIASES = {
     'Margherita Di Savoia': ['margherita di savoia', 'regina margherita'],
     'Pio IX': ['papa pio ix', 'pio ix'],
+    'Don Gennaro Granito Di Belmonte': ['don gennaro', 'gennaro granito', 'granito di belmonte', 'mons. granito', 'monsignor granito', 'mons. gennaro', 'card. granito', 'cardinale granito', 'card. belmonte', 'cardinale belmonte', 'principe di belmonte'],
 }
 
 def build_aliases(people):
